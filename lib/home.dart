@@ -11,6 +11,9 @@ class _HomePageState extends State<HomePage> {
   GoogleSignInAccount _userObj;
   GoogleSignIn _googleSignIn = GoogleSignIn();
 
+  var email;
+  var password;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,7 +23,26 @@ class _HomePageState extends State<HomePage> {
         children: <Widget>[
           Container(
               child: Column(
-            children: <Widget>[Text("Email")],
+            children: <Widget>[
+              TextFormField(
+                maxLength: 160,
+                decoration: InputDecoration(
+                  labelText: "Your Email",
+                ),
+                validator: (value) {
+                  if (value.length == 0) {
+                    return "প্রশ্ন পূরণ আবশ্যক";
+                  }
+                  return null;
+                },
+                onSaved: (value) {
+                  email = value;
+                },
+              ),
+              SizedBox(
+                height: 10,
+              )
+            ],
           )),
           Container(
             child: _isLoggedIn

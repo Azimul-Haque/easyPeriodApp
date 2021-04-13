@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "54115921296",
+    "project_id": "easyperiod-ba7b1",
+    "storage_bucket": "easyperiod-ba7b1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:54115921296:android:431f881406d636637cd715",
+        "android_client_info": {
+          "package_name": "com.orbachinujbuk.easyperiod"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "54115921296-mgabf068v9otcek5hr2klim3ig9dg816.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.orbachinujbuk.easyperiod",
+            "certificate_hash": "87f1d78432d0d035a86d1d2d5c7ed2e9915dd649"
+          }
+        },
+        {
+          "client_id": "54115921296-5gpr44nqtbai92m58toop6bbseege25r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBSboH7V-nMyqO2WKGL1CSmwQGV-hWmAg0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "54115921296-5gpr44nqtbai92m58toop6bbseege25r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

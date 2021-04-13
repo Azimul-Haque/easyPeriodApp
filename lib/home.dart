@@ -16,39 +16,48 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(title: Text("Codesundar")),
       body: Container(
-        child: _isLoggedIn
-            ? Column(
-                children: [
-                  Image.network(_userObj.photoUrl),
-                  Text(_userObj.displayName),
-                  Text(_userObj.email),
-                  TextButton(
+          child: Column(
+        children: <Widget>[
+          Container(
+              child: Column(
+            children: <Widget>[Text("Email")],
+          )),
+          Container(
+            child: _isLoggedIn
+                ? Column(
+                    children: [
+                      Image.network(_userObj.photoUrl),
+                      Text(_userObj.displayName),
+                      Text(_userObj.email),
+                      TextButton(
+                          onPressed: () {
+                            _googleSignIn.signOut().then((value) {
+                              setState(() {
+                                _isLoggedIn = false;
+                              });
+                            }).catchError((e) {});
+                          },
+                          child: Text("Logout"))
+                    ],
+                  )
+                : Center(
+                    child: ElevatedButton(
+                      child: Text("Login with Google"),
                       onPressed: () {
-                        _googleSignIn.signOut().then((value) {
+                        _googleSignIn.signIn().then((userData) {
                           setState(() {
-                            _isLoggedIn = false;
+                            _isLoggedIn = true;
+                            _userObj = userData;
                           });
-                        }).catchError((e) {});
+                        }).catchError((e) {
+                          print(e);
+                        });
                       },
-                      child: Text("Logout"))
-                ],
-              )
-            : Center(
-                child: ElevatedButton(
-                  child: Text("Login with Google"),
-                  onPressed: () {
-                    _googleSignIn.signIn().then((userData) {
-                      setState(() {
-                        _isLoggedIn = true;
-                        _userObj = userData;
-                      });
-                    }).catchError((e) {
-                      print(e);
-                    });
-                  },
-                ),
-              ),
-      ),
+                    ),
+                  ),
+          )
+        ],
+      )),
     );
   }
 }

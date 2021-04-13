@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -31,17 +33,32 @@ class _HomePageState extends State<HomePage> {
                 ),
                 validator: (value) {
                   if (value.length == 0) {
-                    return "প্রশ্ন পূরণ আবশ্যক";
+                    return "Please write your email.";
                   }
                   return null;
                 },
-                onSaved: (value) {
+                onChanged: (value) {
                   email = value;
                 },
               ),
               SizedBox(
                 height: 10,
-              )
+              ),
+              TextFormField(
+                maxLength: 160,
+                decoration: InputDecoration(
+                  labelText: "Your Password",
+                ),
+                validator: (value) {
+                  if (value.length == 0) {
+                    return "Please write your password.";
+                  }
+                  return null;
+                },
+                onChanged: (value) {
+                  password = value;
+                },
+              ),
             ],
           )),
           Container(

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class HomePage extends StatefulWidget {
@@ -9,12 +8,38 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  var email;
+  var password;
+
+  Future<dynamic> register() async {
+    FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+    final User user = (await firebaseAuth.createUserWithEmailAndPassword(
+            email: email, password: password))
+        .user;
+    if (user != null) {
+      print("Works");
+    } else {
+      print("Error");
+    }
+    return null;
+  }
+
+  Future<dynamic> login() async {
+    FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+    final User user = (await firebaseAuth.signInWithEmailAndPassword(
+            email: email, password: password))
+        .user;
+    if (user != null) {
+      print("Logged In!");
+    } else {
+      print("Not a user!");
+    }
+    return null;
+  }
+
   bool _isLoggedIn = false;
   GoogleSignInAccount _userObj;
   GoogleSignIn _googleSignIn = GoogleSignIn();
-
-  var email;
-  var password;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +63,9 @@ class _HomePageState extends State<HomePage> {
                   return null;
                 },
                 onChanged: (value) {
-                  email = value;
+                  setState(() {
+                    email = value;
+                  });
                 },
               ),
               SizedBox(
@@ -56,8 +83,21 @@ class _HomePageState extends State<HomePage> {
                   return null;
                 },
                 onChanged: (value) {
-                  password = value;
+                  setState(() {
+                    password = value;
+                  });
                 },
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              ElevatedButton(
+                onPressed: register,
+                child: Text("Sign Up"),
+              ),
+              ElevatedButton(
+                onPressed: login,
+                child: Text("Sign In"),
               ),
             ],
           )),

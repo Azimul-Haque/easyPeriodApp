@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -127,135 +129,154 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(title: Text(_isLoggedIn ? "EasyPeriod (Logged in)" : "Easyperiod")),
-      body: Container(
-          padding: EdgeInsets.only(top: 10, left: 10, bottom: 10, right: 10),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Container(
+        // appBar: AppBar(title: Text(_isLoggedIn ? "EasyPeriod (Logged in)" : "Easyperiod")),
+        backgroundColor: Colors.white,
+        body: SafeArea(
+          child: Container(
+              padding: EdgeInsets.only(top: 20, left: 25, bottom: 5, right: 25),
+              child: SingleChildScrollView(
                   child: Column(
                 children: <Widget>[
-                  Text("test"),
-                  Text("test"),
-                  Text("test"),
-                  Text("test"),
-                  TextFormField(
-                    maxLength: 160,
-                    decoration: InputDecoration(
-                      labelText: "Your Name",
-                    ),
-                    validator: (value) {
-                      if (value.length == 0) {
-                        return "Please write your name.";
-                      }
-                      return null;
-                    },
-                    onChanged: (value) {
-                      setState(() {
-                        name = value;
-                      });
-                    },
-                  ),
-                  TextFormField(
-                    maxLength: 160,
-                    decoration: InputDecoration(
-                      labelText: "Your Email",
-                    ),
-                    validator: (value) {
-                      if (value.length == 0) {
-                        return "Please write your email.";
-                      }
-                      return null;
-                    },
-                    onChanged: (value) {
-                      setState(() {
-                        email = value;
-                      });
-                    },
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  TextFormField(
-                    maxLength: 160,
-                    decoration: InputDecoration(
-                      labelText: "Your Password",
-                    ),
-                    validator: (value) {
-                      if (value.length == 0) {
-                        return "Please write your password.";
-                      }
-                      return null;
-                    },
-                    onChanged: (value) {
-                      setState(() {
-                        password = value;
-                      });
-                    },
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  ElevatedButton(
-                    onPressed: register,
-                    child: Text("Sign Up"),
-                  ),
-                  ElevatedButton(
-                    onPressed: login,
-                    child: Text("Sign In"),
-                  ),
-                  ElevatedButton(
-                    onPressed: googlelogin,
-                    child: Text("Google Sign In"),
-                  ),
-                  ElevatedButton(
-                    onPressed: () async {
-                      await FirebaseAuth.instance.signOut();
-                      setState(() {
-                        _isLoggedIn = false;
-                      });
-                    },
-                    child: Text("Sign Out"),
-                  ),
+                  Container(
+                      child: Column(
+                    children: <Widget>[
+                      Text(
+                        "EasyPerod",
+                        style: TextStyle(
+                            color: Colors.red.shade900,
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                            height: 1.5),
+                        textAlign: TextAlign.center,
+                      ),
+                      Text(
+                        "Your Period Tracking App",
+                        style: TextStyle(fontSize: 18, height: 1.5),
+                        textAlign: TextAlign.center,
+                      ),
+                      Image.asset(
+                        "assets/images/empowerment/" +
+                            (Random().nextInt(7) + 1).toString() +
+                            ".png",
+                        height: 200,
+                        alignment: Alignment.center,
+                      ),
+                      // TextFormField(
+                      //   maxLength: 160,
+                      //   decoration: InputDecoration(
+                      //     labelText: "Your Name",
+                      //   ),
+                      //   validator: (value) {
+                      //     if (value.length == 0) {
+                      //       return "Please write your name.";
+                      //     }
+                      //     return null;
+                      //   },
+                      //   onChanged: (value) {
+                      //     setState(() {
+                      //       name = value;
+                      //     });
+                      //   },
+                      // ),
+                      TextFormField(
+                        maxLength: 160,
+                        decoration: InputDecoration(
+                          labelText: "Your Email",
+                        ),
+                        validator: (value) {
+                          if (value.length == 0) {
+                            return "Please write your email.";
+                          }
+                          return null;
+                        },
+                        onChanged: (value) {
+                          setState(() {
+                            email = value;
+                          });
+                        },
+                      ),
+                      // SizedBox(
+                      //   height: 10,
+                      // ),
+                      TextFormField(
+                        maxLength: 160,
+                        decoration: InputDecoration(
+                          labelText: "Your Password",
+                        ),
+                        validator: (value) {
+                          if (value.length == 0) {
+                            return "Please write your password.";
+                          }
+                          return null;
+                        },
+                        onChanged: (value) {
+                          setState(() {
+                            password = value;
+                          });
+                        },
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      ElevatedButton(
+                        onPressed: register,
+                        child: Text("Sign Up"),
+                      ),
+                      ElevatedButton(
+                        onPressed: login,
+                        child: Text("Sign In"),
+                      ),
+                      ElevatedButton(
+                        onPressed: googlelogin,
+                        child: Text("Google Sign In"),
+                      ),
+                      ElevatedButton(
+                        onPressed: () async {
+                          await FirebaseAuth.instance.signOut();
+                          setState(() {
+                            _isLoggedIn = false;
+                          });
+                        },
+                        child: Text("Sign Out"),
+                      ),
+                    ],
+                  )),
+                  // Container(
+                  //   child: _isLoggedIn
+                  //       ? Column(
+                  //           children: [
+                  //             // Image.network(_userObj.photoUrl),
+                  //             // Text(_userObj.displayName),
+                  //             // Text(_userObj.email),
+                  //             TextButton(
+                  //                 onPressed: () {
+                  //                   _googleSignIn.signOut().then((value) {
+                  //                     setState(() {
+                  //                       _isLoggedIn = false;
+                  //                     });
+                  //                   }).catchError((e) {});
+                  //                 },
+                  //                 child: Text("Logout"))
+                  //           ],
+                  //         )
+                  //       : Center(
+                  //           child: ElevatedButton(
+                  //             child: Text("Login with Google"),
+                  //             onPressed: () {
+                  //               _googleSignIn.signIn().then((userData) {
+                  //                 setState(() {
+                  //                   _isLoggedIn = true;
+                  //                   _userObj = userData;
+                  //                 });
+                  //               }).catchError((e) {
+                  //                 print(e);
+                  //               });
+                  //             },
+                  //           ),
+                  //         ),
+                  // )
                 ],
-              )),
-              // Container(
-              //   child: _isLoggedIn
-              //       ? Column(
-              //           children: [
-              //             // Image.network(_userObj.photoUrl),
-              //             // Text(_userObj.displayName),
-              //             // Text(_userObj.email),
-              //             TextButton(
-              //                 onPressed: () {
-              //                   _googleSignIn.signOut().then((value) {
-              //                     setState(() {
-              //                       _isLoggedIn = false;
-              //                     });
-              //                   }).catchError((e) {});
-              //                 },
-              //                 child: Text("Logout"))
-              //           ],
-              //         )
-              //       : Center(
-              //           child: ElevatedButton(
-              //             child: Text("Login with Google"),
-              //             onPressed: () {
-              //               _googleSignIn.signIn().then((userData) {
-              //                 setState(() {
-              //                   _isLoggedIn = true;
-              //                   _userObj = userData;
-              //                 });
-              //               }).catchError((e) {
-              //                 print(e);
-              //               });
-              //             },
-              //           ),
-              //         ),
-              // )
-            ],
-          )),
-    );
+              ))),
+        ));
   }
 }

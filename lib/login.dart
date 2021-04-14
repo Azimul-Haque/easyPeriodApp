@@ -28,7 +28,8 @@ class _LoginPageState extends State<LoginPage> {
       } else {
         print('User is signed in!');
         User user = FirebaseAuth.instance.currentUser;
-        print(user);
+        // print(user);
+
       }
     });
   }

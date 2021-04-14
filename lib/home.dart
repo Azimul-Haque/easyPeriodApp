@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'package:easyperiod/pages/dashboard.dart';
 import 'globals.dart';
 
 class HomePage extends StatefulWidget {
@@ -11,9 +12,16 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  var name;
-  var email;
-  var password;
+  int currentTab = 0; // to keep track of active tab index
+  final List<Widget> screens = [
+    Dashboard(),
+    Chat(),
+    Profile(),
+    Settings(),
+  ]; // to store nested tabs
+  final PageStorageBucket bucket = PageStorageBucket();
+  Widget currentScreen = Dashboard();
+
   @override
   Widget build(BuildContext context) {
     return new WillPopScope(

@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "54115921296-t58kqaakvs6sen66a5u5i6bjqrhr6pih.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.orbachinujbuk.easyperiod",
+            "certificate_hash": "ab08836e0761fada65d8816cc3c00b973a6611a2"
+          }
+        },
+        {
           "client_id": "54115921296-5gpr44nqtbai92m58toop6bbseege25r.apps.googleusercontent.com",
           "client_type": 3
         }

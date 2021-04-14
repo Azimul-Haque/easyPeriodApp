@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class HomePage extends StatefulWidget {
-  HomePage({Key key}) : super(key: key);
+class LoginPage extends StatefulWidget {
+  LoginPage({Key key}) : super(key: key);
   @override
-  _HomePageState createState() => _HomePageState();
+  _LoginPageState createState() => _LoginPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _LoginPageState extends State<LoginPage> {
+  var name;
   var email;
   var password;
 
@@ -43,6 +44,9 @@ class _HomePageState extends State<HomePage> {
           content: const Text('Signed up!'),
         ),
       );
+      User user = firebaseAuth.currentUser;
+      user.updateProfile(displayName: name);
+      this.login();
     } on FirebaseAuthException catch (e) {
       print('Failed with error code: ${e.code}');
       print(e.message);
@@ -94,6 +98,9 @@ class _HomePageState extends State<HomePage> {
         await FirebaseAuth.instance.signInWithCredential(credential);
     User user = result.user;
     print(user);
+    setState(() {
+      _isLoggedIn = true;
+    });
     if (user != null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -106,7 +113,8 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(title: Text("EasyPeriod")),
+      appBar: AppBar(
+          title: Text(_isLoggedIn ? "EasyPeriod (Logged in)" : "Easyperiod")),
       body: Container(
           padding: EdgeInsets.only(top: 10, left: 10, bottom: 10, right: 10),
           child: Column(
@@ -114,6 +122,23 @@ class _HomePageState extends State<HomePage> {
               Container(
                   child: Column(
                 children: <Widget>[
+                  TextFormField(
+                    maxLength: 160,
+                    decoration: InputDecoration(
+                      labelText: "Your Name",
+                    ),
+                    validator: (value) {
+                      if (value.length == 0) {
+                        return "Please write your name.";
+                      }
+                      return null;
+                    },
+                    onChanged: (value) {
+                      setState(() {
+                        name = value;
+                      });
+                    },
+                  ),
                   TextFormField(
                     maxLength: 160,
                     decoration: InputDecoration(

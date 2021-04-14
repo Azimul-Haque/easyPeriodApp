@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:easyperiod/globals.dart';
 
-class Dashboard extends StatefulWidget {
-  Dashboard({Key key}) : super(key: key);
+class Calendar extends StatefulWidget {
+  Calendar({Key key}) : super(key: key);
   @override
-  _DashboardState createState() => _DashboardState();
+  _CalendarState createState() => _CalendarState();
 }
 
-class _DashboardState extends State<Dashboard> {
+class _CalendarState extends State<Calendar> {
   @override
   Widget build(BuildContext context) {
     return new WillPopScope(
       onWillPop: () async => false,
       child: new Scaffold(
-          appBar: commonAppBar('Dashboard', this.context),
+          appBar: commonAppBar('Calendar', this.context),
           body: SafeArea(
             child: Container(
                 padding:
@@ -25,7 +25,7 @@ class _DashboardState extends State<Dashboard> {
                         child: Column(
                       children: <Widget>[
                         Text(
-                          "Dashboard",
+                          "Period List",
                           style: TextStyle(
                               color: Colors.red.shade900,
                               fontSize: 25,

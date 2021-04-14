@@ -45,12 +45,14 @@ class _LoginPageState extends State<LoginPage> {
     // if (user != null) {
     //   ScaffoldMessenger.of(context).showSnackBar(
     //     SnackBar(
+    //       behavior: SnackBarBehavior.floating,
     //       content: const Text('Works!'),
     //     ),
     //   );
     // } else {
     //   ScaffoldMessenger.of(context).showSnackBar(
     //     SnackBar(
+    //       behavior: SnackBarBehavior.floating,
     //       content: const Text('Error!'),
     //     ),
     //   );
@@ -61,6 +63,7 @@ class _LoginPageState extends State<LoginPage> {
           email: email, password: password);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
+          behavior: SnackBarBehavior.floating,
           content: const Text('Signed up!'),
         ),
       );
@@ -72,6 +75,7 @@ class _LoginPageState extends State<LoginPage> {
       print(e.message);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
+          behavior: SnackBarBehavior.floating,
           content: Text(e.message),
         ),
       );
@@ -88,6 +92,7 @@ class _LoginPageState extends State<LoginPage> {
       print(user);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
+          behavior: SnackBarBehavior.floating,
           content: const Text('Logged in!'),
         ),
       );
@@ -101,6 +106,7 @@ class _LoginPageState extends State<LoginPage> {
       print(e.message);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
+          behavior: SnackBarBehavior.floating,
           content: Text(e.message),
         ),
       );
@@ -126,6 +132,7 @@ class _LoginPageState extends State<LoginPage> {
     if (user != null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
+          behavior: SnackBarBehavior.floating,
           content: Text('Worked!'),
         ),
       );

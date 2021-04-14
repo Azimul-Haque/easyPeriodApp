@@ -3,6 +3,8 @@ import 'home.dart';
 import 'login.dart';
 import 'package:firebase_core/firebase_core.dart';
 
+import 'pages/addperiod.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -22,6 +24,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => LoginPage(),
         '/homepage': (context) => HomePage(),
+        '/addperiod': (context) => Addperiod(),
       },
     );
   }

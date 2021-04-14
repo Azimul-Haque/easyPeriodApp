@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:easyperiod/home.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,6 +12,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final randompicnumber = (Random().nextInt(7) + 1).toString();
   var name;
   var email;
   var password;
@@ -29,7 +31,8 @@ class _LoginPageState extends State<LoginPage> {
         print('User is signed in!');
         User user = FirebaseAuth.instance.currentUser;
         // print(user);
-
+        Route route = MaterialPageRoute(builder: (context) => HomePage());
+        Navigator.push(context, route);
       }
     });
   }
@@ -91,6 +94,8 @@ class _LoginPageState extends State<LoginPage> {
       setState(() {
         _isLoggedIn = true;
       });
+      Route route = MaterialPageRoute(builder: (context) => HomePage());
+      Navigator.push(context, route);
     } on FirebaseAuthException catch (e) {
       print('Failed with error code: ${e.code}');
       print(e.message);
@@ -156,9 +161,7 @@ class _LoginPageState extends State<LoginPage> {
                         textAlign: TextAlign.center,
                       ),
                       Image.asset(
-                        "assets/images/empowerment/" +
-                            (Random().nextInt(7) + 1).toString() +
-                            ".png",
+                        "assets/images/empowerment/" + randompicnumber + ".png",
                         height: 200,
                         alignment: Alignment.center,
                       ),
@@ -180,7 +183,6 @@ class _LoginPageState extends State<LoginPage> {
                       //   },
                       // ),
                       TextFormField(
-                        maxLength: 160,
                         decoration: InputDecoration(
                           labelText: "Your Email",
                         ),
@@ -192,7 +194,7 @@ class _LoginPageState extends State<LoginPage> {
                         },
                         onChanged: (value) {
                           setState(() {
-                            email = value;
+                            email = value.trim();
                           });
                         },
                       ),
@@ -200,7 +202,6 @@ class _LoginPageState extends State<LoginPage> {
                       //   height: 10,
                       // ),
                       TextFormField(
-                        maxLength: 160,
                         decoration: InputDecoration(
                           labelText: "Your Password",
                         ),
@@ -212,70 +213,39 @@ class _LoginPageState extends State<LoginPage> {
                         },
                         onChanged: (value) {
                           setState(() {
-                            password = value;
+                            password = value.trim();
                           });
                         },
                       ),
                       SizedBox(
                         height: 10,
                       ),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: login,
+                          child: Text("Sign In"),
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.green,
+                            onPrimary: Colors.white,
+                          ),
+                        ),
+                      ),
                       ElevatedButton(
                         onPressed: register,
-                        child: Text("Sign Up"),
+                        child: Text("Create Account"),
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.blueAccent,
+                          onPrimary: Colors.white,
+                        ),
                       ),
-                      ElevatedButton(
-                        onPressed: login,
-                        child: Text("Sign In"),
-                      ),
+
                       ElevatedButton(
                         onPressed: googlelogin,
                         child: Text("Google Sign In"),
                       ),
-                      ElevatedButton(
-                        onPressed: () async {
-                          await FirebaseAuth.instance.signOut();
-                          setState(() {
-                            _isLoggedIn = false;
-                          });
-                        },
-                        child: Text("Sign Out"),
-                      ),
                     ],
                   )),
-                  // Container(
-                  //   child: _isLoggedIn
-                  //       ? Column(
-                  //           children: [
-                  //             // Image.network(_userObj.photoUrl),
-                  //             // Text(_userObj.displayName),
-                  //             // Text(_userObj.email),
-                  //             TextButton(
-                  //                 onPressed: () {
-                  //                   _googleSignIn.signOut().then((value) {
-                  //                     setState(() {
-                  //                       _isLoggedIn = false;
-                  //                     });
-                  //                   }).catchError((e) {});
-                  //                 },
-                  //                 child: Text("Logout"))
-                  //           ],
-                  //         )
-                  //       : Center(
-                  //           child: ElevatedButton(
-                  //             child: Text("Login with Google"),
-                  //             onPressed: () {
-                  //               _googleSignIn.signIn().then((userData) {
-                  //                 setState(() {
-                  //                   _isLoggedIn = true;
-                  //                   _userObj = userData;
-                  //                 });
-                  //               }).catchError((e) {
-                  //                 print(e);
-                  //               });
-                  //             },
-                  //           ),
-                  //         ),
-                  // )
                 ],
               ))),
         ));

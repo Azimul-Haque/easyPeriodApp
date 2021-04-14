@@ -17,6 +17,20 @@ class _LoginPageState extends State<LoginPage> {
   GoogleSignInAccount _userObj;
   GoogleSignIn _googleSignIn = GoogleSignIn();
 
+  @override
+  void initState() {
+    super.initState();
+    FirebaseAuth.instance.authStateChanges().listen((User user) {
+      if (user == null) {
+        print('User is currently signed out!');
+      } else {
+        print('User is signed in!');
+        User user = FirebaseAuth.instance.currentUser;
+        print(user);
+      }
+    });
+  }
+
   Future<dynamic> register() async {
     // FirebaseAuth firebaseAuth = FirebaseAuth.instance;
     // final User user = (await firebaseAuth.createUserWithEmailAndPassword(
@@ -113,15 +127,19 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          title: Text(_isLoggedIn ? "EasyPeriod (Logged in)" : "Easyperiod")),
+      // appBar: AppBar(title: Text(_isLoggedIn ? "EasyPeriod (Logged in)" : "Easyperiod")),
       body: Container(
           padding: EdgeInsets.only(top: 10, left: 10, bottom: 10, right: 10),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Container(
                   child: Column(
                 children: <Widget>[
+                  Text("test"),
+                  Text("test"),
+                  Text("test"),
+                  Text("test"),
                   TextFormField(
                     maxLength: 160,
                     decoration: InputDecoration(
@@ -191,42 +209,51 @@ class _LoginPageState extends State<LoginPage> {
                     onPressed: googlelogin,
                     child: Text("Google Sign In"),
                   ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      await FirebaseAuth.instance.signOut();
+                      setState(() {
+                        _isLoggedIn = false;
+                      });
+                    },
+                    child: Text("Sign Out"),
+                  ),
                 ],
               )),
-              Container(
-                child: _isLoggedIn
-                    ? Column(
-                        children: [
-                          // Image.network(_userObj.photoUrl),
-                          // Text(_userObj.displayName),
-                          // Text(_userObj.email),
-                          TextButton(
-                              onPressed: () {
-                                _googleSignIn.signOut().then((value) {
-                                  setState(() {
-                                    _isLoggedIn = false;
-                                  });
-                                }).catchError((e) {});
-                              },
-                              child: Text("Logout"))
-                        ],
-                      )
-                    : Center(
-                        child: ElevatedButton(
-                          child: Text("Login with Google"),
-                          onPressed: () {
-                            _googleSignIn.signIn().then((userData) {
-                              setState(() {
-                                _isLoggedIn = true;
-                                _userObj = userData;
-                              });
-                            }).catchError((e) {
-                              print(e);
-                            });
-                          },
-                        ),
-                      ),
-              )
+              // Container(
+              //   child: _isLoggedIn
+              //       ? Column(
+              //           children: [
+              //             // Image.network(_userObj.photoUrl),
+              //             // Text(_userObj.displayName),
+              //             // Text(_userObj.email),
+              //             TextButton(
+              //                 onPressed: () {
+              //                   _googleSignIn.signOut().then((value) {
+              //                     setState(() {
+              //                       _isLoggedIn = false;
+              //                     });
+              //                   }).catchError((e) {});
+              //                 },
+              //                 child: Text("Logout"))
+              //           ],
+              //         )
+              //       : Center(
+              //           child: ElevatedButton(
+              //             child: Text("Login with Google"),
+              //             onPressed: () {
+              //               _googleSignIn.signIn().then((userData) {
+              //                 setState(() {
+              //                   _isLoggedIn = true;
+              //                   _userObj = userData;
+              //                 });
+              //               }).catchError((e) {
+              //                 print(e);
+              //               });
+              //             },
+              //           ),
+              //         ),
+              // )
             ],
           )),
     );

@@ -7,6 +7,8 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:easyperiod/globals.dart';
 
+import 'login.dart';
+
 class RegisterPage extends StatefulWidget {
   RegisterPage({Key key}) : super(key: key);
   @override
@@ -16,6 +18,7 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   final randompicnumber = (Random().nextInt(7) + 1).toString();
   var formKey = GlobalKey<FormState>();
+  var nameController = TextEditingController();
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
   var name;
@@ -25,39 +28,20 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   void initState() {
     super.initState();
-    // FirebaseAuth.instance.authStateChanges().listen((User user) {
-    //   if (user == null) {
-    //     print('User is currently signed out!');
-    //   } else {
-    //     print('User is signed in!');
-    //     // User user = FirebaseAuth.instance.currentUser;
-    //     // print(user);
-    //     Route route = MaterialPageRoute(builder: (context) => HomePage());
-    //     Navigator.push(context, route);
-    //   }
-    // });
+    FirebaseAuth.instance.authStateChanges().listen((User user) {
+      if (user == null) {
+        print('User is currently signed out!');
+      } else {
+        print('User is signed in!');
+        // User user = FirebaseAuth.instance.currentUser;
+        print(user);
+        Route route = MaterialPageRoute(builder: (context) => HomePage());
+        Navigator.push(context, route);
+      }
+    });
   }
 
   Future<dynamic> register() async {
-    // FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-    // final User user = (await firebaseAuth.createUserWithEmailAndPassword(
-    //         email: email, password: password))
-    //     .user;
-    // if (user != null) {
-    //   ScaffoldMessenger.of(context).showSnackBar(
-    //     SnackBar(
-    //       behavior: SnackBarBehavior.floating,
-    //       content: const Text('Works!'),
-    //     ),
-    //   );
-    // } else {
-    //   ScaffoldMessenger.of(context).showSnackBar(
-    //     SnackBar(
-    //       behavior: SnackBarBehavior.floating,
-    //       content: const Text('Error!'),
-    //     ),
-    //   );
-    // }
     try {
       FirebaseAuth firebaseAuth = FirebaseAuth.instance;
       await firebaseAuth.createUserWithEmailAndPassword(
@@ -69,15 +53,55 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
       );
       User user = firebaseAuth.currentUser;
-      // user.updateProfile(displayName: name);
+      user.updateProfile(displayName: name);
       this.login();
     } on FirebaseAuthException catch (e) {
-      // print('Failed with error code: ${e.code}');
-      // print(e.message);
+      print('Failed with error code: ${e.code}');
+      print(e.message);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           behavior: SnackBarBehavior.floating,
-          content: Text("Error! Try again."),
+          content: (e.code == 'email-already-in-use')
+              ? Text("The email address is already in use by another account.")
+              : (e.code == 'unknown')
+                  ? Text("No internet!")
+                  : Text("Error! Try again."),
+          // content: Text(e.message),
+        ),
+      );
+      Navigator.pop(context);
+    }
+    return null;
+  }
+
+  Future<dynamic> login() async {
+    FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+    try {
+      await firebaseAuth.signInWithEmailAndPassword(
+          email: email, password: password);
+      // User user = firebaseAuth.currentUser;
+      // print(user);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          behavior: SnackBarBehavior.floating,
+          content: const Text('Logged in!'),
+        ),
+      );
+      // Route route = MaterialPageRoute(builder: (context) => HomePage());
+      // Navigator.push(context, route);
+    } on FirebaseAuthException catch (e) {
+      print('Failed with error code: ${e.code}');
+      print(e.message);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          behavior: SnackBarBehavior.floating,
+          content: (e.code == 'user-not-found')
+              ? Text("No user found with this email.")
+              : (e.code == 'wrong-password')
+                  ? Text("Wrong Password!")
+                  : (e.code == 'unknown')
+                      ? Text("No internet!")
+                      : Text("Error! Try again."),
           // content: Text(e.message),
         ),
       );
@@ -119,10 +143,10 @@ class _RegisterPageState extends State<RegisterPage> {
 
   void handleSubmit() {
     if (formKey.currentState.validate()) {
-      showAlertDialog(context, "Logging in...");
+      showAlertDialog(context, "Creating new account...");
       FocusScope.of(context).unfocus();
       formKey.currentState.save();
-      this.login();
+      this.register();
     }
   }
 
@@ -130,7 +154,7 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return new WillPopScope(
-      onWillPop: () async => false,
+      onWillPop: () async => true,
       child: new Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: Colors.white,
@@ -142,7 +166,7 @@ class _RegisterPageState extends State<RegisterPage> {
               left: 0,
               child: Image.asset(
                 "assets/images/fragments/top1.png",
-                width: size.width * 0.30,
+                width: size.width * 0.24,
               ),
             ),
             Positioned(
@@ -150,7 +174,7 @@ class _RegisterPageState extends State<RegisterPage> {
               right: 0,
               child: Image.asset(
                 "assets/images/fragments/bottom1.png",
-                width: size.width * 0.4,
+                width: size.width * 0.34,
               ),
             ),
             Positioned(
@@ -165,7 +189,7 @@ class _RegisterPageState extends State<RegisterPage> {
               child: Container(
                   height: size.height,
                   padding:
-                      EdgeInsets.only(top: 25, left: 25, bottom: 5, right: 25),
+                      EdgeInsets.only(top: 15, left: 25, bottom: 5, right: 25),
                   child: SingleChildScrollView(
                       child: Column(
                     children: <Widget>[
@@ -190,27 +214,18 @@ class _RegisterPageState extends State<RegisterPage> {
                             "assets/images/empowerment/" +
                                 randompicnumber +
                                 ".png",
-                            height: 150,
+                            height: 110,
                             alignment: Alignment.center,
                           ),
-                          // TextFormField(
-                          //   maxLength: 160,
-                          //   decoration: InputDecoration(
-                          //     labelText: "Your Name",
-                          //   ),
-                          //   validator: (value) {
-                          //     if (value.length == 0) {
-                          //       return "Please write your name.";
-                          //     }
-                          //     return null;
-                          //   },
-                          //   onChanged: (value) {
-                          //     setState(() {
-                          //       name = value;
-                          //     });
-                          //   },
-                          // ),
-
+                          Text(
+                            "Create New Account",
+                            style: TextStyle(
+                                color: Colors.indigo[900],
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                                height: 1.5),
+                            textAlign: TextAlign.center,
+                          ),
                           SizedBox(
                             height: 10,
                           ),
@@ -218,6 +233,31 @@ class _RegisterPageState extends State<RegisterPage> {
                             key: formKey,
                             child: Column(
                               children: <Widget>[
+                                TextFormField(
+                                  controller: nameController,
+                                  decoration: InputDecoration(
+                                    labelText: "Your Name",
+                                    contentPadding: EdgeInsets.all(0),
+                                    border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(50)),
+                                    prefixIcon: Icon(Icons.person),
+                                  ),
+                                  validator: (value) {
+                                    if (value.length == 0) {
+                                      return "Please write your name.";
+                                    }
+                                    return null;
+                                  },
+                                  onSaved: (value) {
+                                    setState(() {
+                                      name = value.trim();
+                                    });
+                                  },
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
                                 TextFormField(
                                   controller: emailController,
                                   decoration: InputDecoration(
@@ -284,8 +324,8 @@ class _RegisterPageState extends State<RegisterPage> {
                             width: double.infinity,
                             child: ElevatedButton.icon(
                               onPressed: handleSubmit,
-                              icon: Icon(Icons.login),
-                              label: Text("Sign In"),
+                              icon: Icon(Icons.person_add_alt),
+                              label: Text("Register"),
                               style: ElevatedButton.styleFrom(
                                 primary: Colors.green,
                                 onPrimary: Colors.white,
@@ -301,11 +341,11 @@ class _RegisterPageState extends State<RegisterPage> {
                                 child: ElevatedButton.icon(
                                   onPressed: () {
                                     Route route = MaterialPageRoute(
-                                        builder: (context) => RegisterPage());
+                                        builder: (context) => LoginPage());
                                     Navigator.push(context, route);
                                   },
-                                  icon: Icon(Icons.person_add_alt),
-                                  label: Text("Create Account"),
+                                  icon: Icon(Icons.login),
+                                  label: Text("Sign in"),
                                   style: ElevatedButton.styleFrom(
                                       primary: Colors.blueAccent,
                                       onPrimary: Colors.white,

@@ -2,20 +2,19 @@ import 'dart:math';
 
 import 'package:easyperiod/home.dart';
 import 'package:easyperiod/register.dart';
-import 'package:easyperiod/resetpassword.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:easyperiod/globals.dart';
 
-class LoginPage extends StatefulWidget {
-  LoginPage({Key key}) : super(key: key);
+class ResetPasswordPage extends StatefulWidget {
+  ResetPasswordPage({Key key}) : super(key: key);
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _ResetPasswordPageState createState() => _ResetPasswordPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _ResetPasswordPageState extends State<ResetPasswordPage> {
   final randompicnumber = (Random().nextInt(7) + 1).toString();
   var formKey = GlobalKey<FormState>();
   var emailController = TextEditingController();
@@ -375,9 +374,7 @@ class _LoginPageState extends State<LoginPage> {
                               textAlign: TextAlign.center,
                             ),
                             onPressed: () {
-                              Route route = MaterialPageRoute(
-                                  builder: (context) => ResetPasswordPage());
-                              Navigator.push(context, route);
+                              print('Pressed');
                             },
                           )
                         ],

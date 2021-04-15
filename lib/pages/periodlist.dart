@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:easyperiod/globals.dart';
 
@@ -8,6 +9,14 @@ class Periodlist extends StatefulWidget {
 }
 
 class _PeriodlistState extends State<Periodlist> {
+  User userdata;
+
+  @override
+  void initState() {
+    super.initState();
+    userdata = FirebaseAuth.instance.currentUser;
+  }
+
   @override
   Widget build(BuildContext context) {
     return new WillPopScope(

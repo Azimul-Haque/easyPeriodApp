@@ -1,4 +1,5 @@
 import 'package:easyperiod/globals.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class Addperiod extends StatefulWidget {
@@ -7,6 +8,14 @@ class Addperiod extends StatefulWidget {
 }
 
 class _AddperiodState extends State<Addperiod> {
+  User userdata;
+
+  @override
+  void initState() {
+    super.initState();
+    userdata = FirebaseAuth.instance.currentUser;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +33,7 @@ class _AddperiodState extends State<Addperiod> {
                       child: Column(
                     children: <Widget>[
                       Text(
-                        "Add Period",
+                        "User: " + userdata.displayName,
                         style: TextStyle(
                             color: Colors.red.shade900,
                             fontSize: 25,

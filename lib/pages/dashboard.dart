@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:easyperiod/globals.dart';
 
@@ -8,6 +9,14 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
+  User userdata;
+
+  @override
+  void initState() {
+    super.initState();
+    userdata = FirebaseAuth.instance.currentUser;
+  }
+
   @override
   Widget build(BuildContext context) {
     return new WillPopScope(
@@ -25,7 +34,7 @@ class _DashboardState extends State<Dashboard> {
                         child: Column(
                       children: <Widget>[
                         Text(
-                          "Dashboard",
+                          "User: " + userdata.displayName,
                           style: TextStyle(
                               color: Colors.red.shade900,
                               fontSize: 25,

@@ -60,6 +60,9 @@ flutter:
    - assets/images/empowerment/5.png
    - assets/images/empowerment/6.png
    - assets/images/empowerment/7.png
+   - assets/images/fragments/top1.png
+   - assets/images/fragments/bottom1.png
+   - assets/images/fragments/google.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

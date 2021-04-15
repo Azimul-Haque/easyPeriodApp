@@ -17,7 +17,8 @@ commonAppBar(String appbarname, BuildContext context) {
     flexibleSpace: appBarStyle(),
     actions: <Widget>[
       PopupMenuButton(
-        offset: Offset(0, 30),
+        icon: Icon(Icons.filter_list_outlined),
+        // offset: Offset(0, 30),
         onSelected: (value) async {
           switch (value) {
             case 'signout':
@@ -30,6 +31,13 @@ commonAppBar(String appbarname, BuildContext context) {
               if (await canLaunch("https://orbachinujbuk.com")) {
                 await launch(
                     "https://play.google.com/store/apps/details?id=com.madladsInc.boi_mela");
+              } else {
+                throw 'Could not launch!';
+              }
+              break;
+            case 'aboutus':
+              if (await canLaunch("https://orbachinujbuk.com")) {
+                await launch("https://orbachinujbuk.com");
               } else {
                 throw 'Could not launch!';
               }
@@ -66,6 +74,21 @@ commonAppBar(String appbarname, BuildContext context) {
                     width: 10,
                   ),
                   Text("Rate Us")
+                ],
+              ),
+            ),
+            PopupMenuItem(
+              value: "aboutus",
+              child: Row(
+                children: <Widget>[
+                  Icon(
+                    Icons.info_outline,
+                    color: Colors.black87,
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text("About Us")
                 ],
               ),
             ),

@@ -25,7 +25,7 @@ class _CalendarState extends State<Calendar> {
                         child: Column(
                       children: <Widget>[
                         Text(
-                          "Period List",
+                          "Calendar",
                           style: TextStyle(
                               color: Colors.red.shade900,
                               fontSize: 25,

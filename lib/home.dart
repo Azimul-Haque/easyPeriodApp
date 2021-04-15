@@ -43,7 +43,7 @@ class _HomePageState extends State<HomePage> {
         shape: CircularNotchedRectangle(),
         notchMargin: 7,
         child: Container(
-          height: 55,
+          height: 60,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
@@ -91,7 +91,7 @@ class _HomePageState extends State<HomePage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Icon(
-                          Icons.chat,
+                          Icons.format_list_numbered_sharp,
                           color:
                               currentTab == 1 ? Colors.red : Colors.grey[600],
                         ),
@@ -127,7 +127,7 @@ class _HomePageState extends State<HomePage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Icon(
-                          Icons.dashboard,
+                          Icons.calendar_today_outlined,
                           color:
                               currentTab == 2 ? Colors.red : Colors.grey[600],
                         ),
@@ -155,7 +155,7 @@ class _HomePageState extends State<HomePage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Icon(
-                          Icons.chat,
+                          Icons.person,
                           color:
                               currentTab == 3 ? Colors.red : Colors.grey[600],
                         ),

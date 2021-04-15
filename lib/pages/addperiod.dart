@@ -1,3 +1,4 @@
+import 'package:easyperiod/globals.dart';
 import 'package:flutter/material.dart';
 
 class Addperiod extends StatefulWidget {
@@ -10,7 +11,8 @@ class _AddperiodState extends State<Addperiod> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Addperiod'),
+          flexibleSpace: appBarStyle(),
+          title: Text('Add Period'),
         ),
         body: SafeArea(
           child: Container(

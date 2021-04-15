@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:easyperiod/globals.dart';
 
@@ -8,6 +9,14 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  User userdata;
+
+  @override
+  void initState() {
+    super.initState();
+    userdata = FirebaseAuth.instance.currentUser;
+  }
+
   @override
   Widget build(BuildContext context) {
     return new WillPopScope(
@@ -25,13 +34,12 @@ class _ProfileState extends State<Profile> {
                         child: Column(
                       children: <Widget>[
                         Text(
-                          "Period List",
+                          userdata.email,
                           style: TextStyle(
                               color: Colors.red.shade900,
                               fontSize: 25,
                               fontWeight: FontWeight.bold,
                               height: 1.5),
-                          textAlign: TextAlign.center,
                         ),
                       ],
                     )),

@@ -13,14 +13,11 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  var formKey = GlobalKey<FormState>();
   final randompicnumber = (Random().nextInt(7) + 1).toString();
   var name;
   var email;
   var password;
-
-  bool _isLoggedIn = false;
-  GoogleSignInAccount _userObj;
-  GoogleSignIn _googleSignIn = GoogleSignIn();
 
   @override
   void initState() {
@@ -97,9 +94,6 @@ class _LoginPageState extends State<LoginPage> {
           content: const Text('Logged in!'),
         ),
       );
-      setState(() {
-        _isLoggedIn = true;
-      });
       Route route = MaterialPageRoute(builder: (context) => HomePage());
       Navigator.push(context, route);
     } on FirebaseAuthException catch (e) {
@@ -127,9 +121,6 @@ class _LoginPageState extends State<LoginPage> {
         await FirebaseAuth.instance.signInWithCredential(credential);
     User user = result.user;
     print(user);
-    setState(() {
-      _isLoggedIn = true;
-    });
     if (user != null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -143,199 +134,203 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
-      // appBar: AppBar(title: Text(_isLoggedIn ? "EasyPeriod (Logged in)" : "Easyperiod")),
-      resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.white,
-      body: Stack(
-        alignment: Alignment.center,
-        children: <Widget>[
-          Positioned(
-            top: 0,
-            left: 0,
-            child: Image.asset(
-              "assets/images/fragments/top1.png",
-              width: size.width * 0.30,
+    return new WillPopScope(
+      onWillPop: () async => false,
+      child: new Scaffold(
+        resizeToAvoidBottomInset: false,
+        backgroundColor: Colors.white,
+        body: Stack(
+          alignment: Alignment.center,
+          children: <Widget>[
+            Positioned(
+              top: 0,
+              left: 0,
+              child: Image.asset(
+                "assets/images/fragments/top1.png",
+                width: size.width * 0.30,
+              ),
             ),
-          ),
-          Positioned(
-            bottom: 0,
-            right: 0,
-            child: Image.asset(
-              "assets/images/fragments/bottom1.png",
-              width: size.width * 0.4,
+            Positioned(
+              bottom: 0,
+              right: 0,
+              child: Image.asset(
+                "assets/images/fragments/bottom1.png",
+                width: size.width * 0.4,
+              ),
             ),
-          ),
-          Positioned(
-            bottom: 10,
-            left: 10,
-            child: Text(
-              "InnovaTech Ltd.",
-              style: TextStyle(fontSize: 12),
+            Positioned(
+              bottom: 10,
+              left: 10,
+              child: Text(
+                "V 1.0.0 | InnovaTech Ltd.",
+                style: TextStyle(fontSize: 12),
+              ),
             ),
-          ),
-          SafeArea(
-            child: Container(
-                height: size.height,
-                padding:
-                    EdgeInsets.only(top: 25, left: 25, bottom: 5, right: 25),
-                child: SingleChildScrollView(
-                    child: Column(
-                  children: <Widget>[
-                    Container(
-                        child: Column(
-                      children: <Widget>[
-                        Text(
-                          "EasyPerod",
-                          style: TextStyle(
-                              color: Colors.red.shade900,
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold,
-                              height: 1.5),
-                          textAlign: TextAlign.center,
-                        ),
-                        Text(
-                          "Your Period Tracking App",
-                          style: TextStyle(fontSize: 18, height: 1.5),
-                          textAlign: TextAlign.center,
-                        ),
-                        Image.asset(
-                          "assets/images/empowerment/" +
-                              randompicnumber +
-                              ".png",
-                          height: 150,
-                          alignment: Alignment.center,
-                        ),
-                        // TextFormField(
-                        //   maxLength: 160,
-                        //   decoration: InputDecoration(
-                        //     labelText: "Your Name",
-                        //   ),
-                        //   validator: (value) {
-                        //     if (value.length == 0) {
-                        //       return "Please write your name.";
-                        //     }
-                        //     return null;
-                        //   },
-                        //   onChanged: (value) {
-                        //     setState(() {
-                        //       name = value;
-                        //     });
-                        //   },
-                        // ),
-                        TextFormField(
-                          decoration: InputDecoration(
-                            labelText: "Your Email",
-                            contentPadding: EdgeInsets.all(0),
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(50)),
-                            prefixIcon: Icon(Icons.email),
+            SafeArea(
+              child: Container(
+                  height: size.height,
+                  padding:
+                      EdgeInsets.only(top: 25, left: 25, bottom: 5, right: 25),
+                  child: SingleChildScrollView(
+                      child: Column(
+                    children: <Widget>[
+                      Container(
+                          child: Column(
+                        children: <Widget>[
+                          Form(child: ),
+                          Text(
+                            "EasyPerod",
+                            style: TextStyle(
+                                color: Colors.red.shade900,
+                                fontSize: 25,
+                                fontWeight: FontWeight.bold,
+                                height: 1.5),
+                            textAlign: TextAlign.center,
                           ),
-                          validator: (value) {
-                            if (value.length == 0) {
-                              return "Please write your email.";
-                            }
-                            return null;
-                          },
-                          onChanged: (value) {
-                            setState(() {
-                              email = value.trim();
-                            });
-                          },
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        TextFormField(
-                          decoration: InputDecoration(
-                            labelText: "Your Password",
-                            contentPadding: EdgeInsets.all(0),
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(50)),
-                            prefixIcon: Icon(Icons.vpn_key),
+                          Text(
+                            "Your Period Tracking App",
+                            style: TextStyle(fontSize: 18, height: 1.5),
+                            textAlign: TextAlign.center,
                           ),
-                          validator: (value) {
-                            if (value.length == 0) {
-                              return "Please write your password.";
-                            }
-                            return null;
-                          },
-                          onChanged: (value) {
-                            setState(() {
-                              password = value.trim();
-                            });
-                          },
-                          obscureText: true,
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton.icon(
-                            onPressed: login,
-                            icon: Icon(Icons.login),
-                            label: Text("Sign In"),
-                            style: ElevatedButton.styleFrom(
-                              primary: Colors.green,
-                              onPrimary: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(50),
+                          Image.asset(
+                            "assets/images/empowerment/" +
+                                randompicnumber +
+                                ".png",
+                            height: 150,
+                            alignment: Alignment.center,
+                          ),
+                          // TextFormField(
+                          //   maxLength: 160,
+                          //   decoration: InputDecoration(
+                          //     labelText: "Your Name",
+                          //   ),
+                          //   validator: (value) {
+                          //     if (value.length == 0) {
+                          //       return "Please write your name.";
+                          //     }
+                          //     return null;
+                          //   },
+                          //   onChanged: (value) {
+                          //     setState(() {
+                          //       name = value;
+                          //     });
+                          //   },
+                          // ),
+                          TextFormField(
+                            decoration: InputDecoration(
+                              labelText: "Your Email",
+                              contentPadding: EdgeInsets.all(0),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(50)),
+                              prefixIcon: Icon(Icons.email),
+                            ),
+                            validator: (value) {
+                              if (value.length == 0) {
+                                return "Please write your email.";
+                              }
+                              return null;
+                            },
+                            onChanged: (value) {
+                              setState(() {
+                                email = value.trim();
+                              });
+                            },
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          TextFormField(
+                            decoration: InputDecoration(
+                              labelText: "Your Password",
+                              contentPadding: EdgeInsets.all(0),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(50)),
+                              prefixIcon: Icon(Icons.vpn_key),
+                            ),
+                            validator: (value) {
+                              if (value.length == 0) {
+                                return "Please write your password.";
+                              }
+                              return null;
+                            },
+                            onChanged: (value) {
+                              setState(() {
+                                password = value.trim();
+                              });
+                            },
+                            obscureText: true,
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          SizedBox(
+                            width: double.infinity,
+                            child: ElevatedButton.icon(
+                              onPressed: login,
+                              icon: Icon(Icons.login),
+                              label: Text("Sign In"),
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.green,
+                                onPrimary: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(50),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Expanded(
-                              child: ElevatedButton.icon(
-                                onPressed: register,
-                                icon: Icon(Icons.person_add_alt),
-                                label: Text("Create Account"),
-                                style: ElevatedButton.styleFrom(
-                                    primary: Colors.blueAccent,
-                                    onPrimary: Colors.white,
+                          Row(
+                            children: <Widget>[
+                              Expanded(
+                                child: ElevatedButton.icon(
+                                  onPressed: register,
+                                  icon: Icon(Icons.person_add_alt),
+                                  label: Text("Create Account"),
+                                  style: ElevatedButton.styleFrom(
+                                      primary: Colors.blueAccent,
+                                      onPrimary: Colors.white,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(50),
+                                      )),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10,
+                                width: 10,
+                              ),
+                              Expanded(
+                                child: ElevatedButton(
+                                  onPressed: googlelogin,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: <Widget>[
+                                      Image.asset(
+                                        "assets/images/fragments/google.png",
+                                        height: 20,
+                                        alignment: Alignment.center,
+                                      ),
+                                      Text(" Google Sign In"),
+                                    ],
+                                  ),
+                                  style: ElevatedButton.styleFrom(
+                                    primary: Colors.yellow[800],
+                                    onPrimary: Colors.black87,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(50),
-                                    )),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 10,
-                              width: 10,
-                            ),
-                            Expanded(
-                              child: ElevatedButton(
-                                onPressed: googlelogin,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: <Widget>[
-                                    Image.asset(
-                                      "assets/images/fragments/google.png",
-                                      height: 20,
-                                      alignment: Alignment.center,
                                     ),
-                                    Text(" Google Sign In"),
-                                  ],
-                                ),
-                                style: ElevatedButton.styleFrom(
-                                  primary: Colors.yellow[800],
-                                  onPrimary: Colors.black87,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(50),
                                   ),
                                 ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ],
-                    )),
-                  ],
-                ))),
-          )
-        ],
+                              )
+                            ],
+                          ),
+                        ],
+                      )),
+                    ],
+                  ))),
+            )
+          ],
+        ),
       ),
     );
   }

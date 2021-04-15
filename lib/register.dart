@@ -1,20 +1,19 @@
 import 'dart:math';
 
 import 'package:easyperiod/home.dart';
-import 'package:easyperiod/register.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:easyperiod/globals.dart';
 
-class LoginPage extends StatefulWidget {
-  LoginPage({Key key}) : super(key: key);
+class RegisterPage extends StatefulWidget {
+  RegisterPage({Key key}) : super(key: key);
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _RegisterPageState createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   final randompicnumber = (Random().nextInt(7) + 1).toString();
   var formKey = GlobalKey<FormState>();
   var emailController = TextEditingController();
@@ -26,17 +25,17 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-    FirebaseAuth.instance.authStateChanges().listen((User user) {
-      if (user == null) {
-        print('User is currently signed out!');
-      } else {
-        print('User is signed in!');
-        // User user = FirebaseAuth.instance.currentUser;
-        // print(user);
-        Route route = MaterialPageRoute(builder: (context) => HomePage());
-        Navigator.push(context, route);
-      }
-    });
+    // FirebaseAuth.instance.authStateChanges().listen((User user) {
+    //   if (user == null) {
+    //     print('User is currently signed out!');
+    //   } else {
+    //     print('User is signed in!');
+    //     // User user = FirebaseAuth.instance.currentUser;
+    //     // print(user);
+    //     Route route = MaterialPageRoute(builder: (context) => HomePage());
+    //     Navigator.push(context, route);
+    //   }
+    // });
   }
 
   Future<dynamic> register() async {
@@ -79,42 +78,6 @@ class _LoginPageState extends State<LoginPage> {
         SnackBar(
           behavior: SnackBarBehavior.floating,
           content: Text("Error! Try again."),
-          // content: Text(e.message),
-        ),
-      );
-      Navigator.pop(context);
-    }
-    return null;
-  }
-
-  Future<dynamic> login() async {
-    FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-    try {
-      await firebaseAuth.signInWithEmailAndPassword(
-          email: email, password: password);
-      // User user = firebaseAuth.currentUser;
-      // print(user);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          behavior: SnackBarBehavior.floating,
-          content: const Text('Logged in!'),
-        ),
-      );
-      // Route route = MaterialPageRoute(builder: (context) => HomePage());
-      // Navigator.push(context, route);
-    } on FirebaseAuthException catch (e) {
-      print('Failed with error code: ${e.code}');
-      print(e.message);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          behavior: SnackBarBehavior.floating,
-          content: (e.code == 'user-not-found')
-              ? Text("No user found with this email.")
-              : (e.code == 'wrong-password')
-                  ? Text("Wrong Password!")
-                  : (e.code == 'unknown')
-                      ? Text("No internet!")
-                      : Text("Error! Try again."),
           // content: Text(e.message),
         ),
       );

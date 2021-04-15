@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'home.dart';
+import 'register.dart';
 import 'login.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -23,6 +24,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => LoginPage(),
+        '/register': (context) => RegisterPage(),
         '/homepage': (context) => HomePage(),
         '/addperiod': (context) => Addperiod(),
       },

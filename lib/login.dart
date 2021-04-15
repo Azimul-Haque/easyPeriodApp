@@ -13,8 +13,10 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  var formKey = GlobalKey<FormState>();
   final randompicnumber = (Random().nextInt(7) + 1).toString();
+  var formKey = GlobalKey<FormState>();
+  var emailController = TextEditingController();
+  var passwordController = TextEditingController();
   var name;
   var email;
   var password;
@@ -131,6 +133,14 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
+  void handleSubmit() {
+    if (formKey.currentState.validate()) {
+      // showAlertDialog(context);
+      formKey.currentState.save();
+      this.login();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -177,7 +187,6 @@ class _LoginPageState extends State<LoginPage> {
                       Container(
                           child: Column(
                         children: <Widget>[
-                          Form(child: ),
                           Text(
                             "EasyPerod",
                             style: TextStyle(
@@ -216,49 +225,72 @@ class _LoginPageState extends State<LoginPage> {
                           //     });
                           //   },
                           // ),
-                          TextFormField(
-                            decoration: InputDecoration(
-                              labelText: "Your Email",
-                              contentPadding: EdgeInsets.all(0),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(50)),
-                              prefixIcon: Icon(Icons.email),
-                            ),
-                            validator: (value) {
-                              if (value.length == 0) {
-                                return "Please write your email.";
-                              }
-                              return null;
-                            },
-                            onChanged: (value) {
-                              setState(() {
-                                email = value.trim();
-                              });
-                            },
-                          ),
+
                           SizedBox(
                             height: 10,
                           ),
-                          TextFormField(
-                            decoration: InputDecoration(
-                              labelText: "Your Password",
-                              contentPadding: EdgeInsets.all(0),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(50)),
-                              prefixIcon: Icon(Icons.vpn_key),
+                          Form(
+                            key: formKey,
+                            child: Column(
+                              children: <Widget>[
+                                TextFormField(
+                                  controller: emailController,
+                                  decoration: InputDecoration(
+                                    labelText: "Your Email",
+                                    contentPadding: EdgeInsets.all(0),
+                                    border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(50)),
+                                    prefixIcon: Icon(Icons.email),
+                                  ),
+                                  validator: (value) {
+                                    if (value.length == 0) {
+                                      return "Please write your email.";
+                                    }
+                                    if (!RegExp(
+                                            r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
+                                        .hasMatch(value)) {
+                                      return "Please provide a valid email address.";
+                                    }
+                                    return null;
+                                  },
+                                  onSaved: (value) {
+                                    setState(() {
+                                      email = value.trim();
+                                    });
+                                  },
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                TextFormField(
+                                  controller: passwordController,
+                                  decoration: InputDecoration(
+                                    labelText: "Your Password",
+                                    contentPadding: EdgeInsets.all(0),
+                                    border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(50)),
+                                    prefixIcon: Icon(Icons.vpn_key),
+                                  ),
+                                  validator: (value) {
+                                    if (value.length == 0) {
+                                      return "Please write your password.";
+                                    }
+                                    if (value.length < 6) {
+                                      return "Password should contain atleast 6 characters.";
+                                    }
+                                    return null;
+                                  },
+                                  onSaved: (value) {
+                                    setState(() {
+                                      password = value.trim();
+                                    });
+                                  },
+                                  obscureText: true,
+                                ),
+                              ],
                             ),
-                            validator: (value) {
-                              if (value.length == 0) {
-                                return "Please write your password.";
-                              }
-                              return null;
-                            },
-                            onChanged: (value) {
-                              setState(() {
-                                password = value.trim();
-                              });
-                            },
-                            obscureText: true,
                           ),
                           SizedBox(
                             height: 10,
@@ -266,7 +298,7 @@ class _LoginPageState extends State<LoginPage> {
                           SizedBox(
                             width: double.infinity,
                             child: ElevatedButton.icon(
-                              onPressed: login,
+                              onPressed: handleSubmit,
                               icon: Icon(Icons.login),
                               label: Text("Sign In"),
                               style: ElevatedButton.styleFrom(

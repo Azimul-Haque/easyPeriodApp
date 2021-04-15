@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:easyperiod/globals.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key}) : super(key: key);
@@ -29,7 +30,7 @@ class _LoginPageState extends State<LoginPage> {
         print('User is currently signed out!');
       } else {
         print('User is signed in!');
-        User user = FirebaseAuth.instance.currentUser;
+        // User user = FirebaseAuth.instance.currentUser;
         // print(user);
         Route route = MaterialPageRoute(builder: (context) => HomePage());
         Navigator.push(context, route);
@@ -64,21 +65,23 @@ class _LoginPageState extends State<LoginPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           behavior: SnackBarBehavior.floating,
-          content: const Text('Signed up!'),
+          content: const Text('Signed up successfully!'),
         ),
       );
       User user = firebaseAuth.currentUser;
       user.updateProfile(displayName: name);
       this.login();
     } on FirebaseAuthException catch (e) {
-      print('Failed with error code: ${e.code}');
-      print(e.message);
+      // print('Failed with error code: ${e.code}');
+      // print(e.message);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           behavior: SnackBarBehavior.floating,
-          content: Text(e.message),
+          content: Text("Error! Try again."),
+          // content: Text(e.message),
         ),
       );
+      Navigator.pop(context);
     }
     return null;
   }
@@ -96,22 +99,25 @@ class _LoginPageState extends State<LoginPage> {
           content: const Text('Logged in!'),
         ),
       );
-      Route route = MaterialPageRoute(builder: (context) => HomePage());
-      Navigator.push(context, route);
+      // Route route = MaterialPageRoute(builder: (context) => HomePage());
+      // Navigator.push(context, route);
     } on FirebaseAuthException catch (e) {
       print('Failed with error code: ${e.code}');
       print(e.message);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           behavior: SnackBarBehavior.floating,
-          content: Text(e.message),
+          content: Text("Error! Try again."),
+          // content: Text(e.message),
         ),
       );
+      Navigator.pop(context);
     }
     return null;
   }
 
   Future googlelogin() async {
+    showAlertDialog(context, "Connecting with google...");
     final GoogleSignInAccount googleSignInAccount =
         await GoogleSignIn().signIn();
     final GoogleSignInAuthentication googleSignInAuthentication =
@@ -122,21 +128,28 @@ class _LoginPageState extends State<LoginPage> {
     UserCredential result =
         await FirebaseAuth.instance.signInWithCredential(credential);
     User user = result.user;
-    print(user);
+    // print(user);
     if (user != null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           behavior: SnackBarBehavior.floating,
-          content: Text('Worked!'),
+          content: Text('Logged in!'),
         ),
       );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          behavior: SnackBarBehavior.floating,
+          content: Text('Error! Try again.'),
+        ),
+      );
+      Navigator.pop(context);
     }
   }
 
   void handleSubmit() {
     if (formKey.currentState.validate()) {
-      // showAlertDialog(context);
-      CircularProgressIndicator();
+      showAlertDialog(context, "Logging in...");
       formKey.currentState.save();
       this.login();
     }

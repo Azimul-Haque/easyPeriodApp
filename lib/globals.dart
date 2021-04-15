@@ -115,3 +115,26 @@ appBarStyle() {
     ),
   );
 }
+
+showAlertDialog(BuildContext context, String message) {
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Center(child: Text(message)),
+    content: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        CircularProgressIndicator(),
+      ],
+    ),
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}

@@ -136,6 +136,7 @@ class _LoginPageState extends State<LoginPage> {
   void handleSubmit() {
     if (formKey.currentState.validate()) {
       // showAlertDialog(context);
+      CircularProgressIndicator();
       formKey.currentState.save();
       this.login();
     }

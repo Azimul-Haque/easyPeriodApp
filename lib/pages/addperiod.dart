@@ -52,7 +52,7 @@ class _AddperiodState extends State<Addperiod> {
         "uid": userdata.uid,
         "start": start,
         "end": end,
-        "description": desc,
+        "desc": desc,
       };
       CollectionReference collectionReference =
           FirebaseFirestore.instance.collection('periods');

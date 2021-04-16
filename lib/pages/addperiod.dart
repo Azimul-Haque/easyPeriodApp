@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easyperiod/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
@@ -42,27 +43,34 @@ class _AddperiodState extends State<Addperiod> {
   }
 
   addPeriod() {
-    print(start);
-    // Map<String, dynamic> perioddata = {
-    //   "uid": "234ASD324234sdf",
-    //   "start": "2021-04-12",
-    //   "end": "2021-04-15",
-    //   "description": null,
-    // };
-    // CollectionReference collectionReference =
-    //     FirebaseFirestore.instance.collection('periods');
-    // collectionReference
-    //     .add(perioddata)
-    //     .then(
-    //       (value) => ScaffoldMessenger.of(context).showSnackBar(
-    //         SnackBar(
-    //           behavior: SnackBarBehavior.floating,
-    //           content: Text("Added!"),
-    //         ),
-    //       ),
-    //     )
-    //     // ignore: return_of_invalid_type_from_catch_error
-    //     .catchError((e) => print(e.message));
+    if (formKey.currentState.validate()) {
+      FocusScope.of(context).unfocus();
+      formKey.currentState.save();
+      print(start);
+      print(end);
+      Map<String, dynamic> perioddata = {
+        "uid": userdata.uid,
+        "start": start,
+        "end": end,
+        "description": desc,
+      };
+      CollectionReference collectionReference =
+          FirebaseFirestore.instance.collection('periods');
+      collectionReference
+          .add(perioddata)
+          .then(
+            (value) => ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                behavior: SnackBarBehavior.floating,
+                content: Text("Added!"),
+              ),
+            ),
+          )
+          // ignore: return_of_invalid_type_from_catch_error
+          .catchError((e) => print(e.message));
+      Route route = MaterialPageRoute(builder: (context) => HomePage());
+      Navigator.push(context, route);
+    }
   }
 
   @override
@@ -83,8 +91,6 @@ class _AddperiodState extends State<Addperiod> {
                 children: <Widget>[
                   TextFormField(
                     controller: startController,
-                    showCursor: false,
-                    readOnly: true,
                     decoration: InputDecoration(
                       labelText: "Start Date",
                       prefixIcon: Icon(Icons.calendar_today_outlined),
@@ -101,7 +107,12 @@ class _AddperiodState extends State<Addperiod> {
                     },
                     onSaved: (value) {
                       setState(() {
-                        start = value.trim();
+                        this.start = value.length > 0
+                            ? DateFormat('MMMM dd, yyyy')
+                                .parse(value)
+                                .toString()
+                                .substring(0, 10)
+                            : '';
                       });
                     },
                   ),
@@ -110,8 +121,6 @@ class _AddperiodState extends State<Addperiod> {
                   ),
                   TextFormField(
                     controller: endController,
-                    showCursor: false,
-                    readOnly: true,
                     decoration: InputDecoration(
                       labelText: "End Date (You can add later)",
                       prefixIcon: Icon(Icons.calendar_today_outlined),
@@ -122,7 +131,12 @@ class _AddperiodState extends State<Addperiod> {
                     },
                     onSaved: (value) {
                       setState(() {
-                        end = value.trim();
+                        end = value.length > 0
+                            ? DateFormat('MMMM dd, yyyy')
+                                .parse(value)
+                                .toString()
+                                .substring(0, 10)
+                            : '';
                       });
                     },
                   ),

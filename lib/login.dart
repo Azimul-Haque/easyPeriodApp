@@ -75,7 +75,7 @@ class _LoginPageState extends State<LoginPage> {
       this.login();
     } on FirebaseAuthException catch (e) {
       // print('Failed with error code: ${e.code}');
-      // print(e.message);
+      print(e.message);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           behavior: SnackBarBehavior.floating,

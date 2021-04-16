@@ -63,14 +63,12 @@ class _PeriodlistState extends State<Periodlist> {
       onSelected: (value) async {
         switch (value) {
           case 'edit':
+
             // qstnReportController.clear();
             // showReportDialog(question);
             break;
-          case 'makefavorite':
-            // makeFavorite(question);
-            break;
-          case 'makeunfavorite':
-            // makeUnfavorite(question);
+          case 'delete':
+            deletePeriodDialogue(period.reference.id);
             break;
           default:
         }
@@ -92,35 +90,69 @@ class _PeriodlistState extends State<Periodlist> {
               ],
             ),
           ),
-          // PopupMenuItem(
-          //   value: (question.isfav == 0) ? "makefavorite" : "makeunfavorite",
-          //   child: (question.isfav == 0)
-          //       ? Row(
-          //           children: <Widget>[
-          //             Icon(
-          //               Icons.favorite_border,
-          //               color: Colors.black87,
-          //             ),
-          //             SizedBox(
-          //               width: 10,
-          //             ),
-          //             Text("প্রিয় তালিকায় যোগ করুন")
-          //           ],
-          //         )
-          //       : Row(
-          //           children: <Widget>[
-          //             Icon(
-          //               Icons.remove_circle_outline,
-          //               color: Colors.black87,
-          //             ),
-          //             SizedBox(
-          //               width: 10,
-          //             ),
-          //             Text("প্রিয় তালিকা থেকে অপসারণ করুন")
-          //           ],
-          //         ),
-          // ),
+          PopupMenuItem(
+            value: "delete",
+            child: Row(
+              children: <Widget>[
+                Icon(
+                  Icons.delete_outline,
+                  color: Colors.black87,
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Text("Delete Period")
+              ],
+            ),
+          ),
         ];
+      },
+    );
+  }
+
+  deletePeriodDialogue(periodrefid) async {
+    AlertDialog alert = AlertDialog(
+      title: Center(child: Text('Delete Confirmation')),
+      content: Text(
+        "Do you want to delete this Period?",
+        style: TextStyle(fontSize: 15.5, height: 1.2),
+      ),
+      actions: <Widget>[
+        ElevatedButton(
+          child: Text("Yes, Delete"),
+          onPressed: () {
+            FirebaseFirestore.instance
+                .collection('periods')
+                .doc(periodrefid)
+                .delete();
+            Navigator.of(context).pop();
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                behavior: SnackBarBehavior.floating,
+                content: const Text('Loaded successfully.'),
+              ),
+            );
+          },
+        ),
+        ElevatedButton(
+          child: Text("Back"),
+          style: ElevatedButton.styleFrom(
+            primary: Colors.grey[350],
+            onPrimary: Colors.black,
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return alert;
       },
     );
   }
@@ -187,6 +219,13 @@ class _PeriodlistState extends State<Periodlist> {
                           ],
                         ),
                         trailing: listPopUpMenu(periodslist[index]),
+                        // trailing: Wrap(
+                        //   spacing: 5, // space between two icons
+                        //   children: <Widget>[
+                        //     Icon(Icons.call), // icon-1
+                        //     Icon(Icons.message), // icon-2
+                        //   ],
+                        // ),
                       ),
                       margin: EdgeInsets.only(
                           top: 5, right: 10, bottom: 5, left: 10),

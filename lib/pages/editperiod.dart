@@ -8,12 +8,17 @@ import 'package:intl/intl.dart';
 import 'package:easyperiod/globals.dart';
 import 'package:flutter/material.dart';
 
-class Addperiod extends StatefulWidget {
+class Editperiod extends StatefulWidget {
+  var data;
+  Editperiod(this.data);
   @override
-  _AddperiodState createState() => _AddperiodState();
+  _EditperiodState createState() => _EditperiodState(this.data);
 }
 
-class _AddperiodState extends State<Addperiod> {
+class _EditperiodState extends State<Editperiod> {
+  var data;
+  _EditperiodState(this.data);
+
   var formKey = GlobalKey<FormState>();
   var startController = TextEditingController();
   var endController = TextEditingController();
@@ -42,14 +47,24 @@ class _AddperiodState extends State<Addperiod> {
   void initState() {
     super.initState();
     userdata = FirebaseAuth.instance.currentUser;
+    startController.text = DateFormat('MMMM dd, yyyy')
+        .format(DateFormat('yyyy-MM-dd').parse(data['start']));
+    endController.text = data['end'] != ""
+        ? DateFormat('MMMM dd, yyyy')
+            .format(DateFormat('yyyy-MM-dd').parse(data['end']))
+        : "";
+    descController.text = data['desc'];
+    start = data['start'];
+    end = data['end'];
+    desc = data['desc'];
   }
 
-  addPeriod() {
+  updatePeriod() {
     if (formKey.currentState.validate()) {
       FocusScope.of(context).unfocus();
       formKey.currentState.save();
-      print(start);
-      print(end);
+      // print(start);
+      // print(end);
       Map<String, dynamic> perioddata = {
         "uid": userdata.uid,
         "start": start,
@@ -59,12 +74,13 @@ class _AddperiodState extends State<Addperiod> {
       CollectionReference collectionReference =
           FirebaseFirestore.instance.collection('periods');
       collectionReference
-          .add(perioddata)
+          .doc(data.reference.id)
+          .update(perioddata)
           .then(
             (value) => this.showSnackBarandPop(),
           )
-          // ignore: return_of_invalid_type_from_catch_error
           .catchError(
+            // ignore: return_of_invalid_type_from_catch_error
             (e) => ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 behavior: SnackBarBehavior.floating,
@@ -76,17 +92,16 @@ class _AddperiodState extends State<Addperiod> {
   }
 
   showSnackBarandPop() {
-    showAlertDialog(context, "Adding...");
+    showAlertDialog(context, "Updating...");
     Timer(Duration(seconds: 1), () {
       Navigator.of(context).pop();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           behavior: SnackBarBehavior.floating,
-          content: Text("Period Added!"),
+          content: Text("Period updated."),
         ),
       );
-      Route route = MaterialPageRoute(builder: (context) => HomePage());
-      Navigator.push(context, route);
+      Navigator.of(context).pop();
     });
   }
 
@@ -95,7 +110,7 @@ class _AddperiodState extends State<Addperiod> {
     return Scaffold(
       appBar: AppBar(
         flexibleSpace: appBarStyle(),
-        title: Text('Add Period'),
+        title: Text('Edit Period'),
       ),
       body: Container(
         padding: EdgeInsets.only(top: 20, left: 15, bottom: 20, right: 15),
@@ -184,9 +199,9 @@ class _AddperiodState extends State<Addperiod> {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(
-                onPressed: addPeriod,
+                onPressed: updatePeriod,
                 icon: Icon(CupertinoIcons.drop),
-                label: Text("Save Period"),
+                label: Text("Update Period"),
               ),
             ),
           ],

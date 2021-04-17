@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:easyperiod/globals.dart';
 
+import 'editperiod.dart';
+
 class Periodlist extends StatefulWidget {
   Periodlist({Key key}) : super(key: key);
   @override
@@ -63,9 +65,9 @@ class _PeriodlistState extends State<Periodlist> {
       onSelected: (value) async {
         switch (value) {
           case 'edit':
-
-            // qstnReportController.clear();
-            // showReportDialog(question);
+            Route route =
+                MaterialPageRoute(builder: (context) => Editperiod(period));
+            Navigator.push(context, route);
             break;
           case 'delete':
             deletePeriodDialogue(period.reference.id);
@@ -129,7 +131,7 @@ class _PeriodlistState extends State<Periodlist> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 behavior: SnackBarBehavior.floating,
-                content: const Text('Loaded successfully.'),
+                content: const Text('Period Deleted.'),
               ),
             );
           },
@@ -216,6 +218,24 @@ class _PeriodlistState extends State<Periodlist> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text(periodslist[index]['desc']),
+                            Wrap(
+                              children: <Widget>[
+                                Text("test"),
+                                LinearProgressIndicator(
+                                  value: periodslist[index]['end'] != ""
+                                      ? (DateTime.parse(
+                                                  periodslist[index]['end'])
+                                              .difference(DateTime.parse(
+                                                  periodslist[index]['start']))
+                                              .inDays) /
+                                          30
+                                      : periodslist.isNotEmpty
+                                          ? 0.033
+                                          : 0.0,
+                                  backgroundColor: Colors.grey[350],
+                                ),
+                              ],
+                            ),
                           ],
                         ),
                         trailing: listPopUpMenu(periodslist[index]),

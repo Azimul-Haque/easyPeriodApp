@@ -16,23 +16,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  // int currentTab = 0; // to keep track of active tab index
-  // final List<Widget> screens = [
-  //   Dashboard(),
-  //   Periodlist(),
-  //   Calendar(),
-  //   Profile(),
-  // ]; // to store nested tabs
-  // final PageStorageBucket bucket = PageStorageBucket();
-  // Widget currentScreen = Dashboard();
-
-  // test
   int _selectedItem = 0;
   var _pages = [Dashboard(), Periodlist(), Calendar(), Profile()];
   var _pageController = PageController();
 
   int get currentIndex => null;
-  // test
 
   @override
   Widget build(BuildContext context) {

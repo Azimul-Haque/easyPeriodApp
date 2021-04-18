@@ -220,14 +220,55 @@ class _PeriodlistState extends State<Periodlist> {
                             Text(periodslist[index]['desc']),
                             Wrap(
                               children: <Widget>[
-                                Text("test"),
+                                SizedBox(
+                                  width: double.infinity,
+                                  child: Container(
+                                    child: (periodslist[index]['end'] != "")
+                                        ? Text(
+                                            (DateTime.parse(periodslist[index]
+                                                                ['end'])
+                                                            .difference(DateTime
+                                                                .parse(periodslist[
+                                                                        index]
+                                                                    ['start']))
+                                                            .inDays +
+                                                        1)
+                                                    .toString() +
+                                                " days",
+                                            textAlign: TextAlign.right,
+                                            style: TextStyle(
+                                              fontSize: 11,
+                                              color: Colors.red,
+                                            ),
+                                          )
+                                        : periodslist.isNotEmpty
+                                            ? Text(
+                                                "1 day",
+                                                textAlign: TextAlign.right,
+                                                style: TextStyle(
+                                                  fontSize: 11,
+                                                  color: Colors.red,
+                                                ),
+                                              )
+                                            : Text(
+                                                "0 day",
+                                                textAlign: TextAlign.right,
+                                                style: TextStyle(
+                                                  fontSize: 11,
+                                                  color: Colors.red,
+                                                ),
+                                              ),
+                                  ),
+                                ),
                                 LinearProgressIndicator(
                                   value: periodslist[index]['end'] != ""
                                       ? (DateTime.parse(
-                                                  periodslist[index]['end'])
-                                              .difference(DateTime.parse(
-                                                  periodslist[index]['start']))
-                                              .inDays) /
+                                                      periodslist[index]['end'])
+                                                  .difference(DateTime.parse(
+                                                      periodslist[index]
+                                                          ['start']))
+                                                  .inDays +
+                                              1) /
                                           30
                                       : periodslist.isNotEmpty
                                           ? 0.033

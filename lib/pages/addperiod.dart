@@ -2,8 +2,11 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easyperiod/home.dart';
+import 'package:easyperiod/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
 import 'package:intl/intl.dart';
 import 'package:easyperiod/globals.dart';
 import 'package:flutter/material.dart';
@@ -85,6 +88,7 @@ class _AddperiodState extends State<Addperiod> {
           content: Text("Period Added!"),
         ),
       );
+      this.scheduleAlarm();
       Route route = MaterialPageRoute(builder: (context) => HomePage());
       Navigator.push(context, route);
     });
@@ -193,5 +197,37 @@ class _AddperiodState extends State<Addperiod> {
         ),
       ),
     );
+  }
+
+  void scheduleAlarm() async {
+    var scheduledNotificationDateTime =
+        DateTime.now().add(Duration(seconds: 1));
+
+    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+      'alarm_notif',
+      'alarm_notif',
+      'Channel for Alarm notification',
+      icon: 'ic_stat_onesignal_default',
+      // sound: RawResourceAndroidNotificationSound('a_long_cold_sting'),
+      largeIcon: DrawableResourceAndroidBitmap('ic_stat_onesignal_default'),
+    );
+
+    var platformChannelSpecifics =
+        NotificationDetails(android: androidPlatformChannelSpecifics);
+
+    await flutterLocalNotificationsPlugin.schedule(
+        0,
+        'Tracking Period',
+        "Your new period recoreded.",
+        scheduledNotificationDateTime,
+        platformChannelSpecifics);
+    // await flutterLocalNotificationsPlugin.zonedSchedule(
+    //     0,
+    //     'Office',
+    //     "This is the very first notification!",
+    //     scheduledNotificationDateTime,
+    //     platformChannelSpecifics,
+    //     androidAllowWhileIdle: true,
+    //     uiLocalNotificationDateInterpretation: null);
   }
 }

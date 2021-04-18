@@ -1,9 +1,9 @@
 library easyperiod.globals;
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import 'login.dart';
 
 String userName;
@@ -12,12 +12,14 @@ String userOrg;
 
 commonAppBar(String appbarname, BuildContext context) {
   return AppBar(
+    elevation: appbarname == 'EasyPeriod' ? 0 : 4,
     title: Text(appbarname),
     automaticallyImplyLeading: false,
     flexibleSpace: appBarStyle(),
     actions: <Widget>[
       PopupMenuButton(
-        icon: Icon(Icons.filter_list_outlined),
+        icon: Icon(CupertinoIcons.line_horizontal_3_decrease),
+        // icon: Icon(Icons.filter_list_outlined),
         // offset: Offset(0, 30),
         onSelected: (value) async {
           switch (value) {

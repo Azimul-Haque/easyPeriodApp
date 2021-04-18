@@ -27,7 +27,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: commonAppBar(
           _selectedItem == 0
-              ? 'Dashboard'
+              ? 'EasyPeriod'
               : _selectedItem == 1
                   ? 'Period List'
                   : _selectedItem == 2

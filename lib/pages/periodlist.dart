@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:easyperiod/globals.dart';
 
 import 'editperiod.dart';
 
@@ -164,7 +163,7 @@ class _PeriodlistState extends State<Periodlist> {
     return new WillPopScope(
       onWillPop: () async => false,
       child: new Scaffold(
-        appBar: commonAppBar('Period List', this.context),
+        // appBar: commonAppBar('Period List', this.context),
         body: RefreshIndicator(
           key: refreshKey,
           onRefresh: () async {

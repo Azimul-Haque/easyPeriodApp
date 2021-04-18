@@ -7,6 +7,8 @@ import 'package:easyperiod/pages/periodlist.dart';
 import 'package:easyperiod/pages/calendar.dart';
 import 'package:easyperiod/pages/profile.dart';
 
+import 'globals.dart';
+
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
   @override
@@ -14,22 +16,46 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int currentTab = 0; // to keep track of active tab index
-  final List<Widget> screens = [
-    Dashboard(),
-    Periodlist(),
-    Calendar(),
-    Profile(),
-  ]; // to store nested tabs
-  final PageStorageBucket bucket = PageStorageBucket();
-  Widget currentScreen = Dashboard();
+  // int currentTab = 0; // to keep track of active tab index
+  // final List<Widget> screens = [
+  //   Dashboard(),
+  //   Periodlist(),
+  //   Calendar(),
+  //   Profile(),
+  // ]; // to store nested tabs
+  // final PageStorageBucket bucket = PageStorageBucket();
+  // Widget currentScreen = Dashboard();
+
+  // test
+  int _selectedItem = 0;
+  var _pages = [Dashboard(), Periodlist(), Calendar(), Profile()];
+  var _pageController = PageController();
+
+  int get currentIndex => null;
+  // test
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: PageStorage(
-        child: currentScreen,
-        bucket: bucket,
+      appBar: commonAppBar(
+          _selectedItem == 0
+              ? 'Dashboard'
+              : _selectedItem == 1
+                  ? 'Period List'
+                  : _selectedItem == 2
+                      ? 'Period Calendar'
+                      : _selectedItem == 3
+                          ? 'Profile'
+                          : '',
+          this.context),
+      body: PageView(
+        children: _pages,
+        onPageChanged: (index) {
+          setState(() {
+            _selectedItem = index;
+          });
+        },
+        controller: _pageController,
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(CupertinoIcons.drop),
@@ -54,9 +80,10 @@ class _HomePageState extends State<HomePage> {
                     minWidth: 40,
                     onPressed: () {
                       setState(() {
-                        currentScreen =
-                            Dashboard(); // if user taps on this dashboard tab will be active
-                        currentTab = 0;
+                        _selectedItem = 0;
+                        _pageController.animateToPage(_selectedItem,
+                            duration: Duration(milliseconds: 200),
+                            curve: Curves.linear);
                       });
                     },
                     child: Column(
@@ -64,13 +91,14 @@ class _HomePageState extends State<HomePage> {
                       children: <Widget>[
                         Icon(
                           Icons.dashboard,
-                          color:
-                              currentTab == 0 ? Colors.red : Colors.grey[600],
+                          color: _selectedItem == 0
+                              ? Colors.red
+                              : Colors.grey[600],
                         ),
                         Text(
                           'Dashboard',
                           style: TextStyle(
-                              color: currentTab == 0
+                              color: _selectedItem == 0
                                   ? Colors.red
                                   : Colors.grey[600],
                               fontSize: 11.5),
@@ -82,9 +110,10 @@ class _HomePageState extends State<HomePage> {
                     minWidth: 40,
                     onPressed: () {
                       setState(() {
-                        currentScreen =
-                            Periodlist(); // if user taps on this dashboard tab will be active
-                        currentTab = 1;
+                        _selectedItem = 1;
+                        _pageController.animateToPage(_selectedItem,
+                            duration: Duration(milliseconds: 200),
+                            curve: Curves.linear);
                       });
                     },
                     child: Column(
@@ -92,13 +121,14 @@ class _HomePageState extends State<HomePage> {
                       children: <Widget>[
                         Icon(
                           Icons.format_list_numbered_sharp,
-                          color:
-                              currentTab == 1 ? Colors.red : Colors.grey[600],
+                          color: _selectedItem == 1
+                              ? Colors.red
+                              : Colors.grey[600],
                         ),
                         Text(
                           'Period List',
                           style: TextStyle(
-                              color: currentTab == 1
+                              color: _selectedItem == 1
                                   ? Colors.red
                                   : Colors.grey[600],
                               fontSize: 11.5),
@@ -118,9 +148,10 @@ class _HomePageState extends State<HomePage> {
                     minWidth: 40,
                     onPressed: () {
                       setState(() {
-                        currentScreen =
-                            Calendar(); // if user taps on this dashboard tab will be active
-                        currentTab = 2;
+                        _selectedItem = 2;
+                        _pageController.animateToPage(_selectedItem,
+                            duration: Duration(milliseconds: 200),
+                            curve: Curves.linear);
                       });
                     },
                     child: Column(
@@ -128,13 +159,14 @@ class _HomePageState extends State<HomePage> {
                       children: <Widget>[
                         Icon(
                           Icons.calendar_today_outlined,
-                          color:
-                              currentTab == 2 ? Colors.red : Colors.grey[600],
+                          color: _selectedItem == 2
+                              ? Colors.red
+                              : Colors.grey[600],
                         ),
                         Text(
                           'Calendar',
                           style: TextStyle(
-                              color: currentTab == 2
+                              color: _selectedItem == 2
                                   ? Colors.red
                                   : Colors.grey[600],
                               fontSize: 11.5),
@@ -146,9 +178,10 @@ class _HomePageState extends State<HomePage> {
                     minWidth: 40,
                     onPressed: () {
                       setState(() {
-                        currentScreen =
-                            Profile(); // if user taps on this dashboard tab will be active
-                        currentTab = 3;
+                        _selectedItem = 3;
+                        _pageController.animateToPage(_selectedItem,
+                            duration: Duration(milliseconds: 200),
+                            curve: Curves.linear);
                       });
                     },
                     child: Column(
@@ -156,13 +189,14 @@ class _HomePageState extends State<HomePage> {
                       children: <Widget>[
                         Icon(
                           Icons.person,
-                          color:
-                              currentTab == 3 ? Colors.red : Colors.grey[600],
+                          color: _selectedItem == 3
+                              ? Colors.red
+                              : Colors.grey[600],
                         ),
                         Text(
                           'Profile',
                           style: TextStyle(
-                              color: currentTab == 3
+                              color: _selectedItem == 3
                                   ? Colors.red
                                   : Colors.grey[600],
                               fontSize: 11.5),

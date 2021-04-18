@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:easyperiod/globals.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class Calendar extends StatefulWidget {
@@ -42,7 +41,7 @@ class _CalendarState extends State<Calendar> {
     return new WillPopScope(
       onWillPop: () async => false,
       child: new Scaffold(
-        appBar: commonAppBar('Period Calendar', this.context),
+        // appBar: commonAppBar('Period Calendar', this.context),
         body: Container(
           padding: EdgeInsets.only(
               top: 5,

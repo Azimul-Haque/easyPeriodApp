@@ -54,49 +54,78 @@ class _DashboardState extends State<Dashboard> {
                     ),
                     child: Padding(
                       padding: EdgeInsets.only(
-                          top: 0, left: 20, right: 20, bottom: 10),
+                          top: 0, left: 30, right: 30, bottom: 10),
                       child: Column(
+                        // mainAxisAlignment: MainAxisAlignment.center,
+                        // crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
                           Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
                               Container(
-                                margin: EdgeInsets.all(8),
+                                margin: EdgeInsets.all(5),
                                 width: 60,
                                 height: 60,
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   image: DecorationImage(
                                       image:
-                                          AssetImage("assets/images/user.png"),
+                                          AssetImage("assets/images/user2.png"),
                                       fit: BoxFit.cover),
                                 ),
                               ),
-                              Text("Test"),
-                              Text("Test"),
+                              Column(
+                                children: <Widget>[
+                                  Wrap(
+                                    children: <Widget>[
+                                      Text(
+                                        userdata.displayName +
+                                            "ASd ASD ASD ASD ASD SAD",
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                          shadows: [
+                                            Shadow(
+                                              color:
+                                                  Colors.black.withOpacity(.5),
+                                              offset: Offset(2, 2),
+                                              blurRadius: 2,
+                                            ),
+                                          ],
+                                        ),
+                                        // style: TextStyle,
+                                      ),
+                                    ],
+                                  ),
+                                  Text("Test ASD ASd ASD "),
+                                ],
+                              ),
                             ],
-                          )
+                          ),
+                          Center(
+                            child: Text(
+                              "Welcome\n" + userdata.displayName + "!",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 25,
+                                fontFamily: "Times",
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                shadows: [
+                                  Shadow(
+                                    color: Colors.black.withOpacity(.5),
+                                    offset: Offset(2, 2),
+                                    blurRadius: 2,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),
-                    // Center(
-                    //   child: Text(
-                    //     "Welcome\n" + userdata.displayName + "!",
-                    //     textAlign: TextAlign.center,
-                    //     style: TextStyle(
-                    //       fontSize: 25,
-                    //       fontFamily: "Times",
-                    //       fontWeight: FontWeight.bold,
-                    //       color: Colors.white,
-                    //       shadows: [
-                    //         Shadow(
-                    //           color: Colors.black.withOpacity(.5),
-                    //           offset: Offset(2, 2),
-                    //           blurRadius: 2,
-                    //         ),
-                    //       ],
-                    //     ),
-                    //   ),
-                    // ),
                   ),
                   SizedBox(
                     height: 5,

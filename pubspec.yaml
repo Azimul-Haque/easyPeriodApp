@@ -68,7 +68,7 @@ flutter:
    - assets/images/fragments/google.png
    - assets/images/faded/1.png
    - assets/images/faded/2.png
-   - assets/images/virus.png
+   - assets/images/user.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

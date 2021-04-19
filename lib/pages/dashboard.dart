@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -56,14 +54,22 @@ class _DashboardState extends State<Dashboard> {
                     ),
                     child: Padding(
                       padding: EdgeInsets.only(
-                          top: 10, left: 20, right: 20, bottom: 10),
+                          top: 0, left: 20, right: 20, bottom: 10),
                       child: Column(
                         children: <Widget>[
                           Row(
                             children: <Widget>[
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(8.0),
-                                child: Image.asset("assets/images/user.png"),
+                              Container(
+                                margin: EdgeInsets.all(8),
+                                width: 60,
+                                height: 60,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  image: DecorationImage(
+                                      image:
+                                          AssetImage("assets/images/user.png"),
+                                      fit: BoxFit.cover),
+                                ),
                               ),
                               Text("Test"),
                               Text("Test"),

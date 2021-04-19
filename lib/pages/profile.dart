@@ -21,29 +21,29 @@ class _ProfileState extends State<Profile> {
     return new WillPopScope(
       onWillPop: () async => false,
       child: new Scaffold(
-          // appBar: commonAppBar('Profile', this.context),
-          body: SafeArea(
-        child: Container(
+        // appBar: commonAppBar('Profile', this.context),
+        body: SafeArea(
+          child: Container(
             padding: EdgeInsets.only(top: 20, left: 25, bottom: 5, right: 25),
-            child: SingleChildScrollView(
-                child: Column(
+            child: ListView(
               children: <Widget>[
-                Container(
-                    child: Column(
-                  children: <Widget>[
-                    Text(
-                      userdata.email,
-                      style: TextStyle(
-                          color: Colors.red.shade900,
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                          height: 1.5),
-                    ),
-                  ],
-                )),
+                Text(userdata.email + "ASd ASD asd ASd ASd aSD ASd aSd"),
+                SizedBox(
+                  height: 200,
+                ),
+                Text(userdata.email),
+                SizedBox(
+                  height: 200,
+                ),
+                Text(userdata.email),
+                SizedBox(
+                  height: 200,
+                ),
               ],
-            ))),
-      )),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

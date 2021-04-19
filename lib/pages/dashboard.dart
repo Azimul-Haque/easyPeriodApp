@@ -1,4 +1,7 @@
+import 'dart:ffi';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class Dashboard extends StatefulWidget {
@@ -29,7 +32,7 @@ class _DashboardState extends State<Dashboard> {
               child: Column(
                 children: <Widget>[
                   Container(
-                    height: screenheight * .2,
+                    height: screenheight * .25,
                     decoration: new BoxDecoration(
                       gradient: new LinearGradient(
                         colors: [
@@ -70,28 +73,146 @@ class _DashboardState extends State<Dashboard> {
                       ),
                     ),
                   ),
-                  Text("Test1"),
                   SizedBox(
-                    height: 100,
+                    height: 5,
                   ),
-                  Text("Test2"),
-                  SizedBox(
-                    height: 100,
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Container(
+                          padding: EdgeInsets.only(
+                              top: 10, left: 10, bottom: 2.5, right: 2.5),
+                          child: _homeCard(
+                              "3.png", "সংবিধান", "পুরো সংবিধান", '/homepage'),
+                        ),
+                      ),
+                      Expanded(
+                        child: Container(
+                          padding: EdgeInsets.only(
+                              top: 10, left: 2.5, bottom: 2.5, right: 10),
+                          child: _homeCard("4.png", "প্রশ্নোত্তর",
+                              "সংবিধান থেকে প্রশ্ন", '/homepage'),
+                        ),
+                      ),
+                      Expanded(
+                        child: Container(
+                          padding: EdgeInsets.only(
+                              top: 10, left: 2.5, bottom: 2.5, right: 10),
+                          child: _homeCard("3.png", "প্রশ্নোত্তর",
+                              "সংবিধান থেকে", '/homepage'),
+                        ),
+                      ),
+                    ],
                   ),
-                  Text("Test3"),
                   SizedBox(
-                    height: 100,
+                    height: 7,
                   ),
-                  Text("Test4"),
-                  SizedBox(
-                    height: 100,
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Container(
+                          padding: EdgeInsets.only(
+                              top: 0, left: 15, bottom: 0, right: 15),
+                          child: Text(
+                            "Avg Period Graph",
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  Text("Test5"),
-                  Text("Test5"),
-                  Text("Test5"),
-                  Text("Test5"),
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Container(
+                            alignment: Alignment.center,
+                            padding: EdgeInsets.all(5),
+                            // height: 250,
+                            margin: EdgeInsets.only(
+                                top: 5, left: 15, bottom: 10, right: 15),
+                            decoration: new BoxDecoration(
+                                color: Colors.indigo[900],
+                                borderRadius: BorderRadius.circular(10),
+                                image: DecorationImage(
+                                  image:
+                                      AssetImage("assets/images/faded/2.png"),
+                                  alignment: Alignment.center,
+                                )),
+                            child: Column(
+                              children: <Widget>[
+                                Container(
+                                  height: 150,
+                                  padding: EdgeInsets.all(7),
+                                  child: BarChart(
+                                    BarChartData(
+                                      borderData: FlBorderData(
+                                        show: true,
+                                        border: Border(
+                                          left: BorderSide.none,
+                                          bottom: BorderSide(
+                                            color: Colors.white60,
+                                            width: 1,
+                                          ),
+                                        ),
+                                      ),
+                                      titlesData: FlTitlesData(
+                                        show: true,
+                                        leftTitles:
+                                            SideTitles(showTitles: false),
+                                        topTitles: SideTitles(
+                                          showTitles: true,
+                                          margin: 0,
+                                          getTextStyles: (value) =>
+                                              getTextforTiles(value),
+                                        ),
+                                        bottomTitles: SideTitles(
+                                          showTitles: false,
+                                        ),
+                                      ),
+                                      // alignment: BarChartAlignment.center,
+                                      barGroups: [
+                                        barData(28),
+                                        barData(27),
+                                        barData(29),
+                                        barData(28),
+                                        barData(28),
+                                        barData(27),
+                                        barData(29),
+                                        barData(30),
+                                      ],
+                                    ),
+                                  ),
+                                )
+                              ],
+                            )),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Container(
+                          padding: EdgeInsets.only(
+                              top: 5, left: 10, bottom: 5, right: 2.5),
+                          child: _homeCard(
+                              "3.png", "সংবিধান", "পুরো সংবিধান", '/homepage'),
+                        ),
+                      ),
+                      Expanded(
+                        child: Container(
+                          padding: EdgeInsets.only(
+                              top: 5, left: 2.5, bottom: 5, right: 10),
+                          child: _homeCard("4.png", "প্রশ্নোত্তর",
+                              "সংবিধান থেকে প্রশ্ন ও উত্তর", '/homepage'),
+                        ),
+                      ),
+                    ],
+                  ),
                   SizedBox(
-                    height: 40,
+                    height: 25,
                   ),
                 ],
               ),
@@ -99,6 +220,92 @@ class _DashboardState extends State<Dashboard> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _homeCard(
+      String image, String title, String takenby, String routename) {
+    return Card(
+      child: Stack(
+        children: <Widget>[
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              ClipRRect(
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(5), topRight: Radius.circular(5)),
+                child: Image.asset("assets/images/empowerment/" + image),
+              ),
+              Padding(
+                  padding: EdgeInsets.all(7),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        title,
+                        style: TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        takenby,
+                        style: TextStyle(
+                            color: Colors.blueGrey,
+                            fontSize: 11.5,
+                            height: 1.0),
+                      ),
+                    ],
+                  ))
+            ],
+          ),
+          Positioned.fill(
+            child: Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: () {
+                  // if (routename != 'N/A') {
+                  //   Navigator.pushNamed(context, routename);
+                  // } else {}
+                },
+                borderRadius: BorderRadius.circular(5),
+              ),
+            ),
+          ),
+        ],
+      ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(5),
+      ),
+      elevation: 2,
+    );
+  }
+
+  getTextforTiles(double number) {
+    return TextStyle(
+      color: Colors.white,
+    );
+  }
+
+  barData(xyvalue) {
+    return BarChartGroupData(
+      x: xyvalue,
+      barRods: [
+        BarChartRodData(
+          y: xyvalue.toDouble(),
+          colors: [
+            Colors.amber,
+            Colors.red,
+            Colors.blue,
+          ],
+          width: 15,
+          borderRadius: BorderRadius.circular(2),
+        ),
+      ],
+      showingTooltipIndicators: [26],
     );
   }
 }

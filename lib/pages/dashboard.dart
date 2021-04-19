@@ -33,6 +33,7 @@ class _DashboardState extends State<Dashboard> {
                 children: <Widget>[
                   Container(
                     height: screenheight * .25,
+                    width: double.infinity,
                     decoration: new BoxDecoration(
                       gradient: new LinearGradient(
                         colors: [
@@ -53,25 +54,43 @@ class _DashboardState extends State<Dashboard> {
                         alignment: Alignment.center,
                       ),
                     ),
-                    child: Center(
-                      child: Text(
-                        "Welcome\n" + userdata.displayName + "!",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontFamily: "Times",
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                          shadows: [
-                            Shadow(
-                              color: Colors.black.withOpacity(.5),
-                              offset: Offset(2, 2),
-                              blurRadius: 2,
-                            ),
-                          ],
-                        ),
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                          top: 10, left: 20, right: 20, bottom: 10),
+                      child: Column(
+                        children: <Widget>[
+                          Row(
+                            children: <Widget>[
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(8.0),
+                                child: Image.asset("assets/images/user.png"),
+                              ),
+                              Text("Test"),
+                              Text("Test"),
+                            ],
+                          )
+                        ],
                       ),
                     ),
+                    // Center(
+                    //   child: Text(
+                    //     "Welcome\n" + userdata.displayName + "!",
+                    //     textAlign: TextAlign.center,
+                    //     style: TextStyle(
+                    //       fontSize: 25,
+                    //       fontFamily: "Times",
+                    //       fontWeight: FontWeight.bold,
+                    //       color: Colors.white,
+                    //       shadows: [
+                    //         Shadow(
+                    //           color: Colors.black.withOpacity(.5),
+                    //           offset: Offset(2, 2),
+                    //           blurRadius: 2,
+                    //         ),
+                    //       ],
+                    //     ),
+                    //   ),
+                    // ),
                   ),
                   SizedBox(
                     height: 5,
@@ -134,17 +153,17 @@ class _DashboardState extends State<Dashboard> {
                             margin: EdgeInsets.only(
                                 top: 5, left: 15, bottom: 10, right: 15),
                             decoration: new BoxDecoration(
-                                color: Colors.indigo[900],
-                                borderRadius: BorderRadius.circular(10),
-                                image: DecorationImage(
-                                  image:
-                                      AssetImage("assets/images/faded/2.png"),
-                                  alignment: Alignment.center,
-                                )),
+                              color: Colors.indigo[900],
+                              borderRadius: BorderRadius.circular(10),
+                              image: DecorationImage(
+                                image: AssetImage("assets/images/faded/2.png"),
+                                alignment: Alignment.center,
+                              ),
+                            ),
                             child: Column(
                               children: <Widget>[
                                 Container(
-                                  height: 150,
+                                  height: 140,
                                   padding: EdgeInsets.all(7),
                                   child: BarChart(
                                     BarChartData(
@@ -179,9 +198,8 @@ class _DashboardState extends State<Dashboard> {
                                         barData(29),
                                         barData(28),
                                         barData(28),
-                                        barData(27),
-                                        barData(29),
-                                        barData(30),
+                                        barData(28),
+                                        barData(28),
                                       ],
                                     ),
                                   ),
@@ -301,11 +319,10 @@ class _DashboardState extends State<Dashboard> {
             Colors.red,
             Colors.blue,
           ],
-          width: 15,
+          width: 20,
           borderRadius: BorderRadius.circular(2),
         ),
       ],
-      showingTooltipIndicators: [26],
     );
   }
 }

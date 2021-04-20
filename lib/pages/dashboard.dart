@@ -20,6 +20,7 @@ class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     var screenheight = MediaQuery.of(context).size.height;
+    var screenwidth = MediaQuery.of(context).size.width;
     return new WillPopScope(
       onWillPop: () async => false,
       child: new Scaffold(
@@ -54,7 +55,10 @@ class _DashboardState extends State<Dashboard> {
                     ),
                     child: Padding(
                       padding: EdgeInsets.only(
-                          top: 0, left: 30, right: 30, bottom: 10),
+                          top: 0,
+                          left: screenwidth * .12,
+                          right: screenwidth * .12,
+                          bottom: 10),
                       child: Column(
                         // mainAxisAlignment: MainAxisAlignment.center,
                         // crossAxisAlignment: CrossAxisAlignment.center,
@@ -64,9 +68,9 @@ class _DashboardState extends State<Dashboard> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
                               Container(
-                                margin: EdgeInsets.all(5),
-                                width: 60,
-                                height: 60,
+                                margin: EdgeInsets.all(screenwidth * .015),
+                                width: screenwidth * .16,
+                                height: screenwidth * .16,
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   image: DecorationImage(
@@ -75,13 +79,15 @@ class _DashboardState extends State<Dashboard> {
                                       fit: BoxFit.cover),
                                 ),
                               ),
-                              Column(
-                                children: <Widget>[
-                                  Wrap(
+                              Expanded(
+                                child: Container(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Text(
-                                        userdata.displayName +
-                                            "ASd ASD ASD ASD ASD SAD",
+                                        "Anindita Mashsharrat Naziba",
+                                        overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
                                           fontSize: 20,
                                           fontWeight: FontWeight.bold,
@@ -95,34 +101,50 @@ class _DashboardState extends State<Dashboard> {
                                             ),
                                           ],
                                         ),
-                                        // style: TextStyle,
+                                      ),
+                                      SizedBox(
+                                        height: 4,
+                                      ),
+                                      Text(
+                                        "14 days of last period",
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                          color: Colors.white70,
+                                          shadows: [
+                                            Shadow(
+                                              color:
+                                                  Colors.black.withOpacity(.5),
+                                              offset: Offset(2, 2),
+                                              blurRadius: 2,
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ],
                                   ),
-                                  Text("Test ASD ASd ASD "),
-                                ],
+                                ),
                               ),
                             ],
                           ),
-                          Center(
-                            child: Text(
-                              "Welcome\n" + userdata.displayName + "!",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 25,
-                                fontFamily: "Times",
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                                shadows: [
-                                  Shadow(
-                                    color: Colors.black.withOpacity(.5),
-                                    offset: Offset(2, 2),
-                                    blurRadius: 2,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
+                          // Center(
+                          //   child: Text(
+                          //     "Welcome\n" + userdata.displayName + "!",
+                          //     textAlign: TextAlign.center,
+                          //     style: TextStyle(
+                          //       fontSize: 25,
+                          //       fontFamily: "Times",
+                          //       fontWeight: FontWeight.bold,
+                          //       color: Colors.white,
+                          //       shadows: [
+                          //         Shadow(
+                          //           color: Colors.black.withOpacity(.5),
+                          //           offset: Offset(2, 2),
+                          //           blurRadius: 2,
+                          //         ),
+                          //       ],
+                          //     ),
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),

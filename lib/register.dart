@@ -235,6 +235,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               children: <Widget>[
                                 TextFormField(
                                   controller: nameController,
+                                  maxLength: 25,
                                   decoration: InputDecoration(
                                     labelText: "Your Name",
                                     contentPadding: EdgeInsets.all(0),

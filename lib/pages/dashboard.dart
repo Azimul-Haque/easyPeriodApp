@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -10,11 +11,14 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   User userdata;
+  List<QueryDocumentSnapshot> periodslist = [];
+  var dayscount = 0;
 
   @override
   void initState() {
     super.initState();
     userdata = FirebaseAuth.instance.currentUser;
+    this.fetchLastPeriod();
   }
 
   @override
@@ -31,7 +35,7 @@ class _DashboardState extends State<Dashboard> {
               child: Column(
                 children: <Widget>[
                   Container(
-                    height: screenheight * .25,
+                    height: screenheight * .20,
                     width: double.infinity,
                     decoration: new BoxDecoration(
                       gradient: new LinearGradient(
@@ -76,7 +80,7 @@ class _DashboardState extends State<Dashboard> {
                                   image: DecorationImage(
                                       image:
                                           AssetImage("assets/images/user.png"),
-                                      fit: BoxFit.cover),
+                                      fit: BoxFit.contain),
                                 ),
                               ),
                               Expanded(
@@ -106,7 +110,13 @@ class _DashboardState extends State<Dashboard> {
                                         height: 4,
                                       ),
                                       Text(
-                                        "14 days of last period",
+                                        dayscount > 6
+                                            ? "Day " +
+                                                dayscount.toString() +
+                                                " of last period"
+                                            : "Day " +
+                                                dayscount.toString() +
+                                                " of current period",
                                         style: TextStyle(
                                           fontSize: 15,
                                           color: Colors.white70,
@@ -151,6 +161,42 @@ class _DashboardState extends State<Dashboard> {
                   ),
                   SizedBox(
                     height: 5,
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Container(
+                          height: 100,
+                          padding: EdgeInsets.only(
+                              top: 10, left: 10, bottom: 2.5, right: 2.5),
+                          child: Card(
+                            child: Container(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Text("Mesasge for the day"),
+                                  Text("Mesasge for the day"),
+                                  // Row(
+                                  //   mainAxisAlignment: MainAxisAlignment.center,
+                                  //   children: <Widget>[
+                                  //     Text("Test"),
+                                  //     Text("Test"),
+                                  //   ],
+                                  // ),
+                                ],
+                              ),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                    image:
+                                        AssetImage("assets/images/faded/2.png"),
+                                    fit: BoxFit.contain),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   Row(
                     children: <Widget>[
@@ -381,5 +427,25 @@ class _DashboardState extends State<Dashboard> {
         ),
       ],
     );
+  }
+
+  fetchLastPeriod() {
+    CollectionReference collectionReference =
+        FirebaseFirestore.instance.collection('periods');
+
+    collectionReference
+        .where('uid', isEqualTo: userdata.uid)
+        .orderBy('start', descending: true)
+        .limit(1)
+        .snapshots()
+        .listen((snapshot) {
+      setState(() {
+        periodslist = snapshot.docs;
+      });
+      print(periodslist[0]["start"]);
+      var startdate = DateTime.parse(periodslist[0]["start"]);
+      var today = DateTime.now();
+      dayscount = today.difference(startdate).inDays;
+    });
   }
 }

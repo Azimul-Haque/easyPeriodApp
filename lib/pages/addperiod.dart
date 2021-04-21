@@ -30,10 +30,12 @@ class _AddperiodState extends State<Addperiod> {
   Future _selectDate(
       BuildContext context, TextEditingController controller) async {
     final DateTime picked = await showDatePicker(
-        context: context,
-        initialDate: selectedDate,
-        firstDate: DateTime(selectedDate.year - 2),
-        lastDate: DateTime(selectedDate.year + 2));
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime(selectedDate.year - 2),
+      // lastDate: DateTime(selectedDate.year + 2),
+      lastDate: DateTime.now(),
+    );
     if (picked != null && picked != selectedDate)
       setState(() {
         selectedDate = picked;

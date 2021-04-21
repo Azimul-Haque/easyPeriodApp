@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'home.dart';
+import 'pages/addperiod.dart';
 import 'register.dart';
 import 'login.dart';
+import 'package:easyperiod/pages/profile_pages/myaccount.dart';
+import 'package:easyperiod/pages/profile_pages/changepass.dart';
+import 'package:easyperiod/pages/profile_pages/notifications.dart';
+import 'package:easyperiod/pages/profile_pages/feedback.dart';
+import 'package:easyperiod/pages/profile_pages/settings.dart';
+
 import 'resetpassword.dart';
 import 'package:firebase_core/firebase_core.dart';
-
-import 'pages/addperiod.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
@@ -49,6 +54,11 @@ class MyApp extends StatelessWidget {
         '/resetpassword': (context) => ResetPasswordPage(),
         '/homepage': (context) => HomePage(),
         '/addperiod': (context) => Addperiod(),
+        '/myaccount': (context) => MyAccount(),
+        '/changepass': (context) => ChangePass(),
+        '/notifications': (context) => Notifications(),
+        '/feedback': (context) => FeedBack(),
+        '/settings': (context) => Settings(),
       },
     );
   }

@@ -56,8 +56,8 @@ class _DashboardState extends State<Dashboard> {
                     child: Padding(
                       padding: EdgeInsets.only(
                           top: 0,
-                          left: screenwidth * .12,
-                          right: screenwidth * .12,
+                          left: screenwidth * .125,
+                          right: screenwidth * .125,
                           bottom: 10),
                       child: Column(
                         // mainAxisAlignment: MainAxisAlignment.center,
@@ -68,14 +68,14 @@ class _DashboardState extends State<Dashboard> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
                               Container(
-                                margin: EdgeInsets.all(screenwidth * .015),
-                                width: screenwidth * .16,
-                                height: screenwidth * .16,
+                                margin: EdgeInsets.all(screenwidth * .02),
+                                width: screenwidth * .15,
+                                height: screenwidth * .15,
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   image: DecorationImage(
                                       image:
-                                          AssetImage("assets/images/user2.png"),
+                                          AssetImage("assets/images/user.png"),
                                       fit: BoxFit.cover),
                                 ),
                               ),
@@ -86,16 +86,16 @@ class _DashboardState extends State<Dashboard> {
                                         CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Text(
-                                        "Anindita Mashsharrat Naziba",
+                                        userdata.displayName,
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
-                                          fontSize: 20,
+                                          fontSize: 19,
                                           fontWeight: FontWeight.bold,
                                           color: Colors.white,
                                           shadows: [
                                             Shadow(
                                               color:
-                                                  Colors.black.withOpacity(.5),
+                                                  Colors.black.withOpacity(.4),
                                               offset: Offset(2, 2),
                                               blurRadius: 2,
                                             ),
@@ -113,7 +113,7 @@ class _DashboardState extends State<Dashboard> {
                                           shadows: [
                                             Shadow(
                                               color:
-                                                  Colors.black.withOpacity(.5),
+                                                  Colors.black.withOpacity(.4),
                                               offset: Offset(2, 2),
                                               blurRadius: 2,
                                             ),

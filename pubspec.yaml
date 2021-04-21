@@ -35,6 +35,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_local_notifications: ^5.0.0
   fl_chart: ^0.35.0
+  image_picker: ^0.7.4
 
 dev_dependencies:
   flutter_test:
@@ -63,13 +64,20 @@ flutter:
    - assets/images/empowerment/5.png
    - assets/images/empowerment/6.png
    - assets/images/empowerment/7.png
+   - assets/images/empowerment/8.png
+   - assets/images/empowerment/9.png
+   - assets/images/empowerment/10.png
    - assets/images/fragments/top1.png
    - assets/images/fragments/bottom1.png
    - assets/images/fragments/google.png
    - assets/images/faded/1.png
    - assets/images/faded/2.png
+   - assets/images/faded/3.png
+   - assets/images/faded/4.png
+   - assets/images/faded/5.png
+   - assets/images/faded/6.png
+   - assets/images/faded/7.png
    - assets/images/user.png
-   - assets/images/user2.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

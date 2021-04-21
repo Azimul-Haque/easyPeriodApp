@@ -60,6 +60,7 @@ class _EditperiodState extends State<Editperiod> {
 
   updatePeriod() {
     if (formKey.currentState.validate()) {
+      showAlertDialog(context, "Updating...");
       FocusScope.of(context).unfocus();
       formKey.currentState.save();
       // print(start);
@@ -91,7 +92,6 @@ class _EditperiodState extends State<Editperiod> {
   }
 
   showSnackBarandPop() {
-    showAlertDialog(context, "Updating...");
     Timer(Duration(seconds: 1), () {
       Navigator.of(context).pop();
       ScaffoldMessenger.of(context).showSnackBar(

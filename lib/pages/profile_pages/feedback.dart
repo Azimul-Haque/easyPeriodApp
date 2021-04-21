@@ -1,19 +1,15 @@
-import 'package:easyperiod/pages/profile_pages/changepass.dart';
-import 'package:easyperiod/pages/profile_pages/feedback.dart';
-import 'package:easyperiod/pages/profile_pages/myaccount.dart';
-import 'package:easyperiod/pages/profile_pages/notifications.dart';
-import 'package:easyperiod/pages/profile_pages/settings.dart';
+import 'package:easyperiod/globals.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class Profile extends StatefulWidget {
-  Profile({Key key}) : super(key: key);
+class FeedBack extends StatefulWidget {
+  FeedBack({Key key}) : super(key: key);
   @override
-  _ProfileState createState() => _ProfileState();
+  _FeedBackState createState() => _FeedBackState();
 }
 
-class _ProfileState extends State<Profile> {
+class _FeedBackState extends State<FeedBack> {
   User userdata;
 
   @override
@@ -26,9 +22,12 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     var screenwidth = MediaQuery.of(context).size.width;
     return new WillPopScope(
-      onWillPop: () async => false,
+      onWillPop: () async => true,
       child: new Scaffold(
-        // appBar: commonAppBar('Profile', this.context),
+        appBar: AppBar(
+          title: Text('Feedback'),
+          flexibleSpace: appBarStyle(),
+        ),
         body: SingleChildScrollView(
           padding: EdgeInsets.only(top: 20, left: 10, right: 10, bottom: 20),
           child: Container(
@@ -48,6 +47,28 @@ class _ProfileState extends State<Profile> {
                       CircleAvatar(
                         backgroundImage: AssetImage("assets/images/user.png"),
                       ),
+                      Positioned(
+                        right: -16,
+                        bottom: 0,
+                        child: SizedBox(
+                          height: 40,
+                          width: 40,
+                          child: TextButton(
+                            style: TextButton.styleFrom(
+                              primary: Colors.grey,
+                              backgroundColor: Colors.grey[200],
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50),
+                                side: BorderSide(color: Colors.white),
+                              ),
+                            ),
+                            onPressed: () {
+                              print("Clicked!");
+                            },
+                            child: Icon(Icons.camera_alt_outlined),
+                          ),
+                        ),
+                      )
                     ],
                   ),
                 ),
@@ -79,46 +100,9 @@ class _ProfileState extends State<Profile> {
                         color: Colors.red,
                       ),
                     ),
-                    onTap: () {},
                     trailing: IconButton(
                       icon: Icon(Icons.edit_outlined),
-                      onPressed: () {
-                        Route route = MaterialPageRoute(
-                            builder: (context) => MyAccount());
-                        Navigator.push(context, route).then((value) {
-                          setState(() {
-                            userdata = FirebaseAuth.instance.currentUser;
-                          });
-                        });
-                      },
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Card(
-                  child: ListTile(
-                    leading: Icon(
-                      Icons.vpn_key_outlined,
-                      color: Colors.red,
-                      size: 32,
-                    ),
-                    title: Text(
-                      'Change Password',
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.red,
-                      ),
-                    ),
-                    onTap: () {},
-                    trailing: IconButton(
-                      icon: Icon(Icons.edit_outlined),
-                      onPressed: () {
-                        Route route = MaterialPageRoute(
-                            builder: (context) => ChangePass());
-                        Navigator.push(context, route);
-                      },
+                      onPressed: () {},
                     ),
                   ),
                 ),
@@ -139,14 +123,9 @@ class _ProfileState extends State<Profile> {
                         color: Colors.red,
                       ),
                     ),
-                    onTap: () {},
                     trailing: IconButton(
                       icon: Icon(Icons.edit_outlined),
-                      onPressed: () {
-                        Route route = MaterialPageRoute(
-                            builder: (context) => Notifications());
-                        Navigator.push(context, route);
-                      },
+                      onPressed: () {},
                     ),
                   ),
                 ),
@@ -167,14 +146,9 @@ class _ProfileState extends State<Profile> {
                         color: Colors.red,
                       ),
                     ),
-                    onTap: () {},
                     trailing: IconButton(
                       icon: Icon(Icons.edit_outlined),
-                      onPressed: () {
-                        Route route =
-                            MaterialPageRoute(builder: (context) => FeedBack());
-                        Navigator.push(context, route);
-                      },
+                      onPressed: () {},
                     ),
                   ),
                 ),
@@ -195,14 +169,9 @@ class _ProfileState extends State<Profile> {
                         color: Colors.red,
                       ),
                     ),
-                    onTap: () {},
                     trailing: IconButton(
                       icon: Icon(Icons.edit_outlined),
-                      onPressed: () {
-                        Route route =
-                            MaterialPageRoute(builder: (context) => Settings());
-                        Navigator.push(context, route);
-                      },
+                      onPressed: () {},
                     ),
                   ),
                 ),

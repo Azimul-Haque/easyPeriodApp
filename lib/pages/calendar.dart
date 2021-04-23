@@ -53,6 +53,12 @@ class _CalendarState extends State<Calendar> {
                   view: CalendarView
                       .month, // calender > settings > month_view_settings
                   dataSource: PeriodDataSource(getPeriods()),
+                  onTap: (CalendarTapDetails details) {
+                    // DateTime date = details.date;
+                    dynamic appointments = details.appointments;
+                    // CalendarElement view = details.targetElement;
+                    print(appointments[0].notes);
+                  },
                 ),
               ),
               Padding(
@@ -85,11 +91,22 @@ List<Appointment> getPeriods() {
     DateTime endTime = periodslist[i]['end'] != ''
         ? DateTime.parse(periodslist[i]['end'])
         : DateTime.parse(periodslist[i]['start']);
+    // period
     periods.add(Appointment(
       startTime: DateTime(startTime.year, startTime.month, startTime.day),
       endTime: DateTime(endTime.year, endTime.month, endTime.day),
       subject: periodslist[i]['desc'],
       color: Colors.red,
+      notes: "Period",
+      isAllDay: true,
+    ));
+    // fertility period
+    periods.add(Appointment(
+      startTime: DateTime(startTime.year, startTime.month, startTime.day + 7),
+      endTime: DateTime(startTime.year, startTime.month, startTime.day + 18),
+      subject: "Fertile phase",
+      color: Colors.lightBlue,
+      notes: "Fertility",
       isAllDay: true,
     ));
   }

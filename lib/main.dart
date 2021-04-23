@@ -1,9 +1,16 @@
+import 'package:easyperiod/pages/calendar.dart';
+import 'package:easyperiod/pages/dashboard.dart';
+import 'package:easyperiod/pages/periodlist.dart';
+import 'package:easyperiod/pages/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'home.dart';
 import 'pages/addperiod.dart';
 import 'register.dart';
 import 'login.dart';
+import 'package:easyperiod/pages/dashboard_pages/prediction.dart';
+import 'package:easyperiod/pages/dashboard_pages/graph.dart';
+import 'package:easyperiod/pages/dashboard_pages/insights.dart';
 import 'package:easyperiod/pages/profile_pages/myaccount.dart';
 import 'package:easyperiod/pages/profile_pages/changepass.dart';
 import 'package:easyperiod/pages/profile_pages/notifications.dart';
@@ -53,12 +60,19 @@ class MyApp extends StatelessWidget {
         '/register': (context) => RegisterPage(),
         '/resetpassword': (context) => ResetPasswordPage(),
         '/homepage': (context) => HomePage(),
+        '/dashboard': (context) => Dashboard(),
+        '/periodlist': (context) => Periodlist(),
+        '/calendar': (context) => Calendar(),
+        '/profile': (context) => Profile(),
         '/addperiod': (context) => Addperiod(),
         '/myaccount': (context) => MyAccount(),
         '/changepass': (context) => ChangePass(),
         '/notifications': (context) => Notifications(),
         '/feedback': (context) => FeedBack(),
         '/settings': (context) => Settings(),
+        // '/prediction': (context) => Prediction(context),
+        '/graph': (context) => Graph(),
+        '/insights': (context) => Insights(),
       },
     );
   }

@@ -8,7 +8,7 @@ import 'package:easyperiod/globals.dart';
 import 'package:flutter/material.dart';
 
 class Editperiod extends StatefulWidget {
-  var data;
+  final data;
   Editperiod(this.data);
   @override
   _EditperiodState createState() => _EditperiodState(this.data);

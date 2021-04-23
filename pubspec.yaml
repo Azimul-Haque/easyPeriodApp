@@ -81,6 +81,9 @@ flutter:
    - assets/images/faded/5.png
    - assets/images/faded/6.png
    - assets/images/faded/7.png
+   - assets/images/faded/8.png
+   - assets/images/faded/9.png
+   - assets/images/faded/10.png
    - assets/images/user.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

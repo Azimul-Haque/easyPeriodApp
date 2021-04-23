@@ -305,21 +305,21 @@ class _DashboardState extends State<Dashboard> {
                           padding: EdgeInsets.only(
                               top: 5, left: 0, bottom: 5, right: 2.5),
                           child: _homeCard(
-                              "4.png", "Prediction", "", Prediction(startdate)),
+                              "11.png", "Prediction", Prediction(startdate)),
                         ),
                       ),
                       Expanded(
                         child: Container(
                           padding: EdgeInsets.only(
                               top: 5, left: 2.5, bottom: 5, right: 2.5),
-                          child: _homeCard("4.png", "Graph", "", Graph()),
+                          child: _homeCard("12.png", "Graph", Graph()),
                         ),
                       ),
                       Expanded(
                         child: Container(
                           padding: EdgeInsets.only(
                               top: 5, left: 2.5, bottom: 5, right: 0),
-                          child: _homeCard("4.png", "Insights", "", Insights()),
+                          child: _homeCard("13.png", "Insights", Insights()),
                         ),
                       ),
                       SizedBox(
@@ -327,34 +327,6 @@ class _DashboardState extends State<Dashboard> {
                       ),
                     ],
                   ),
-                  // SizedBox(
-                  //   height: 7,
-                  // ),
-                  // Row(
-                  //   children: <Widget>[
-                  //     SizedBox(
-                  //       width: 10,
-                  //     ),
-                  //     Expanded(
-                  //       child: Container(
-                  //         padding: EdgeInsets.only(
-                  //             top: 5, left: 0, bottom: 5, right: 2.5),
-                  //         child: _homeCard("4.png", "A", "পুরো সংবিধান", 'N/A'),
-                  //       ),
-                  //     ),
-                  //     Expanded(
-                  //       child: Container(
-                  //         padding: EdgeInsets.only(
-                  //             top: 5, left: 2.5, bottom: 5, right: 0),
-                  //         child: _homeCard("4.png", "C",
-                  //             "সংবিধান থেকে প্রশ্ন ও উত্তর", 'N/A'),
-                  //       ),
-                  //     ),
-                  //     SizedBox(
-                  //       width: 10,
-                  //     ),
-                  //   ],
-                  // ),
                   SizedBox(
                     height: 25,
                   ),
@@ -367,7 +339,7 @@ class _DashboardState extends State<Dashboard> {
     );
   }
 
-  Widget _homeCard(String image, String title, String takenby, routename) {
+  Widget _homeCard(String image, String title, routename) {
     return Card(
       child: Stack(
         children: <Widget>[
@@ -391,16 +363,6 @@ class _DashboardState extends State<Dashboard> {
                         style: TextStyle(
                             fontSize: 14, fontWeight: FontWeight.bold),
                       ),
-                      // SizedBox(
-                      //   height: 5,
-                      // ),
-                      // Text(
-                      //   takenby,
-                      //   style: TextStyle(
-                      //       color: Colors.blueGrey,
-                      //       fontSize: 11.5,
-                      //       height: 1.0),
-                      // ),
                     ],
                   ))
             ],

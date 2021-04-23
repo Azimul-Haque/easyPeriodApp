@@ -95,10 +95,10 @@ class _PredictionState extends State<Prediction> {
                 height: 10,
               ),
               Container(
-                height: 150,
+                height: 160,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage("assets/images/faded/2.png"),
+                      image: AssetImage("assets/images/faded/8.png"),
                       fit: BoxFit.contain),
                 ),
               ),

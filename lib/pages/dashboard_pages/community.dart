@@ -23,7 +23,7 @@ class _CommunityState extends State<Community> {
     // var screenwidth = MediaQuery.of(context).size.width;
     return new Scaffold(
       appBar: AppBar(
-        title: Text('Insights'),
+        title: Text('Community'),
         flexibleSpace: appBarStyle(),
         automaticallyImplyLeading: false,
         actions: <Widget>[
@@ -33,25 +33,23 @@ class _CommunityState extends State<Community> {
           ),
         ],
       ),
-      body: GestureDetector(
-        child: Container(
-          padding: EdgeInsets.only(top: 15, left: 15, right: 15, bottom: 15),
-          child: Column(
-            children: <Widget>[
-              SizedBox(
-                height: 10,
-              ),
-              Container(
-                height: 160,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage("assets/images/faded/10.png"),
-                    fit: BoxFit.contain,
-                  ),
+      body: Container(
+        padding: EdgeInsets.only(top: 15, left: 15, right: 15, bottom: 15),
+        child: Column(
+          children: <Widget>[
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+              height: 160,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage("assets/images/faded/10.png"),
+                  fit: BoxFit.contain,
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

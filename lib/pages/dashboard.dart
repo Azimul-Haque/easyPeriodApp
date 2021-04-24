@@ -3,6 +3,7 @@ import 'package:drag_down_to_pop/drag_down_to_pop.dart';
 import 'package:easyperiod/pages/dashboard_pages/dailymessage.dart';
 import 'package:easyperiod/pages/dashboard_pages/graph.dart';
 import 'package:easyperiod/pages/dashboard_pages/insights.dart';
+import 'package:easyperiod/pages/dashboard_pages/community.dart';
 import 'package:easyperiod/pages/dashboard_pages/prediction.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -404,7 +405,7 @@ class _DashboardState extends State<Dashboard> {
                           height: screenwidth * .27,
                           padding: EdgeInsets.only(
                               top: 5, left: 2.5, bottom: 5, right: 0),
-                          child: _homeCard("13.png", "Insights", Insights()),
+                          child: _homeCard("14.png", "Community", Community()),
                         ),
                       ),
                       SizedBox(
@@ -458,13 +459,21 @@ class _DashboardState extends State<Dashboard> {
               child: InkWell(
                 onTap: () {
                   if (routename != 'N/A') {
-                    // Navigator.pushNamed(context, routename);
-                    Navigator.push(
-                      context,
-                      ImageViewerPageRoute(
-                        builder: (context) => routename,
-                      ),
-                    );
+                    if (title == 'Community') {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => routename,
+                        ),
+                      );
+                    } else {
+                      Navigator.push(
+                        context,
+                        ImageViewerPageRoute(
+                          builder: (context) => routename,
+                        ),
+                      );
+                    }
                   } else {}
                 },
                 borderRadius: BorderRadius.circular(5),

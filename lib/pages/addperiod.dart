@@ -58,8 +58,17 @@ class _AddperiodState extends State<Addperiod> {
       await flutterLocalNotificationsPlugin.cancelAll();
       this.scheduleAlarm(start, 3, 20, 1, "Period ended? Record then...",
           "Get yourself equipped with menstrual items.");
-      this.scheduleAlarm(start, 12, 20, 1, "Tomorrow is the ",
-          "Get yourself equipped with menstrual items.");
+      this.scheduleAlarm(start, 12, 8, 1, "You are on your Fertility Phase",
+          "Today is one of your most fertile days.");
+      this.scheduleAlarm(
+          start,
+          13,
+          8,
+          1,
+          "Today is the Probable ovulation day.",
+          "Today is one of your most fertile days.");
+      this.scheduleAlarm(start, 14, 8, 1, "You are on your Fertility Phase",
+          "Today is one of your fertile days.");
       this.scheduleAlarm(start, 26, 8, 1, "Period starts in today/tomorrow",
           "Get yourself equipped with menstrual items.");
       this.scheduleAlarm(start, 26, 20, 2, "Period starts in today/tomorrow",
@@ -225,33 +234,33 @@ class _AddperiodState extends State<Addperiod> {
         DateTime.parse(date).add(Duration(days: plusday, hours: plushour));
     print(scheduledNotificationDateTime);
 
-    final timeZone = TimeZone();
-    String timeZoneName = await timeZone.getTimeZoneName();
-    final location = await timeZone.getLocation(timeZoneName);
-    final scheduletztime =
-        tz.TZDateTime.from(scheduledNotificationDateTime, location);
+    // final timeZone = TimeZone();
+    // String timeZoneName = await timeZone.getTimeZoneName();
+    // final location = await timeZone.getLocation(timeZoneName);
+    // final scheduletztime =
+    //     tz.TZDateTime.from(scheduledNotificationDateTime, location);
 
-    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-      'alarm_notif',
-      'alarm_notif',
-      'Channel for Alarm notification',
-      importance: Importance.max,
-      icon: 'ic_stat_onesignal_default',
-      // sound: RawResourceAndroidNotificationSound('a_long_cold_sting'),
-      largeIcon: DrawableResourceAndroidBitmap('ic_stat_onesignal_default'),
-    );
+    // var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+    //   'alarm_notif',
+    //   'alarm_notif',
+    //   'Channel for Alarm notification',
+    //   importance: Importance.max,
+    //   icon: 'ic_stat_onesignal_default',
+    //   // sound: RawResourceAndroidNotificationSound('a_long_cold_sting'),
+    //   largeIcon: DrawableResourceAndroidBitmap('ic_stat_onesignal_default'),
+    // );
 
-    var platformChannelSpecifics =
-        NotificationDetails(android: androidPlatformChannelSpecifics);
+    // var platformChannelSpecifics =
+    //     NotificationDetails(android: androidPlatformChannelSpecifics);
 
-    await flutterLocalNotificationsPlugin.zonedSchedule(
-      id,
-      title,
-      message,
-      scheduletztime,
-      platformChannelSpecifics,
-      androidAllowWhileIdle: true,
-      uiLocalNotificationDateInterpretation: null,
-    );
+    // await flutterLocalNotificationsPlugin.zonedSchedule(
+    //   id,
+    //   title,
+    //   message,
+    //   scheduletztime,
+    //   platformChannelSpecifics,
+    //   androidAllowWhileIdle: true,
+    //   uiLocalNotificationDateInterpretation: null,
+    // );
   }
 }

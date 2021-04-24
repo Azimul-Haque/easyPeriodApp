@@ -10,6 +10,8 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/intl.dart';
 import 'package:easyperiod/globals.dart';
 import 'package:flutter/material.dart';
+import 'package:easyperiod/TimeZone.dart';
+import 'package:timezone/timezone.dart' as tz;
 
 class Addperiod extends StatefulWidget {
   @override
@@ -82,7 +84,7 @@ class _AddperiodState extends State<Addperiod> {
 
   showSnackBarandPop() {
     showAlertDialog(context, "Adding...");
-    Timer(Duration(seconds: 1), () {
+    Timer(Duration(seconds: 1), () async {
       Navigator.of(context).pop();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -90,6 +92,7 @@ class _AddperiodState extends State<Addperiod> {
           content: Text("Period Added!"),
         ),
       );
+      await flutterLocalNotificationsPlugin.cancelAll();
       this.scheduleAlarm();
       Route route = MaterialPageRoute(builder: (context) => HomePage());
       Navigator.push(context, route);
@@ -202,13 +205,19 @@ class _AddperiodState extends State<Addperiod> {
   }
 
   void scheduleAlarm() async {
-    var scheduledNotificationDateTime =
-        DateTime.now().add(Duration(seconds: 1));
+    var scheduledNotificationDateTime = DateTime.now().add(Duration(hours: 1));
+
+    final timeZone = TimeZone();
+    String timeZoneName = await timeZone.getTimeZoneName();
+    final location = await timeZone.getLocation(timeZoneName);
+    final scheduletztime =
+        tz.TZDateTime.from(scheduledNotificationDateTime, location);
 
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
       'alarm_notif',
       'alarm_notif',
       'Channel for Alarm notification',
+      importance: Importance.max,
       icon: 'ic_stat_onesignal_default',
       // sound: RawResourceAndroidNotificationSound('a_long_cold_sting'),
       largeIcon: DrawableResourceAndroidBitmap('ic_stat_onesignal_default'),
@@ -217,19 +226,14 @@ class _AddperiodState extends State<Addperiod> {
     var platformChannelSpecifics =
         NotificationDetails(android: androidPlatformChannelSpecifics);
 
-    await flutterLocalNotificationsPlugin.schedule(
-        0,
-        'Tracking Period',
-        "Your new period recoreded.",
-        scheduledNotificationDateTime,
-        platformChannelSpecifics);
-    // await flutterLocalNotificationsPlugin.zonedSchedule(
-    //     0,
-    //     'Office',
-    //     "This is the very first notification!",
-    //     scheduledNotificationDateTime,
-    //     platformChannelSpecifics,
-    //     androidAllowWhileIdle: true,
-    //     uiLocalNotificationDateInterpretation: null);
+    await flutterLocalNotificationsPlugin.zonedSchedule(
+      0,
+      'Tracking Period',
+      "Your new period recoreded. (Test)",
+      scheduletztime,
+      platformChannelSpecifics,
+      androidAllowWhileIdle: true,
+      uiLocalNotificationDateInterpretation: null,
+    );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drag_down_to_pop/drag_down_to_pop.dart';
+import 'package:easyperiod/pages/dashboard_pages/dailymessage.dart';
 import 'package:easyperiod/pages/dashboard_pages/graph.dart';
 import 'package:easyperiod/pages/dashboard_pages/insights.dart';
 import 'package:easyperiod/pages/dashboard_pages/prediction.dart';
@@ -22,6 +23,8 @@ class _DashboardState extends State<Dashboard> {
   var enddate;
   var periodduration = 0;
   var dayscount = 0;
+  var todaystitle = "";
+  var todaysmessage = "";
 
   @override
   void initState() {
@@ -232,34 +235,92 @@ class _DashboardState extends State<Dashboard> {
                     ],
                   ),
                   Container(
-                    height: 100,
+                    // height: 100,
                     padding:
                         EdgeInsets.only(top: 0, left: 10, bottom: 5, right: 10),
                     child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
                       child: Stack(
+                        clipBehavior: Clip.none,
                         children: <Widget>[
                           Container(
-                            alignment: Alignment.center,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                            width: double.infinity,
+                            padding: EdgeInsets.all(15),
+                            child: Row(
                               children: <Widget>[
-                                Text("Mesasge for the day"),
-                                Text("Mesasge for the day"),
-                                // Row(
-                                //   mainAxisAlignment: MainAxisAlignment.center,
-                                //   children: <Widget>[
-                                //     Text("Test"),
-                                //     Text("Test"),
-                                //   ],
-                                // ),
+                                Container(
+                                  width: screenwidth - 130,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text(
+                                        todaystitle,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      Text(
+                                        todaysmessage,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      Text(
+                                        "See More",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 2,
+                                  child: Column(),
+                                ),
                               ],
                             ),
                             decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: DecorationImage(
-                                  image:
-                                      AssetImage("assets/images/faded/2.png"),
-                                  fit: BoxFit.contain),
+                              shape: BoxShape.rectangle,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5)),
+                              gradient: LinearGradient(
+                                colors: [
+                                  Colors.blue,
+                                  Colors.blue[200],
+                                ],
+                                begin: const FractionalOffset(0.0, 0.0),
+                                end: const FractionalOffset(1.0, 0.0),
+                                stops: [0.0, 1.0],
+                                tileMode: TileMode.clamp,
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            right: 15,
+                            bottom: 15,
+                            top: 15,
+                            child: ClipRRect(
+                              child: Image.asset(
+                                  "assets/images/dailyicons/sun.png"),
                             ),
                           ),
                           Positioned.fill(
@@ -267,7 +328,13 @@ class _DashboardState extends State<Dashboard> {
                               color: Colors.transparent,
                               child: InkWell(
                                 onTap: () {
-                                  // Navigator.pushNamed(context, routename); // replace routename
+                                  Route routename = ImageViewerPageRoute(
+                                      builder: (context) => DailyMessage(
+                                          [todaystitle, todaysmessage]));
+                                  Navigator.push(
+                                    context,
+                                    routename,
+                                  );
                                 },
                                 borderRadius: BorderRadius.circular(5),
                               ),
@@ -419,6 +486,24 @@ class _DashboardState extends State<Dashboard> {
       // print(periodduration);
       var today = DateTime.now();
       dayscount = today.difference(startdate).inDays + 1;
+      this.fetchTodaysMessage(dayscount);
+    });
+  }
+
+  fetchTodaysMessage(day) {
+    CollectionReference collectionReference =
+        FirebaseFirestore.instance.collection('dailymessages');
+
+    collectionReference
+        .where('day', isEqualTo: 3) // day
+        .limit(1)
+        .snapshots()
+        .listen((snapshot) {
+      setState(() {
+        todaystitle = snapshot.docs[0]["title"];
+        todaysmessage = snapshot.docs[0]["message"];
+      });
+      // print(todaysmessage);
     });
   }
 

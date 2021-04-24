@@ -5,7 +5,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Graph extends StatefulWidget {
-  Graph({Key key}) : super(key: key);
   @override
   _GraphState createState() => _GraphState();
 }
@@ -120,6 +119,18 @@ class _GraphState extends State<Graph> {
                         )),
                   ),
                 ],
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Container(
+                height: 160,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("assets/images/faded/9.png"),
+                    fit: BoxFit.contain,
+                  ),
+                ),
               ),
             ],
           ),

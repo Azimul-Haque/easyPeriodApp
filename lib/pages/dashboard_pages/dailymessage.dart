@@ -1,15 +1,18 @@
-import 'package:easyperiod/globals.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class Insights extends StatefulWidget {
-  Insights({Key key}) : super(key: key);
+class DailyMessage extends StatefulWidget {
+  final data;
+  DailyMessage(this.data);
   @override
-  _InsightsState createState() => _InsightsState();
+  _DailyMessageState createState() => _DailyMessageState(this.data);
 }
 
-class _InsightsState extends State<Insights> {
+class _DailyMessageState extends State<DailyMessage> {
+  var data;
+  _DailyMessageState(this.data);
+
   User userdata;
 
   @override
@@ -23,7 +26,8 @@ class _InsightsState extends State<Insights> {
     // var screenwidth = MediaQuery.of(context).size.width;
     return new Scaffold(
       appBar: AppBar(
-        title: Text('Insights'),
+        title: Text('Daily Message'),
+        elevation: 0,
         flexibleSpace: appBarStyle(),
         automaticallyImplyLeading: false,
         actions: <Widget>[
@@ -33,11 +37,25 @@ class _InsightsState extends State<Insights> {
           ),
         ],
       ),
-      body: GestureDetector(
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Colors.blue,
+              Colors.blue[200],
+            ],
+            begin: const FractionalOffset(0.0, 0.0),
+            end: const FractionalOffset(1.0, 0.0),
+            stops: [0.0, 1.0],
+            tileMode: TileMode.clamp,
+          ),
+        ),
         child: Container(
           padding: EdgeInsets.only(top: 15, left: 15, right: 15, bottom: 15),
           child: Column(
             children: <Widget>[
+              Text(data[0]),
+              Text(data[1]),
               SizedBox(
                 height: 10,
               ),
@@ -45,13 +63,30 @@ class _InsightsState extends State<Insights> {
                 height: 160,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage("assets/images/faded/10.png"),
+                    image: AssetImage("assets/images/faded/11.png"),
                     fit: BoxFit.contain,
                   ),
                 ),
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  appBarStyle() {
+    return Ink(
+      decoration: new BoxDecoration(
+        gradient: new LinearGradient(
+          colors: [
+            Colors.blue,
+            Colors.blue[200],
+          ],
+          begin: const FractionalOffset(0.0, 0.0),
+          end: const FractionalOffset(1.0, 0.0),
+          stops: [0.0, 1.0],
+          tileMode: TileMode.clamp,
         ),
       ),
     );

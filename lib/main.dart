@@ -1,5 +1,6 @@
 import 'package:easyperiod/pages/calendar.dart';
 import 'package:easyperiod/pages/dashboard.dart';
+import 'package:easyperiod/pages/dashboard_pages/dailymessage.dart';
 import 'package:easyperiod/pages/periodlist.dart';
 import 'package:easyperiod/pages/profile.dart';
 import 'package:flutter/material.dart';
@@ -73,6 +74,7 @@ class MyApp extends StatelessWidget {
         // '/prediction': (context) => Prediction(context),
         '/graph': (context) => Graph(),
         '/insights': (context) => Insights(),
+        // '/dailymessage': (context) => DailyMessage(),
       },
     );
   }

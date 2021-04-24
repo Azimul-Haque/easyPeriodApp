@@ -51,34 +51,52 @@ class _AddperiodState extends State<Addperiod> {
     userdata = FirebaseAuth.instance.currentUser;
   }
 
-  addPeriod() {
+  addPeriod() async {
     if (formKey.currentState.validate()) {
       FocusScope.of(context).unfocus();
       formKey.currentState.save();
-      print(start);
-      print(end);
-      Map<String, dynamic> perioddata = {
-        "uid": userdata.uid,
-        "start": start,
-        "end": end,
-        "desc": desc,
-      };
-      CollectionReference collectionReference =
-          FirebaseFirestore.instance.collection('periods');
-      collectionReference
-          .add(perioddata)
-          .then(
-            (value) => this.showSnackBarandPop(),
-          )
-          // ignore: return_of_invalid_type_from_catch_error
-          .catchError(
-            (e) => ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                behavior: SnackBarBehavior.floating,
-                content: Text("Error: " + e.message),
-              ),
-            ),
-          );
+      await flutterLocalNotificationsPlugin.cancelAll();
+      this.scheduleAlarm(start, 3, 20, 1, "Period ended? Record then...",
+          "Get yourself equipped with menstrual items.");
+      this.scheduleAlarm(start, 12, 20, 1, "Tomorrow is the ",
+          "Get yourself equipped with menstrual items.");
+      this.scheduleAlarm(start, 26, 8, 1, "Period starts in today/tomorrow",
+          "Get yourself equipped with menstrual items.");
+      this.scheduleAlarm(start, 26, 20, 2, "Period starts in today/tomorrow",
+          "Get yourself equipped with menstrual items.");
+      this.scheduleAlarm(start, 27, 8, 1, "Period starts in today/tomorrow",
+          "Get yourself equipped with menstrual items.");
+      this.scheduleAlarm(start, 28, 8, 1, "Period starts in today/tomorrow",
+          "Get yourself equipped with menstrual items.");
+      this.scheduleAlarm(start, 29, 8, 1, "Period starts in today/tomorrow",
+          "Get yourself equipped with menstrual items.");
+      this.scheduleAlarm(start, 30, 8, 1, "Period starts in today/tomorrow",
+          "Get yourself equipped with menstrual items.");
+
+      // print(start);
+      // print(end);
+      // Map<String, dynamic> perioddata = {
+      //   "uid": userdata.uid,
+      //   "start": start,
+      //   "end": end,
+      //   "desc": desc,
+      // };
+      // CollectionReference collectionReference =
+      //     FirebaseFirestore.instance.collection('periods');
+      // collectionReference
+      //     .add(perioddata)
+      //     .then(
+      //       (value) => this.showSnackBarandPop(),
+      //     )
+      //     // ignore: return_of_invalid_type_from_catch_error
+      //     .catchError(
+      //       (e) => ScaffoldMessenger.of(context).showSnackBar(
+      //         SnackBar(
+      //           behavior: SnackBarBehavior.floating,
+      //           content: Text("Error: " + e.message),
+      //         ),
+      //       ),
+      //     );
     }
   }
 
@@ -92,8 +110,6 @@ class _AddperiodState extends State<Addperiod> {
           content: Text("Period Added!"),
         ),
       );
-      await flutterLocalNotificationsPlugin.cancelAll();
-      this.scheduleAlarm();
       Route route = MaterialPageRoute(builder: (context) => HomePage());
       Navigator.push(context, route);
     });
@@ -204,8 +220,10 @@ class _AddperiodState extends State<Addperiod> {
     );
   }
 
-  void scheduleAlarm() async {
-    var scheduledNotificationDateTime = DateTime.now().add(Duration(hours: 1));
+  void scheduleAlarm(date, plusday, plushour, id, title, message) async {
+    var scheduledNotificationDateTime =
+        DateTime.parse(date).add(Duration(days: plusday, hours: plushour));
+    print(scheduledNotificationDateTime);
 
     final timeZone = TimeZone();
     String timeZoneName = await timeZone.getTimeZoneName();
@@ -227,9 +245,9 @@ class _AddperiodState extends State<Addperiod> {
         NotificationDetails(android: androidPlatformChannelSpecifics);
 
     await flutterLocalNotificationsPlugin.zonedSchedule(
-      0,
-      'Tracking Period',
-      "Your new period recoreded. (Test)",
+      id,
+      title,
+      message,
       scheduletztime,
       platformChannelSpecifics,
       androidAllowWhileIdle: true,

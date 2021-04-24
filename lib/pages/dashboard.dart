@@ -25,6 +25,7 @@ class _DashboardState extends State<Dashboard> {
   var dayscount = 0;
   var todaystitle = "";
   var todaysmessage = "";
+  var banglamessage = "";
 
   @override
   void initState() {
@@ -328,9 +329,15 @@ class _DashboardState extends State<Dashboard> {
                               color: Colors.transparent,
                               child: InkWell(
                                 onTap: () {
-                                  Route routename = ImageViewerPageRoute(
-                                      builder: (context) => DailyMessage(
-                                          [todaystitle, todaysmessage]));
+                                  Route routename = MaterialPageRoute(
+                                    builder: (context) => DailyMessage(
+                                      [
+                                        todaystitle,
+                                        todaysmessage,
+                                        banglamessage
+                                      ],
+                                    ),
+                                  );
                                   Navigator.push(
                                     context,
                                     routename,
@@ -491,20 +498,27 @@ class _DashboardState extends State<Dashboard> {
   }
 
   fetchTodaysMessage(day) {
+    if (day > 29) {
+      day = 29;
+    }
     CollectionReference collectionReference =
         FirebaseFirestore.instance.collection('dailymessages');
-
-    collectionReference
-        .where('day', isEqualTo: 3) // day
-        .limit(1)
-        .snapshots()
-        .listen((snapshot) {
-      setState(() {
-        todaystitle = snapshot.docs[0]["title"];
-        todaysmessage = snapshot.docs[0]["message"];
+    try {
+      collectionReference
+          .where('day', isEqualTo: day) // day
+          .limit(1)
+          .snapshots()
+          .listen((snapshot) {
+        setState(() {
+          todaystitle = snapshot.docs[0]["title"];
+          todaysmessage = snapshot.docs[0]["message"];
+          banglamessage = snapshot.docs[0]["banglamessage"];
+        });
+        // print(todaysmessage);
       });
-      // print(todaysmessage);
-    });
+    } catch (e) {
+      print(e);
+    }
   }
 
   List<PieChartSectionData> getSectionsforPie() {

@@ -12,7 +12,8 @@ class DailyMessage extends StatefulWidget {
 class _DailyMessageState extends State<DailyMessage> {
   var data;
   _DailyMessageState(this.data);
-
+  bool banglavisibility = false;
+  bool buttonvisibility = true;
   User userdata;
 
   @override
@@ -23,7 +24,7 @@ class _DailyMessageState extends State<DailyMessage> {
 
   @override
   Widget build(BuildContext context) {
-    // var screenwidth = MediaQuery.of(context).size.width;
+    var screenwidth = MediaQuery.of(context).size.width;
     return new Scaffold(
       appBar: AppBar(
         title: Text('Daily Message'),
@@ -38,6 +39,7 @@ class _DailyMessageState extends State<DailyMessage> {
         ],
       ),
       body: Container(
+        height: double.infinity,
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
@@ -50,26 +52,168 @@ class _DailyMessageState extends State<DailyMessage> {
             tileMode: TileMode.clamp,
           ),
         ),
-        child: Container(
+        child: ListView(
           padding: EdgeInsets.only(top: 15, left: 15, right: 15, bottom: 15),
-          child: Column(
-            children: <Widget>[
-              Text(data[0]),
-              Text(data[1]),
-              SizedBox(
-                height: 10,
+          shrinkWrap: true,
+          // mainAxisAlignment: MainAxisAlignment.start,
+          // crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              data[0],
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: Colors.white,
               ),
-              Container(
-                height: 160,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage("assets/images/faded/11.png"),
-                    fit: BoxFit.contain,
+            ),
+            SizedBox(
+              height: 5,
+            ),
+            Card(
+              color: Colors.transparent,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: <Widget>[
+                  Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.all(15),
+                    child: Row(
+                      children: <Widget>[
+                        Container(
+                          width: screenwidth - 155,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                data[1] +
+                                    "This Test is Test a Test my Test Message the Test Message Test this This Test is Test a Test my Test Message the Test Message Test ",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: Column(),
+                        ),
+                      ],
+                    ),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.rectangle,
+                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                      gradient: LinearGradient(
+                        colors: [
+                          Colors.black12,
+                          Colors.black12,
+                        ],
+                        begin: const FractionalOffset(0.0, 0.0),
+                        end: const FractionalOffset(1.0, 0.0),
+                        stops: [0.0, 1.0],
+                        tileMode: TileMode.clamp,
+                      ),
+                    ),
                   ),
+                  Positioned(
+                    height: 80,
+                    right: 15,
+                    bottom: 15,
+                    child: ClipRRect(
+                      child: Image.asset("assets/images/dailyicons/sun.png"),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Visibility(
+              visible: banglavisibility,
+              child: Card(
+                color: Colors.transparent,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: Stack(
+                  clipBehavior: Clip.none,
+                  children: <Widget>[
+                    Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.all(15),
+                      child: Row(
+                        children: <Widget>[
+                          Container(
+                            width: screenwidth - 155,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  data[1] +
+                                      "This Test is Test a Test my Test Message the Test Message Test this This Test is Test a Test my Test Message the Test Message Test ",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            flex: 2,
+                            child: Column(),
+                          ),
+                        ],
+                      ),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.rectangle,
+                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.black12,
+                            Colors.black12,
+                          ],
+                          begin: const FractionalOffset(0.0, 0.0),
+                          end: const FractionalOffset(1.0, 0.0),
+                          stops: [0.0, 1.0],
+                          tileMode: TileMode.clamp,
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      height: 80,
+                      right: 15,
+                      bottom: 15,
+                      child: ClipRRect(
+                        child: Image.asset("assets/images/dailyicons/sun.png"),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+              height: 150,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage("assets/images/faded/11.png"),
+                  fit: BoxFit.contain,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

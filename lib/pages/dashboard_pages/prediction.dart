@@ -63,6 +63,9 @@ class _PredictionState extends State<Prediction> {
                   ),
                 ],
               ),
+              SizedBox(
+                height: 5,
+              ),
               Card(
                 elevation: 2,
                 child: Container(

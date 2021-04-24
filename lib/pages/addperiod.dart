@@ -56,58 +56,142 @@ class _AddperiodState extends State<Addperiod> {
       FocusScope.of(context).unfocus();
       formKey.currentState.save();
       await flutterLocalNotificationsPlugin.cancelAll();
-      this.scheduleAlarm(start, 3, 20, 1, "Period ended? Record then...",
-          "Get yourself equipped with menstrual items.");
-      this.scheduleAlarm(start, 12, 8, 1, "You are on your Fertility Phase",
+      this.scheduleNotification(
+          start,
+          1,
+          8,
+          0,
+          "Pay attention to diet nutrition.",
+          "Eat more food with rich vitamin.");
+      this.scheduleNotification(start, 3, 20, 1, "Period ended? Record then...",
+          "Let us help with your menstrual periods.");
+      this.scheduleNotification(
+          start,
+          8,
+          9,
+          2,
+          "Feeling refreshed? You should!",
+          "These days are the best among the cycle.");
+      this.scheduleNotification(start, 19, 8, 3, "Be careful of acne!",
+          "The sebaceous glands are running at full speed.");
+      this.scheduleNotification(
+          start,
+          12,
+          8,
+          4,
+          "You are on your Fertility Phase",
           "Today is one of your most fertile days.");
-      this.scheduleAlarm(
+      this.scheduleNotification(
           start,
           13,
           8,
-          1,
+          5,
           "Today is the Probable ovulation day.",
-          "Today is one of your most fertile days.");
-      this.scheduleAlarm(start, 14, 8, 1, "You are on your Fertility Phase",
+          "Today is probably your most fertile day.");
+      this.scheduleNotification(
+          start,
+          14,
+          8,
+          6,
+          "You are on your Fertility Phase",
           "Today is one of your fertile days.");
-      this.scheduleAlarm(start, 26, 8, 1, "Period starts in today/tomorrow",
+      this.scheduleNotification(
+          start,
+          26,
+          8,
+          7,
+          "Period starts in today/tomorrow",
           "Get yourself equipped with menstrual items.");
-      this.scheduleAlarm(start, 26, 20, 2, "Period starts in today/tomorrow",
+      this.scheduleNotification(
+          start,
+          26,
+          20,
+          8,
+          "Period starts in today/tomorrow",
           "Get yourself equipped with menstrual items.");
-      this.scheduleAlarm(start, 27, 8, 1, "Period starts in today/tomorrow",
+      this.scheduleNotification(
+          start,
+          27,
+          8,
+          9,
+          "Period starts in today/tomorrow",
           "Get yourself equipped with menstrual items.");
-      this.scheduleAlarm(start, 28, 8, 1, "Period starts in today/tomorrow",
+      this.scheduleNotification(
+          start,
+          28,
+          8,
+          10,
+          "Period starts in today/tomorrow",
           "Get yourself equipped with menstrual items.");
-      this.scheduleAlarm(start, 29, 8, 1, "Period starts in today/tomorrow",
+      this.scheduleNotification(
+          start,
+          29,
+          8,
+          11,
+          "Period starts in today/tomorrow",
           "Get yourself equipped with menstrual items.");
-      this.scheduleAlarm(start, 30, 8, 1, "Period starts in today/tomorrow",
+      this.scheduleNotification(
+          start,
+          30,
+          8,
+          12,
+          "Period starts in today/tomorrow",
           "Get yourself equipped with menstrual items.");
 
       // print(start);
       // print(end);
-      // Map<String, dynamic> perioddata = {
-      //   "uid": userdata.uid,
-      //   "start": start,
-      //   "end": end,
-      //   "desc": desc,
-      // };
-      // CollectionReference collectionReference =
-      //     FirebaseFirestore.instance.collection('periods');
-      // collectionReference
-      //     .add(perioddata)
-      //     .then(
-      //       (value) => this.showSnackBarandPop(),
-      //     )
-      //     // ignore: return_of_invalid_type_from_catch_error
-      //     .catchError(
-      //       (e) => ScaffoldMessenger.of(context).showSnackBar(
-      //         SnackBar(
-      //           behavior: SnackBarBehavior.floating,
-      //           content: Text("Error: " + e.message),
-      //         ),
-      //       ),
-      //     );
+      Map<String, dynamic> perioddata = {
+        "uid": userdata.uid,
+        "start": start,
+        "end": end,
+        "desc": desc,
+      };
+      CollectionReference collectionReference =
+          FirebaseFirestore.instance.collection('periods');
+      collectionReference
+          .add(perioddata)
+          .then(
+            (value) => this.showSnackBarandPop(),
+          )
+          // ignore: return_of_invalid_type_from_catch_error
+          .catchError(
+            (e) => ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                behavior: SnackBarBehavior.floating,
+                content: Text("Error: " + e.message),
+              ),
+            ),
+          );
     }
   }
+
+  // addDaily() {
+  //   print("click");
+  //   for (var i = 1; i <= 28; i++) {
+  //     Map<String, dynamic> perioddata = {
+  //       "day": i,
+  //       "title": "Test tile for the day " + i.toString(),
+  //       "message": "Test message for day " + i.toString(),
+  //       "banglamessage": "বাংলা ভাষায় মেসেজ, দিন সংখ্যাঃ " + i.toString(),
+  //     };
+  //     CollectionReference collectionReference =
+  //         FirebaseFirestore.instance.collection('dailymessages');
+  //     collectionReference
+  //         .add(perioddata)
+  //         .then(
+  //           (value) => this.showSnackBarandPop(),
+  //         )
+  //         // ignore: return_of_invalid_type_from_catch_error
+  //         .catchError(
+  //           (e) => ScaffoldMessenger.of(context).showSnackBar(
+  //             SnackBar(
+  //               behavior: SnackBarBehavior.floating,
+  //               content: Text("Error: " + e.message),
+  //             ),
+  //           ),
+  //         );
+  //   }
+  // }
 
   showSnackBarandPop() {
     showAlertDialog(context, "Adding...");
@@ -229,38 +313,43 @@ class _AddperiodState extends State<Addperiod> {
     );
   }
 
-  void scheduleAlarm(date, plusday, plushour, id, title, message) async {
+  void scheduleNotification(date, plusday, plushour, id, title, message) async {
     var scheduledNotificationDateTime =
         DateTime.parse(date).add(Duration(days: plusday, hours: plushour));
     print(scheduledNotificationDateTime);
+    // print(scheduledNotificationDateTime.difference(DateTime.now()).inHours);
 
-    // final timeZone = TimeZone();
-    // String timeZoneName = await timeZone.getTimeZoneName();
-    // final location = await timeZone.getLocation(timeZoneName);
-    // final scheduletztime =
-    //     tz.TZDateTime.from(scheduledNotificationDateTime, location);
+    // if 'time is not future' handled.
+    if (scheduledNotificationDateTime.difference(DateTime.now()).inHours > 0) {
+      final timeZone = TimeZone();
+      String timeZoneName = await timeZone.getTimeZoneName();
+      final location = await timeZone.getLocation(timeZoneName);
+      final scheduletztime =
+          tz.TZDateTime.from(scheduledNotificationDateTime, location);
 
-    // var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-    //   'alarm_notif',
-    //   'alarm_notif',
-    //   'Channel for Alarm notification',
-    //   importance: Importance.max,
-    //   icon: 'ic_stat_onesignal_default',
-    //   // sound: RawResourceAndroidNotificationSound('a_long_cold_sting'),
-    //   largeIcon: DrawableResourceAndroidBitmap('ic_stat_onesignal_default'),
-    // );
+      var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+        'alarm_notif',
+        'alarm_notif',
+        'Channel for Alarm notification',
+        importance: Importance.max,
+        icon: 'ic_stat_onesignal_default',
+        // sound: RawResourceAndroidNotificationSound('a_long_cold_sting'),
+        largeIcon: DrawableResourceAndroidBitmap('ic_stat_onesignal_default'),
+      );
 
-    // var platformChannelSpecifics =
-    //     NotificationDetails(android: androidPlatformChannelSpecifics);
+      var platformChannelSpecifics =
+          NotificationDetails(android: androidPlatformChannelSpecifics);
 
-    // await flutterLocalNotificationsPlugin.zonedSchedule(
-    //   id,
-    //   title,
-    //   message,
-    //   scheduletztime,
-    //   platformChannelSpecifics,
-    //   androidAllowWhileIdle: true,
-    //   uiLocalNotificationDateInterpretation: null,
-    // );
+      await flutterLocalNotificationsPlugin.zonedSchedule(
+        id,
+        title,
+        message,
+        scheduletztime,
+        platformChannelSpecifics,
+        androidAllowWhileIdle: true,
+        uiLocalNotificationDateInterpretation: null,
+      );
+      print("Notification scheduled: " + id.toString());
+    }
   }
 }

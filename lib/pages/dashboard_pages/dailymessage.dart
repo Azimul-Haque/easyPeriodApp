@@ -89,8 +89,7 @@ class _DailyMessageState extends State<DailyMessage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
-                                data[1] +
-                                    "This Test is Test a Test my Test Message the Test Message Test this This Test is Test a Test my Test Message the Test Message Test ",
+                                data[1],
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 16,
@@ -135,6 +134,44 @@ class _DailyMessageState extends State<DailyMessage> {
             SizedBox(
               height: 10,
             ),
+            Row(
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.only(
+                    left: 5,
+                    right: 5,
+                  ),
+                  width: screenwidth * .35,
+                  child: Visibility(
+                    visible: buttonvisibility,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          banglavisibility = !banglavisibility;
+                          buttonvisibility = !banglavisibility;
+                        });
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Icon(
+                            Icons.translate,
+                            size: 15,
+                          ),
+                          Text(
+                            " Bengali",
+                            style: TextStyle(
+                              fontSize: 13,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
             Visibility(
               visible: banglavisibility,
               child: Card(
@@ -157,8 +194,7 @@ class _DailyMessageState extends State<DailyMessage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Text(
-                                  data[1] +
-                                      "This Test is Test a Test my Test Message the Test Message Test this This Test is Test a Test my Test Message the Test Message Test ",
+                                  data[2],
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 16,

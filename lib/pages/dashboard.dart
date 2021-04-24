@@ -376,6 +376,7 @@ class _DashboardState extends State<Dashboard> {
                       ),
                       Expanded(
                         child: Container(
+                          height: screenwidth * .27,
                           padding: EdgeInsets.only(
                               top: 5, left: 0, bottom: 5, right: 2.5),
                           child: _homeCard(
@@ -384,6 +385,7 @@ class _DashboardState extends State<Dashboard> {
                       ),
                       Expanded(
                         child: Container(
+                          height: screenwidth * .27,
                           padding: EdgeInsets.only(
                               top: 5, left: 2.5, bottom: 5, right: 2.5),
                           child: _homeCard("12.png", "Graph", Graph()),
@@ -391,6 +393,15 @@ class _DashboardState extends State<Dashboard> {
                       ),
                       Expanded(
                         child: Container(
+                          height: screenwidth * .27,
+                          padding: EdgeInsets.only(
+                              top: 5, left: 2.5, bottom: 5, right: 2.5),
+                          child: _homeCard("13.png", "Insights", Insights()),
+                        ),
+                      ),
+                      Expanded(
+                        child: Container(
+                          height: screenwidth * .27,
                           padding: EdgeInsets.only(
                               top: 5, left: 2.5, bottom: 5, right: 0),
                           child: _homeCard("13.png", "Insights", Insights()),
@@ -427,7 +438,7 @@ class _DashboardState extends State<Dashboard> {
                 child: Image.asset("assets/images/empowerment/" + image),
               ),
               Padding(
-                  padding: EdgeInsets.all(7),
+                  padding: EdgeInsets.all(2),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -435,7 +446,7 @@ class _DashboardState extends State<Dashboard> {
                       Text(
                         title,
                         style: TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.bold),
+                            fontSize: 13, fontWeight: FontWeight.bold),
                       ),
                     ],
                   ))

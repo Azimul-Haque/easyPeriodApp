@@ -12,6 +12,7 @@ import 'login.dart';
 import 'package:easyperiod/pages/dashboard_pages/prediction.dart';
 import 'package:easyperiod/pages/dashboard_pages/graph.dart';
 import 'package:easyperiod/pages/dashboard_pages/insights.dart';
+import 'package:easyperiod/pages/dashboard_pages/community.dart';
 import 'package:easyperiod/pages/profile_pages/myaccount.dart';
 import 'package:easyperiod/pages/profile_pages/changepass.dart';
 import 'package:easyperiod/pages/profile_pages/notifications.dart';
@@ -74,6 +75,7 @@ class MyApp extends StatelessWidget {
         // '/prediction': (context) => Prediction(context),
         '/graph': (context) => Graph(),
         '/insights': (context) => Insights(),
+        '/community': (context) => Community(),
         // '/dailymessage': (context) => DailyMessage(),
       },
     );

@@ -1,5 +1,7 @@
 import 'dart:async';
-
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:easyperiod/TimeZone.dart';
 import 'package:easyperiod/globals.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -103,45 +105,65 @@ class _FeedBackState extends State<FeedBack> {
     );
   }
 
-  sendFeedback() {
+  sendFeedback() async {
     if (formKey.currentState.validate()) {
       showAlertDialog(context, "Sending feedback...");
       FocusScope.of(context).unfocus();
       formKey.currentState.save();
+      final timeZone = TimeZone();
+      String timeZoneName = await timeZone.getTimeZoneName();
+      final location = await timeZone.getLocation(timeZoneName);
+      // print(location);
+      var data = {
+        'name': userdata.displayName,
+        'email': userdata.email,
+        'message': feedback,
+        'location': location.toString(),
+      };
 
-      // apatoto
-      this.showSnackBarandPop();
-
-      // final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-      // User currentUser = firebaseAuth.currentUser;
-
-      // currentUser.updatePassword(feedback).then((_) {
-      //   this.showSnackBarandPop();
-      // }).catchError((error) {
-      //   print(error.code);
-      //   if (error.code == "requires-recent-login") {
-      //     ScaffoldMessenger.of(context).showSnackBar(
-      //       SnackBar(
-      //         behavior: SnackBarBehavior.floating,
-      //         content: Text(error.message),
-      //       ),
-      //     );
-      //   } else {
-      //     ScaffoldMessenger.of(context).showSnackBar(
-      //       SnackBar(
-      //         behavior: SnackBarBehavior.floating,
-      //         content: Text("Error! Try again."),
-      //       ),
-      //     );
-      //   }
-      //   Navigator.of(context).pop();
-      // });
+      try {
+        FocusScope.of(context).unfocus(); // hide the keyboard
+        http.Response response = await http.post(
+          Uri.parse(
+            "https://cvcsbd.com/dashboard/easyperiod/store/message/api",
+          ),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=utf-8',
+            'Accept': 'application/json',
+          },
+          body: jsonEncode(data),
+        );
+        // print(response.statusCode);
+        if (response.statusCode == 200) {
+          var body = json.decode(response.body);
+          if (body["success"] == true) {
+            this.showSnackBarandPop();
+          }
+        } else {
+          Navigator.of(context, rootNavigator: true).pop();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              behavior: SnackBarBehavior.floating,
+              content: Text("Error! Try again."),
+            ),
+          );
+        }
+      } catch (_) {
+        Navigator.of(context, rootNavigator: true).pop();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            behavior: SnackBarBehavior.floating,
+            content: Text("No internet connection!"),
+          ),
+        );
+        // print(_);
+      }
     }
   }
 
   showSnackBarandPop() {
     Timer(Duration(seconds: 1), () {
-      Navigator.of(context).pop();
+      Navigator.of(context, rootNavigator: true).pop();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           behavior: SnackBarBehavior.floating,

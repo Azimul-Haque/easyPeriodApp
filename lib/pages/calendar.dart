@@ -50,8 +50,13 @@ class _CalendarState extends State<Calendar> {
                 height: screenheight / 1.8,
                 padding: EdgeInsets.only(top: 5, left: 5, bottom: 5, right: 5),
                 child: SfCalendar(
+                  monthViewSettings: MonthViewSettings(
+                    appointmentDisplayCount: 2,
+                    appointmentDisplayMode:
+                        MonthAppointmentDisplayMode.appointment,
+                  ),
                   view: CalendarView
-                      .month, // calender > settings > month_view_settings
+                      .month, // calender > settings > month_view_settings (this.appointmentDisplayCount = 2, this.navigationDirection = MonthNavigationDirection.horizontal,)
                   dataSource: PeriodDataSource(getPeriods()),
                   onTap: (CalendarTapDetails details) {
                     // DateTime date = details.date;

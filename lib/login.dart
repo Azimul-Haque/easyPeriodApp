@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:easyperiod/globals.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key}) : super(key: key);
@@ -38,6 +39,7 @@ class _LoginPageState extends State<LoginPage> {
         Navigator.push(context, route);
       }
     });
+    this.configOneSignal();
   }
 
   Future<dynamic> register() async {
@@ -389,5 +391,26 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  // onesignal configuration
+  void configOneSignal() {
+    OneSignal.shared.init("8d4b4cf5-1f10-4cb6-9ba0-90cb027d2732");
+    OneSignal.shared
+        .setInFocusDisplayType(OSNotificationDisplayType.notification);
+    OneSignal.shared
+        .setNotificationOpenedHandler((OSNotificationOpenedResult result) {
+      // if (result.notification.payload.additionalData.values.first == 'update') {
+      //   Route route = MaterialPageRoute(builder: (context) => UpdateQstnPage());
+      //   Navigator.push(context, route);
+      // } else {
+      //   Route route = MaterialPageRoute(
+      //       builder: (context) => NotificationPage([
+      //             result.notification.payload.title,
+      //             result.notification.payload.additionalData.values.first
+      //           ]));
+      //   Navigator.push(context, route);
+      // }
+    });
   }
 }

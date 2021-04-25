@@ -23,6 +23,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  onesignal_flutter: ^2.6.3
   google_sign_in: ^5.0.1
   firebase_core: ^1.0.3
   firebase_auth: ^1.1.0

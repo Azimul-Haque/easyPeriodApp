@@ -67,8 +67,8 @@ class _AddperiodState extends State<Addperiod> {
           "Let us help with your menstrual periods.");
       this.scheduleNotification(
           start,
-          8,
           9,
+          8,
           2,
           "Feeling refreshed? You should!",
           "These days are the best among the cycle.");
@@ -324,6 +324,7 @@ class _AddperiodState extends State<Addperiod> {
       final timeZone = TimeZone();
       String timeZoneName = await timeZone.getTimeZoneName();
       final location = await timeZone.getLocation(timeZoneName);
+      print(location);
       final scheduletztime =
           tz.TZDateTime.from(scheduledNotificationDateTime, location);
 

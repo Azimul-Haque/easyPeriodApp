@@ -2,6 +2,7 @@ import 'package:easyperiod/globals.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Insights extends StatefulWidget {
   Insights({Key key}) : super(key: key);
@@ -38,6 +39,20 @@ class _InsightsState extends State<Insights> {
           padding: EdgeInsets.only(top: 15, left: 15, right: 15, bottom: 15),
           child: Column(
             children: <Widget>[
+              Text("Coming soon..."),
+              SizedBox(
+                height: 10,
+              ),
+              ElevatedButton(
+                onPressed: () async {
+                  if (await canLaunch("https://orbachinujbuk.com")) {
+                    await launch("https://orbachinujbuk.com");
+                  } else {
+                    throw 'Could not launch!';
+                  }
+                },
+                child: Text("Check for updates"),
+              ),
               SizedBox(
                 height: 10,
               ),

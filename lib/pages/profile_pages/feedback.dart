@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:easyperiod/globals.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,7 +12,11 @@ class FeedBack extends StatefulWidget {
 }
 
 class _FeedBackState extends State<FeedBack> {
+  var formKey = GlobalKey<FormState>();
   User userdata;
+
+  var feedbackController = TextEditingController();
+  var feedback;
 
   @override
   void initState() {
@@ -29,150 +35,50 @@ class _FeedBackState extends State<FeedBack> {
           flexibleSpace: appBarStyle(),
         ),
         body: SingleChildScrollView(
-          padding: EdgeInsets.only(top: 20, left: 10, right: 10, bottom: 20),
+          padding: EdgeInsets.only(top: 20, left: 15, right: 15, bottom: 20),
           child: Container(
             alignment: Alignment.center,
             child: Column(
               // crossAxisAlignment: CrossAxisAlignment.center,
               // mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                SizedBox(
-                  height: 100,
-                  width: 100,
-                  child: Stack(
-                    fit: StackFit.expand,
-                    // overflow: Overflow.visible,
-                    clipBehavior: Clip.none,
-                    children: [
-                      CircleAvatar(
-                        backgroundImage: AssetImage("assets/images/user.png"),
-                      ),
-                      Positioned(
-                        right: -16,
-                        bottom: 0,
-                        child: SizedBox(
-                          height: 40,
-                          width: 40,
-                          child: TextButton(
-                            style: TextButton.styleFrom(
-                              primary: Colors.grey,
-                              backgroundColor: Colors.grey[200],
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(50),
-                                side: BorderSide(color: Colors.white),
-                              ),
-                            ),
-                            onPressed: () {
-                              print("Clicked!");
-                            },
-                            child: Icon(Icons.camera_alt_outlined),
-                          ),
+                Form(
+                  key: formKey,
+                  child: Column(
+                    children: <Widget>[
+                      TextFormField(
+                        controller: feedbackController,
+                        keyboardType: TextInputType.multiline,
+                        maxLines: 4,
+                        decoration: InputDecoration(
+                          labelText: "Write your feedback",
+                          prefixIcon: Icon(Icons.edit),
                         ),
-                      )
+                        validator: (value) {
+                          if (value.length == 0) {
+                            return "Please write a something.";
+                          }
+                          return null;
+                        },
+                        maxLength: 200,
+                        onSaved: (value) {
+                          setState(() {
+                            this.feedback = value.trim();
+                          });
+                        },
+                      ),
                     ],
                   ),
                 ),
                 SizedBox(
                   height: 10,
                 ),
-                Text(
-                  userdata.displayName,
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.red,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
                 SizedBox(
-                  height: 10,
-                ),
-                Card(
-                  child: ListTile(
-                    leading: Icon(
-                      Icons.person_outline,
-                      color: Colors.red,
-                      size: 35,
-                    ),
-                    title: Text(
-                      'My Account',
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.red,
-                      ),
-                    ),
-                    trailing: IconButton(
-                      icon: Icon(Icons.edit_outlined),
-                      onPressed: () {},
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Card(
-                  child: ListTile(
-                    leading: Icon(
-                      Icons.notifications_none,
-                      color: Colors.red,
-                      size: 35,
-                    ),
-                    title: Text(
-                      'Notifications',
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.red,
-                      ),
-                    ),
-                    trailing: IconButton(
-                      icon: Icon(Icons.edit_outlined),
-                      onPressed: () {},
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Card(
-                  child: ListTile(
-                    leading: Icon(
-                      Icons.message_outlined,
-                      color: Colors.red,
-                      size: 35,
-                    ),
-                    title: Text(
-                      'Send Feedback',
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.red,
-                      ),
-                    ),
-                    trailing: IconButton(
-                      icon: Icon(Icons.edit_outlined),
-                      onPressed: () {},
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Card(
-                  child: ListTile(
-                    leading: Icon(
-                      Icons.settings,
-                      color: Colors.red,
-                      size: 35,
-                    ),
-                    title: Text(
-                      'Settings',
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.red,
-                      ),
-                    ),
-                    trailing: IconButton(
-                      icon: Icon(Icons.edit_outlined),
-                      onPressed: () {},
-                    ),
+                  width: double.infinity,
+                  child: ElevatedButton.icon(
+                    onPressed: sendFeedback,
+                    icon: Icon(Icons.send_outlined),
+                    label: Text("Send Feedback"),
                   ),
                 ),
                 Padding(
@@ -195,5 +101,54 @@ class _FeedBackState extends State<FeedBack> {
         ),
       ),
     );
+  }
+
+  sendFeedback() {
+    if (formKey.currentState.validate()) {
+      showAlertDialog(context, "Sending feedback...");
+      FocusScope.of(context).unfocus();
+      formKey.currentState.save();
+
+      // apatoto
+      this.showSnackBarandPop();
+
+      // final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+      // User currentUser = firebaseAuth.currentUser;
+
+      // currentUser.updatePassword(feedback).then((_) {
+      //   this.showSnackBarandPop();
+      // }).catchError((error) {
+      //   print(error.code);
+      //   if (error.code == "requires-recent-login") {
+      //     ScaffoldMessenger.of(context).showSnackBar(
+      //       SnackBar(
+      //         behavior: SnackBarBehavior.floating,
+      //         content: Text(error.message),
+      //       ),
+      //     );
+      //   } else {
+      //     ScaffoldMessenger.of(context).showSnackBar(
+      //       SnackBar(
+      //         behavior: SnackBarBehavior.floating,
+      //         content: Text("Error! Try again."),
+      //       ),
+      //     );
+      //   }
+      //   Navigator.of(context).pop();
+      // });
+    }
+  }
+
+  showSnackBarandPop() {
+    Timer(Duration(seconds: 1), () {
+      Navigator.of(context).pop();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          behavior: SnackBarBehavior.floating,
+          content: Text("Thanks for your feedback!"),
+        ),
+      );
+      Navigator.of(context).pop();
+    });
   }
 }

@@ -57,7 +57,7 @@ class _ProfileState extends State<Profile> {
                 Text(
                   userdata.displayName,
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: 16,
                     color: Colors.red,
                     fontWeight: FontWeight.bold,
                   ),
@@ -70,12 +70,12 @@ class _ProfileState extends State<Profile> {
                     leading: Icon(
                       Icons.person_outline,
                       color: Colors.red,
-                      size: 35,
+                      size: 30,
                     ),
                     title: Text(
                       'My Account',
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: 16,
                         color: Colors.red,
                       ),
                     ),
@@ -102,12 +102,12 @@ class _ProfileState extends State<Profile> {
                     leading: Icon(
                       Icons.vpn_key_outlined,
                       color: Colors.red,
-                      size: 32,
+                      size: 27,
                     ),
                     title: Text(
                       'Change Password',
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: 16,
                         color: Colors.red,
                       ),
                     ),
@@ -130,12 +130,12 @@ class _ProfileState extends State<Profile> {
                     leading: Icon(
                       Icons.notifications_none,
                       color: Colors.red,
-                      size: 35,
+                      size: 30,
                     ),
                     title: Text(
                       'Notifications',
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: 16,
                         color: Colors.red,
                       ),
                     ),
@@ -158,12 +158,12 @@ class _ProfileState extends State<Profile> {
                     leading: Icon(
                       Icons.message_outlined,
                       color: Colors.red,
-                      size: 35,
+                      size: 30,
                     ),
                     title: Text(
                       'Send Feedback',
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: 16,
                         color: Colors.red,
                       ),
                     ),
@@ -181,31 +181,31 @@ class _ProfileState extends State<Profile> {
                 SizedBox(
                   height: 5,
                 ),
-                Card(
-                  child: ListTile(
-                    leading: Icon(
-                      Icons.settings,
-                      color: Colors.red,
-                      size: 35,
-                    ),
-                    title: Text(
-                      'Settings',
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.red,
-                      ),
-                    ),
-                    onTap: () {},
-                    trailing: IconButton(
-                      icon: Icon(Icons.edit_outlined),
-                      onPressed: () {
-                        Route route =
-                            MaterialPageRoute(builder: (context) => Settings());
-                        Navigator.push(context, route);
-                      },
-                    ),
-                  ),
-                ),
+                // Card(
+                //   child: ListTile(
+                //     leading: Icon(
+                //       Icons.settings,
+                //       color: Colors.red,
+                //       size: 30,
+                //     ),
+                //     title: Text(
+                //       'Settings',
+                //       style: TextStyle(
+                //         fontSize: 16,
+                //         color: Colors.red,
+                //       ),
+                //     ),
+                //     onTap: () {},
+                //     trailing: IconButton(
+                //       icon: Icon(Icons.edit_outlined),
+                //       onPressed: () {
+                //         Route route =
+                //             MaterialPageRoute(builder: (context) => Settings());
+                //         Navigator.push(context, route);
+                //       },
+                //     ),
+                //   ),
+                // ),
                 Padding(
                   padding: EdgeInsets.only(
                     top: 20,

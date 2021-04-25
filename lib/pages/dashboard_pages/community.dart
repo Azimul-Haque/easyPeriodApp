@@ -2,6 +2,7 @@ import 'package:easyperiod/globals.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Community extends StatefulWidget {
   Community({Key key}) : super(key: key);
@@ -23,7 +24,7 @@ class _CommunityState extends State<Community> {
     // var screenwidth = MediaQuery.of(context).size.width;
     return new Scaffold(
       appBar: AppBar(
-        title: Text('Community'),
+        title: Text('Community Discussion'),
         flexibleSpace: appBarStyle(),
         automaticallyImplyLeading: false,
         actions: <Widget>[
@@ -37,6 +38,20 @@ class _CommunityState extends State<Community> {
         padding: EdgeInsets.only(top: 15, left: 15, right: 15, bottom: 15),
         child: Column(
           children: <Widget>[
+            Text("Coming soon..."),
+            SizedBox(
+              height: 10,
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                if (await canLaunch("https://orbachinujbuk.com")) {
+                  await launch("https://orbachinujbuk.com");
+                } else {
+                  throw 'Could not launch!';
+                }
+              },
+              child: Text("Check for updates"),
+            ),
             SizedBox(
               height: 10,
             ),
@@ -44,7 +59,7 @@ class _CommunityState extends State<Community> {
               height: 160,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage("assets/images/faded/10.png"),
+                  image: AssetImage("assets/images/faded/13.png"),
                   fit: BoxFit.contain,
                 ),
               ),

@@ -115,6 +115,7 @@ class _FeedBackState extends State<FeedBack> {
       final location = await timeZone.getLocation(timeZoneName);
       // print(location);
       var data = {
+        'uid': userdata.uid,
         'name': userdata.displayName,
         'email': userdata.email,
         'message': feedback,
@@ -122,7 +123,6 @@ class _FeedBackState extends State<FeedBack> {
       };
 
       try {
-        FocusScope.of(context).unfocus(); // hide the keyboard
         http.Response response = await http.post(
           Uri.parse(
             "https://cvcsbd.com/dashboard/easyperiod/store/message/api",

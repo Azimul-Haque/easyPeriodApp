@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:easyperiod/globals.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -20,15 +23,7 @@ class _MyAccountState extends State<MyAccount> {
   var formname;
   User userdata;
 
-  PickedFile _image;
-  Future getImage() async {
-    print("Called");
-    final ImagePicker _picker = ImagePicker();
-    final image = await _picker.getImage(source: ImageSource.gallery);
-    setState(() {
-      _image = image;
-    });
-  }
+  File _image;
 
   @override
   void initState() {
@@ -65,7 +60,9 @@ class _MyAccountState extends State<MyAccount> {
                     clipBehavior: Clip.none,
                     children: [
                       CircleAvatar(
-                        backgroundImage: AssetImage("assets/images/user.png"),
+                        backgroundImage: _image != null
+                            ? FileImage(File(_image.path))
+                            : AssetImage("assets/images/user.png"),
                       ),
                       Positioned(
                         right: -16,
@@ -155,14 +152,12 @@ class _MyAccountState extends State<MyAccount> {
                     bottom: 10,
                   ),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(5),
-                        topRight: Radius.circular(5)),
                     child: _image != null
                         ? Image.file(File(_image.path))
                         : Image.asset("assets/images/faded/6.png"),
                   ),
                 ),
+                Text("Image Size: " + (_image?.lengthSync()).toString()),
               ],
             ),
           ),
@@ -181,7 +176,7 @@ class _MyAccountState extends State<MyAccount> {
 
       try {
         userdata.updateProfile(displayName: formname).then(
-              (value) => this.showSnackBarandPop(),
+              (value) => this.showSnackBarandPop("Profile updated."),
             );
       } on FirebaseAuthException catch (e) {
         print('Failed with error code: ${e.code}');
@@ -198,14 +193,90 @@ class _MyAccountState extends State<MyAccount> {
     }
   }
 
-  showSnackBarandPop() {
+  Future getImage() async {
+    print("Called");
+    final ImagePicker _picker = ImagePicker();
+    final image = await _picker.getImage(source: ImageSource.gallery);
+    File croppedImage = await ImageCropper.cropImage(
+        maxWidth: 250,
+        maxHeight: 250,
+        sourcePath: image.path,
+        aspectRatioPresets: [
+          CropAspectRatioPreset.square,
+        ],
+        androidUiSettings: AndroidUiSettings(
+            toolbarTitle: 'Edit Image',
+            toolbarColor: Colors.red,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.square,
+            lockAspectRatio: true),
+        compressQuality: 40);
+    setState(() {
+      _image = croppedImage;
+    });
+    if (_image.lengthSync() > 0) {
+      this.uploadImage();
+    }
+    // print("Image File: " + _image.readAsBytesSync().toString());
+  }
+
+  uploadImage() async {
+    showAlertDialog(context, "Uploading image...");
+    var encodedimage = base64Encode(_image.readAsBytesSync());
+    // print(base64Decode(encodedimage));
+
+    var data = {
+      'uid': userdata.uid,
+      'image': encodedimage,
+    };
+
+    try {
+      http.Response response = await http.post(
+        Uri.parse(
+          "https://cvcsbd.com/dashboard/easyperiod/store/userimage/api",
+        ),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=utf-8',
+          'Accept': 'application/json',
+        },
+        body: jsonEncode(data),
+      );
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        var body = json.decode(response.body);
+        if (body["success"] == true) {
+          this.showSnackBarandPop("Image uploaded.");
+          // print(body["image"]);
+        }
+      } else {
+        Navigator.of(context, rootNavigator: true).pop();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            behavior: SnackBarBehavior.floating,
+            content: Text("Error! Try again."),
+          ),
+        );
+      }
+    } catch (_) {
+      Navigator.of(context, rootNavigator: true).pop();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          behavior: SnackBarBehavior.floating,
+          content: Text("No internet connection!"),
+        ),
+      );
+      // print(_);
+    }
+  }
+
+  showSnackBarandPop(message) {
     Timer(Duration(seconds: 1), () {
       // userdata.reload();
       Navigator.of(context).pop();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           behavior: SnackBarBehavior.floating,
-          content: Text("Profile updated."),
+          content: Text(message),
         ),
       );
       Navigator.of(context).pop();

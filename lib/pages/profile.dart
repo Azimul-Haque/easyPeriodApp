@@ -88,6 +88,7 @@ class _ProfileState extends State<Profile> {
                         Navigator.push(context, route).then((value) {
                           setState(() {
                             userdata = FirebaseAuth.instance.currentUser;
+                            // image update er kaaj korte hobe...
                           });
                         });
                       },

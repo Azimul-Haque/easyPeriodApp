@@ -28,6 +28,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
+    this.configOneSignal();
     FirebaseAuth.instance.authStateChanges().listen((User user) {
       if (user == null) {
         print('User is currently signed out!');
@@ -39,55 +40,6 @@ class _LoginPageState extends State<LoginPage> {
         Navigator.push(context, route);
       }
     });
-    this.configOneSignal();
-  }
-
-  Future<dynamic> register() async {
-    // FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-    // final User user = (await firebaseAuth.createUserWithEmailAndPassword(
-    //         email: email, password: password))
-    //     .user;
-    // if (user != null) {
-    //   ScaffoldMessenger.of(context).showSnackBar(
-    //     SnackBar(
-    //       behavior: SnackBarBehavior.floating,
-    //       content: const Text('Works!'),
-    //     ),
-    //   );
-    // } else {
-    //   ScaffoldMessenger.of(context).showSnackBar(
-    //     SnackBar(
-    //       behavior: SnackBarBehavior.floating,
-    //       content: const Text('Error!'),
-    //     ),
-    //   );
-    // }
-    try {
-      FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-      await firebaseAuth.createUserWithEmailAndPassword(
-          email: email, password: password);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          behavior: SnackBarBehavior.floating,
-          content: const Text('Signed up successfully!'),
-        ),
-      );
-      // User user = firebaseAuth.currentUser;
-      // user.updateProfile(displayName: name);
-      this.login();
-    } on FirebaseAuthException catch (e) {
-      // print('Failed with error code: ${e.code}');
-      print(e.message);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          behavior: SnackBarBehavior.floating,
-          content: Text("Error! Try again."),
-          // content: Text(e.message),
-        ),
-      );
-      Navigator.pop(context);
-    }
-    return null;
   }
 
   Future<dynamic> login() async {

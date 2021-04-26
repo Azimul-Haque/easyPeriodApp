@@ -80,8 +80,7 @@ class _MyAccountState extends State<MyAccount> {
                               ),
                             ),
                             onPressed: () {
-                              this.getImage();
-                              print(_image);
+                              this.showImageUploadDialog();
                             },
                             child: Icon(Icons.camera_alt_outlined),
                           ),
@@ -152,12 +151,10 @@ class _MyAccountState extends State<MyAccount> {
                     bottom: 10,
                   ),
                   child: ClipRRect(
-                    child: _image != null
-                        ? Image.file(File(_image.path))
-                        : Image.asset("assets/images/faded/6.png"),
+                    child: Image.asset("assets/images/faded/6.png"),
                   ),
                 ),
-                Text("Image Size: " + (_image?.lengthSync()).toString()),
+                // Text("Image Size: " + (_image?.lengthSync()).toString()),
               ],
             ),
           ),
@@ -193,10 +190,44 @@ class _MyAccountState extends State<MyAccount> {
     }
   }
 
-  Future getImage() async {
+  showImageUploadDialog() {
+    var screenheight = MediaQuery.of(context).size.height;
+    AlertDialog alert = AlertDialog(
+      title: Center(child: Text('Choose one')),
+      content: Container(
+        height: screenheight * .2,
+        child: Column(
+          children: <Widget>[
+            ElevatedButton.icon(
+              onPressed: () => getImage(ImageSource.camera),
+              icon: Icon(CupertinoIcons.camera),
+              label: Text("Camera"),
+            ),
+            ElevatedButton.icon(
+              onPressed: () => getImage(ImageSource.gallery),
+              icon: Icon(CupertinoIcons.photo_fill_on_rectangle_fill),
+              label: Text("Gallery"),
+            ),
+          ],
+        ),
+      ),
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  Future getImage(imageSource) async {
     print("Called");
+    Navigator.of(context, rootNavigator: true).pop();
     final ImagePicker _picker = ImagePicker();
-    final image = await _picker.getImage(source: ImageSource.gallery);
+    final image = await _picker.getImage(source: imageSource);
     File croppedImage = await ImageCropper.cropImage(
         maxWidth: 250,
         maxHeight: 250,

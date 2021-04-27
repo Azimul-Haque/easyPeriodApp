@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drag_down_to_pop/drag_down_to_pop.dart';
 import 'package:easyperiod/pages/dashboard_pages/dailymessage.dart';
@@ -8,6 +10,7 @@ import 'package:easyperiod/pages/dashboard_pages/prediction.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
@@ -27,12 +30,14 @@ class _DashboardState extends State<Dashboard> {
   var todaystitle = "";
   var todaysmessage = "";
   var banglamessage = "";
+  var userimage = "";
 
   @override
   void initState() {
     super.initState();
     userdata = FirebaseAuth.instance.currentUser;
     this.fetchLastPeriod();
+    this.getUserImage();
   }
 
   @override
@@ -92,8 +97,12 @@ class _DashboardState extends State<Dashboard> {
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   image: DecorationImage(
-                                      image:
-                                          AssetImage("assets/images/user.png"),
+                                      image: userimage != ""
+                                          ? NetworkImage(
+                                              "https://cvcsbd.com/images/easyperiod/users/" +
+                                                  userimage)
+                                          : AssetImage(
+                                              "assets/images/user.png"),
                                       fit: BoxFit.contain),
                                 ),
                               ),
@@ -538,6 +547,27 @@ class _DashboardState extends State<Dashboard> {
       });
     } catch (e) {
       print(e);
+    }
+  }
+
+  getUserImage() async {
+    try {
+      String serviceURL = "https://cvcsbd.com/dashboard/easyperiod/userimage/" +
+          userdata.uid +
+          "/api";
+      var response = await http.get(Uri.parse(serviceURL));
+      print(response.body);
+      if (response.statusCode == 200) {
+        var body = json.decode(response.body);
+        if (body["success"] == true) {
+          setState(() {
+            userimage = body["image"];
+          });
+          // print(userimage);
+        }
+      }
+    } catch (_) {
+      print(_);
     }
   }
 

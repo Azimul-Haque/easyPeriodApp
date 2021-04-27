@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:drag_down_to_pop/drag_down_to_pop.dart';
 import 'package:easyperiod/pages/dashboard_pages/dailymessage.dart';
 import 'package:easyperiod/pages/dashboard_pages/graph.dart';
@@ -94,16 +95,19 @@ class _DashboardState extends State<Dashboard> {
                                 margin: EdgeInsets.all(screenwidth * .02),
                                 width: screenwidth * .15,
                                 height: screenwidth * .15,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(
-                                      image: userimage != ""
-                                          ? NetworkImage(
-                                              "https://cvcsbd.com/images/easyperiod/users/" +
-                                                  userimage)
-                                          : AssetImage(
-                                              "assets/images/user.png"),
-                                      fit: BoxFit.contain),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(75.0),
+                                  child: CachedNetworkImage(
+                                    imageUrl:
+                                        "https://cvcsbd.com/images/easyperiod/users/" +
+                                            userimage,
+                                    progressIndicatorBuilder: (context, url,
+                                            downloadProgress) =>
+                                        CircularProgressIndicator(
+                                            value: downloadProgress.progress),
+                                    errorWidget: (context, url, error) =>
+                                        Icon(Icons.error),
+                                  ),
                                 ),
                               ),
                               Expanded(

@@ -41,6 +41,7 @@ dependencies:
   flutter_native_timezone: ^1.0.10
   image_cropper: ^1.4.0
   cached_network_image: ^3.0.0
+  
 
 dev_dependencies:
   flutter_test:

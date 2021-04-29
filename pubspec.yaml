@@ -41,6 +41,11 @@ dependencies:
   flutter_native_timezone: ^1.0.10
   image_cropper: ^1.4.0
   cached_network_image: ^3.0.0
+  shared_preferences: ^2.0.5
+  webview_flutter: ^2.0.4
+  share: ^2.0.1
+  html: ^0.15.0
+  shimmer: ^2.0.0
   
 
 dev_dependencies:

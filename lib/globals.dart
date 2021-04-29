@@ -4,11 +4,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:share/share.dart';
 import 'login.dart';
 
-String userName;
-String userDesig;
-String userOrg;
+// String userName;
+// String userDesig;
+// String userOrg;
+String userImage;
 
 commonAppBar(String appbarname, BuildContext context) {
   return AppBar(
@@ -32,10 +34,15 @@ commonAppBar(String appbarname, BuildContext context) {
             case 'rate':
               if (await canLaunch("https://orbachinujbuk.com")) {
                 await launch(
-                    "https://play.google.com/store/apps/details?id=com.madladsInc.boi_mela");
+                    "https://play.google.com/store/apps/details?id=com.orbachinujbuk.easyperiod");
               } else {
                 throw 'Could not launch!';
               }
+              break;
+            case 'shareapp':
+              share(
+                  "https://play.google.com/store/apps/details?id=com.orbachinujbuk.easyperiod",
+                  "EasyPeriod Insight Article");
               break;
             case 'aboutus':
               if (await canLaunch("https://orbachinujbuk.com")) {
@@ -76,6 +83,21 @@ commonAppBar(String appbarname, BuildContext context) {
                     width: 10,
                   ),
                   Text("Rate Us")
+                ],
+              ),
+            ),
+            PopupMenuItem(
+              value: "shareapp",
+              child: Row(
+                children: <Widget>[
+                  Icon(
+                    Icons.share,
+                    color: Colors.black87,
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text("Share App")
                 ],
               ),
             ),
@@ -138,5 +160,12 @@ showAlertDialog(BuildContext context, String message) {
     builder: (BuildContext context) {
       return alert;
     },
+  );
+}
+
+Future<void> share(textorurl, subject) async {
+  await Share.share(
+    'EasyPeriod App: ' + textorurl,
+    subject: subject,
   );
 }

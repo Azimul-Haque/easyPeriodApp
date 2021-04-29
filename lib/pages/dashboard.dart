@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:drag_down_to_pop/drag_down_to_pop.dart';
 import 'package:easyperiod/pages/dashboard_pages/dailymessage.dart';
 import 'package:easyperiod/pages/dashboard_pages/graph.dart';
@@ -31,14 +32,24 @@ class _DashboardState extends State<Dashboard> {
   var todaystitle = "";
   var todaysmessage = "";
   var banglamessage = "";
-  var userimage = "";
+  var userimagelocal = "";
 
   @override
   void initState() {
     super.initState();
+    this._loadSharedData();
     userdata = FirebaseAuth.instance.currentUser;
     this.fetchLastPeriod();
     this.getUserImage();
+  }
+
+  _loadSharedData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // String spuserimage = (prefs.getString('userImage') ?? '');
+    setState(() {
+      userimagelocal = (prefs.getString('userImage') ?? '');
+    });
+    // print(userimagelocal);
   }
 
   @override
@@ -97,17 +108,20 @@ class _DashboardState extends State<Dashboard> {
                                 height: screenwidth * .15,
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(75.0),
-                                  child: CachedNetworkImage(
-                                    imageUrl:
-                                        "https://cvcsbd.com/images/easyperiod/users/" +
-                                            userimage,
-                                    progressIndicatorBuilder: (context, url,
-                                            downloadProgress) =>
-                                        CircularProgressIndicator(
-                                            value: downloadProgress.progress),
-                                    errorWidget: (context, url, error) =>
-                                        Icon(Icons.error),
-                                  ),
+                                  child: userimagelocal != ''
+                                      ? CachedNetworkImage(
+                                          imageUrl:
+                                              "https://cvcsbd.com/images/easyperiod/users/" +
+                                                  userimagelocal,
+                                          progressIndicatorBuilder: (context,
+                                                  url, downloadProgress) =>
+                                              CircularProgressIndicator(
+                                                  value: downloadProgress
+                                                      .progress),
+                                          errorWidget: (context, url, error) =>
+                                              Icon(Icons.error),
+                                        )
+                                      : Image.asset("assets/images/user.png"),
                                 ),
                               ),
                               Expanded(
@@ -472,7 +486,7 @@ class _DashboardState extends State<Dashboard> {
               child: InkWell(
                 onTap: () {
                   if (routename != 'N/A') {
-                    if (title == 'Community') {
+                    if (title == 'Insights' || title == 'Community') {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -560,14 +574,19 @@ class _DashboardState extends State<Dashboard> {
           userdata.uid +
           "/api";
       var response = await http.get(Uri.parse(serviceURL));
-      print(response.body);
+      // print(response.body);
       if (response.statusCode == 200) {
         var body = json.decode(response.body);
         if (body["success"] == true) {
-          setState(() {
-            userimage = body["image"];
-          });
-          // print(userimage);
+          if (userimagelocal != body["image"]) {
+            SharedPreferences spupdateimgdata =
+                await SharedPreferences.getInstance();
+            setState(() {
+              userimagelocal = body["image"];
+            });
+            spupdateimgdata.setString('userImage', userimagelocal);
+          }
+          // print(userimagelocal);
         }
       }
     } catch (_) {

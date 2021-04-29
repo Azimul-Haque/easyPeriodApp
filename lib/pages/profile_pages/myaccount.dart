@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easyperiod/globals.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -9,6 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MyAccount extends StatefulWidget {
   MyAccount({Key key}) : super(key: key);
@@ -22,15 +24,26 @@ class _MyAccountState extends State<MyAccount> {
   var emailController = TextEditingController();
   var formname;
   User userdata;
+  String userimagelocal = "";
 
   File _image;
 
   @override
   void initState() {
     super.initState();
+    this._loadSharedData();
     userdata = FirebaseAuth.instance.currentUser;
     nameController.text = userdata.displayName;
     emailController.text = userdata.email;
+  }
+
+  _loadSharedData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // String spuserimage = (prefs.getString('userImage') ?? '');
+    setState(() {
+      userimagelocal = (prefs.getString('userImage') ?? '');
+    });
+    // print(userimagelocal);
   }
 
   @override
@@ -64,6 +77,29 @@ class _MyAccountState extends State<MyAccount> {
                             ? FileImage(File(_image.path))
                             : AssetImage("assets/images/user.png"),
                       ),
+                      Container(
+                        // margin: EdgeInsets.all(screenwidth * .02),
+                        width: 100,
+                        height: 100,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(75.0),
+                          child: _image != null
+                              ? Image.file(File(_image.path))
+                              : userimagelocal != ''
+                                  ? CachedNetworkImage(
+                                      imageUrl:
+                                          "https://cvcsbd.com/images/easyperiod/users/" +
+                                              userimagelocal,
+                                      progressIndicatorBuilder: (context, url,
+                                              downloadProgress) =>
+                                          CircularProgressIndicator(
+                                              value: downloadProgress.progress),
+                                      errorWidget: (context, url, error) =>
+                                          Icon(Icons.error),
+                                    )
+                                  : Image.asset("assets/images/user.png"),
+                        ),
+                      ),
                       Positioned(
                         right: -16,
                         bottom: 0,
@@ -82,7 +118,7 @@ class _MyAccountState extends State<MyAccount> {
                             onPressed: () {
                               this.showImageUploadDialog();
                             },
-                            child: Icon(Icons.camera_alt_outlined),
+                            child: Icon(CupertinoIcons.camera_viewfinder),
                           ),
                         ),
                       )
@@ -297,6 +333,32 @@ class _MyAccountState extends State<MyAccount> {
         ),
       );
       // print(_);
+    }
+  }
+
+  getUserImage() async {
+    try {
+      String serviceURL = "https://cvcsbd.com/dashboard/easyperiod/userimage/" +
+          userdata.uid +
+          "/api";
+      var response = await http.get(Uri.parse(serviceURL));
+      // print(response.body);
+      if (response.statusCode == 200) {
+        var body = json.decode(response.body);
+        if (body["success"] == true) {
+          if (userimagelocal != body["image"]) {
+            SharedPreferences spupdateimgdata =
+                await SharedPreferences.getInstance();
+            setState(() {
+              userimagelocal = body["image"];
+            });
+            spupdateimgdata.setString('userImage', userimagelocal);
+          }
+          // print(userimagelocal);
+        }
+      }
+    } catch (_) {
+      print(_);
     }
   }
 

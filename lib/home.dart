@@ -24,6 +24,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    var screenwidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: commonAppBar(
           _selectedItem == 0
@@ -65,7 +66,7 @@ class _HomePageState extends State<HomePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   MaterialButton(
-                    minWidth: 40,
+                    minWidth: screenwidth * .2,
                     onPressed: () {
                       setState(() {
                         _selectedItem = 0;
@@ -78,24 +79,25 @@ class _HomePageState extends State<HomePage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Icon(
-                          Icons.dashboard,
+                          CupertinoIcons.home,
+                          // Icons.dashboard,
                           color: _selectedItem == 0
                               ? Colors.red
                               : Colors.grey[600],
                         ),
                         Text(
-                          'Dashboard',
+                          'Home',
                           style: TextStyle(
                               color: _selectedItem == 0
                                   ? Colors.red
                                   : Colors.grey[600],
-                              fontSize: 11.5),
+                              fontSize: 11),
                         ),
                       ],
                     ),
                   ),
                   MaterialButton(
-                    minWidth: 40,
+                    minWidth: screenwidth * .2,
                     onPressed: () {
                       setState(() {
                         _selectedItem = 1;
@@ -108,18 +110,19 @@ class _HomePageState extends State<HomePage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Icon(
-                          Icons.format_list_numbered_sharp,
+                          CupertinoIcons.list_bullet_indent,
+                          // Icons.format_list_numbered_sharp,
                           color: _selectedItem == 1
                               ? Colors.red
                               : Colors.grey[600],
                         ),
                         Text(
-                          'Period List',
+                          'Records',
                           style: TextStyle(
                               color: _selectedItem == 1
                                   ? Colors.red
                                   : Colors.grey[600],
-                              fontSize: 11.5),
+                              fontSize: 11),
                         ),
                       ],
                     ),
@@ -133,7 +136,7 @@ class _HomePageState extends State<HomePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   MaterialButton(
-                    minWidth: 40,
+                    minWidth: screenwidth * .2,
                     onPressed: () {
                       setState(() {
                         _selectedItem = 2;
@@ -146,7 +149,8 @@ class _HomePageState extends State<HomePage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Icon(
-                          Icons.calendar_today_outlined,
+                          CupertinoIcons.calendar_today,
+                          // Icons.calendar_today_outlined,
                           color: _selectedItem == 2
                               ? Colors.red
                               : Colors.grey[600],
@@ -157,13 +161,13 @@ class _HomePageState extends State<HomePage> {
                               color: _selectedItem == 2
                                   ? Colors.red
                                   : Colors.grey[600],
-                              fontSize: 11.5),
+                              fontSize: 11),
                         ),
                       ],
                     ),
                   ),
                   MaterialButton(
-                    minWidth: 40,
+                    minWidth: screenwidth * .2,
                     onPressed: () {
                       setState(() {
                         _selectedItem = 3;
@@ -176,7 +180,8 @@ class _HomePageState extends State<HomePage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Icon(
-                          Icons.person,
+                          CupertinoIcons.person,
+                          // Icons.person,
                           color: _selectedItem == 3
                               ? Colors.red
                               : Colors.grey[600],
@@ -187,7 +192,7 @@ class _HomePageState extends State<HomePage> {
                               color: _selectedItem == 3
                                   ? Colors.red
                                   : Colors.grey[600],
-                              fontSize: 11.5),
+                              fontSize: 11),
                         ),
                       ],
                     ),

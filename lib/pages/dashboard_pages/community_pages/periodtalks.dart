@@ -34,8 +34,10 @@ class _PeriodTalksState extends State<PeriodTalks> {
               ),
               ElevatedButton(
                 onPressed: () async {
-                  if (await canLaunch("https://orbachinujbuk.com")) {
-                    await launch("https://orbachinujbuk.com");
+                  if (await canLaunch(
+                      "https://play.google.com/store/apps/details?id=com.orbachinujbuk.easyperiod")) {
+                    await launch(
+                        "https://play.google.com/store/apps/details?id=com.orbachinujbuk.easyperiod");
                   } else {
                     throw 'Could not launch!';
                   }

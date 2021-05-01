@@ -56,6 +56,14 @@ class _AddperiodState extends State<Addperiod> {
       FocusScope.of(context).unfocus();
       formKey.currentState.save();
       await flutterLocalNotificationsPlugin.cancelAll();
+      // this.scheduleNotification(start, 0, 118, 0, "51 Test", "Test 51");
+      // this.scheduleNotification(start, 0, 119, 1, "52 Test", "Test 52");
+      // this.scheduleNotification(start, 0, 120, 2, "53 Test", "Test 53");
+      // this.scheduleNotification(start, 0, 121, 3, "54 Test", "Test 54");
+      // this.scheduleNotification(start, 0, 122, 4, "55 Test", "Test 55");
+      // this.scheduleNotification(start, 0, 123, 5, "56 Test", "Test 56");
+      // this.scheduleNotification(start, 0, 124, 6, "57 Test", "Test 57");
+
       this.scheduleNotification(
           start,
           1,
@@ -164,34 +172,6 @@ class _AddperiodState extends State<Addperiod> {
           );
     }
   }
-
-  // addDaily() {
-  //   print("click");
-  //   for (var i = 1; i <= 28; i++) {
-  //     Map<String, dynamic> perioddata = {
-  //       "day": i,
-  //       "title": "Test tile for the day " + i.toString(),
-  //       "message": "Test message for day " + i.toString(),
-  //       "banglamessage": "বাংলা ভাষায় মেসেজ, দিন সংখ্যাঃ " + i.toString(),
-  //     };
-  //     CollectionReference collectionReference =
-  //         FirebaseFirestore.instance.collection('dailymessages');
-  //     collectionReference
-  //         .add(perioddata)
-  //         .then(
-  //           (value) => this.showSnackBarandPop(),
-  //         )
-  //         // ignore: return_of_invalid_type_from_catch_error
-  //         .catchError(
-  //           (e) => ScaffoldMessenger.of(context).showSnackBar(
-  //             SnackBar(
-  //               behavior: SnackBarBehavior.floating,
-  //               content: Text("Error: " + e.message),
-  //             ),
-  //           ),
-  //         );
-  //   }
-  // }
 
   showSnackBarandPop() {
     showAlertDialog(context, "Adding...");
@@ -314,17 +294,19 @@ class _AddperiodState extends State<Addperiod> {
   }
 
   void scheduleNotification(date, plusday, plushour, id, title, message) async {
-    var scheduledNotificationDateTime =
-        DateTime.parse(date).add(Duration(days: plusday, hours: plushour));
-    print(scheduledNotificationDateTime);
-    // print(scheduledNotificationDateTime.difference(DateTime.now()).inHours);
+    var scheduledNotificationDateTime = DateTime.parse(date).add(Duration(
+        days: plusday, minutes: plushour)); // minutes ta thik korte hobe
+    // print(scheduledNotificationDateTime);
+    // print(title);
+    // print(scheduledNotificationDateTime.difference(DateTime.now()).inMinutes);
 
     // if 'time is not future' handled.
-    if (scheduledNotificationDateTime.difference(DateTime.now()).inHours > 0) {
+    if (scheduledNotificationDateTime.difference(DateTime.now()).inSeconds >
+        0) {
       final timeZone = TimeZone();
       String timeZoneName = await timeZone.getTimeZoneName();
       final location = await timeZone.getLocation(timeZoneName);
-      print(location);
+      // print(location);
       final scheduletztime =
           tz.TZDateTime.from(scheduledNotificationDateTime, location);
 
@@ -353,4 +335,32 @@ class _AddperiodState extends State<Addperiod> {
       print("Notification scheduled: " + id.toString());
     }
   }
+
+  // addDaily() {
+  //   print("click");
+  //   for (var i = 1; i <= 28; i++) {
+  //     Map<String, dynamic> perioddata = {
+  //       "day": i,
+  //       "title": "Test tile for the day " + i.toString(),
+  //       "message": "Test message for day " + i.toString(),
+  //       "banglamessage": "বাংলা ভাষায় মেসেজ, দিন সংখ্যাঃ " + i.toString(),
+  //     };
+  //     CollectionReference collectionReference =
+  //         FirebaseFirestore.instance.collection('dailymessages');
+  //     collectionReference
+  //         .add(perioddata)
+  //         .then(
+  //           (value) => this.showSnackBarandPop(),
+  //         )
+  //         // ignore: return_of_invalid_type_from_catch_error
+  //         .catchError(
+  //           (e) => ScaffoldMessenger.of(context).showSnackBar(
+  //             SnackBar(
+  //               behavior: SnackBarBehavior.floating,
+  //               content: Text("Error: " + e.message),
+  //             ),
+  //           ),
+  //         );
+  //   }
+  // }
 }

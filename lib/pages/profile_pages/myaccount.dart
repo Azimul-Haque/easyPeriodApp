@@ -72,36 +72,42 @@ class _MyAccountState extends State<MyAccount> {
                     // overflow: Overflow.visible,
                     clipBehavior: Clip.none,
                     children: [
-                      CircleAvatar(
-                        backgroundImage: _image != null
-                            ? FileImage(File(_image.path))
-                            : AssetImage("assets/images/user.png"),
-                      ),
+                      // CircleAvatar(
+                      //   backgroundImage: _image != null
+                      //       ? FileImage(File(_image.path))
+                      //       : AssetImage("assets/images/user.png"),
+                      // ),
                       Container(
                         // margin: EdgeInsets.all(screenwidth * .02),
                         width: 100,
                         height: 100,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(75.0),
-                          child: _image != null
-                              ? Image.file(File(_image.path))
-                              : userimagelocal != ''
-                                  ? CachedNetworkImage(
-                                      imageUrl:
-                                          "https://cvcsbd.com/images/easyperiod/users/" +
-                                              userimagelocal,
-                                      progressIndicatorBuilder: (context, url,
-                                              downloadProgress) =>
-                                          CircularProgressIndicator(
-                                              value: downloadProgress.progress),
-                                      errorWidget: (context, url, error) =>
-                                          Icon(Icons.error),
-                                    )
-                                  : Image.asset("assets/images/user.png"),
+                          child: GestureDetector(
+                            onTap: () {
+                              this.showImageUploadDialog();
+                            },
+                            child: _image != null
+                                ? Image.file(File(_image.path))
+                                : userimagelocal != ''
+                                    ? CachedNetworkImage(
+                                        imageUrl:
+                                            "https://cvcsbd.com/images/easyperiod/users/" +
+                                                userimagelocal,
+                                        progressIndicatorBuilder: (context, url,
+                                                downloadProgress) =>
+                                            CircularProgressIndicator(
+                                                value:
+                                                    downloadProgress.progress),
+                                        errorWidget: (context, url, error) =>
+                                            Icon(Icons.error),
+                                      )
+                                    : Image.asset("assets/images/user.png"),
+                          ),
                         ),
                       ),
                       Positioned(
-                        right: -16,
+                        right: -10,
                         bottom: 0,
                         child: SizedBox(
                           height: 40,

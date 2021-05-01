@@ -42,7 +42,7 @@ commonAppBar(String appbarname, BuildContext context) {
             case 'shareapp':
               share(
                   "https://play.google.com/store/apps/details?id=com.orbachinujbuk.easyperiod",
-                  "EasyPeriod Insight Article");
+                  "EasyPeriod App");
               break;
             case 'aboutus':
               if (await canLaunch("https://orbachinujbuk.com")) {
@@ -165,7 +165,7 @@ showAlertDialog(BuildContext context, String message) {
 
 Future<void> share(textorurl, subject) async {
   await Share.share(
-    'EasyPeriod App: ' + textorurl,
+    subject + ': ' + textorurl,
     subject: subject,
   );
 }

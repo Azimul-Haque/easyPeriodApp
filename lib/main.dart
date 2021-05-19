@@ -75,7 +75,7 @@ class MyApp extends StatelessWidget {
         '/settings': (context) => Settings(),
         // '/prediction': (context) => Prediction(context),
         '/graph': (context) => Graph(),
-        '/insights': (context) => Insights(),
+        // '/insights': (context) => Insights(),
         '/community': (context) => Community(),
         // '/dailymessage': (context) => DailyMessage(),
       },

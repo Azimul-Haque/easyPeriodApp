@@ -33,6 +33,7 @@ class _DashboardState extends State<Dashboard> {
   var todaysmessage = "";
   var banglamessage = "";
   var userimagelocal = "";
+  List urlcollection = [];
 
   @override
   void initState() {
@@ -41,6 +42,7 @@ class _DashboardState extends State<Dashboard> {
     userdata = FirebaseAuth.instance.currentUser;
     this.fetchLastPeriod();
     this.getUserImage();
+    this.getArticleList();
   }
 
   _loadSharedData() async {
@@ -424,7 +426,8 @@ class _DashboardState extends State<Dashboard> {
                           height: screenwidth * .27,
                           padding: EdgeInsets.only(
                               top: 5, left: 2.5, bottom: 5, right: 2.5),
-                          child: _homeCard("13.png", "Insights", Insights()),
+                          child: _homeCard(
+                              "13.png", "Insights", Insights(urlcollection)),
                         ),
                       ),
                       Expanded(
@@ -588,6 +591,25 @@ class _DashboardState extends State<Dashboard> {
           }
           // print(userimagelocal);
         }
+      }
+    } catch (_) {
+      print(_);
+    }
+  }
+
+  getArticleList() async {
+    try {
+      String serviceURL =
+          "http://192.168.0.104:8000/easyperiod/article/list/api";
+      var response = await http.get(Uri.parse(serviceURL));
+      if (response.statusCode == 200) {
+        var articlelist = json.decode(response.body);
+        articlelist.forEach((element) {
+          // print(urlcollection);
+          urlcollection
+              .add({'url': 'http://192.168.0.104:8000/easyperiod/' + element});
+        });
+        // print(urlcollection);
       }
     } catch (_) {
       print(_);

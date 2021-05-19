@@ -3,36 +3,38 @@ import 'package:easyperiod/pages/dashboard_pages/insight_pages/webpage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:http/http.dart';
 import 'package:html/parser.dart';
 
 class Insights extends StatefulWidget {
-  Insights({Key key}) : super(key: key);
+  final urlcollection;
+  Insights(this.urlcollection);
   @override
-  _InsightsState createState() => _InsightsState();
+  _InsightsState createState() => _InsightsState(this.urlcollection);
 }
 
 class _InsightsState extends State<Insights> {
+  var urlcollection;
+  _InsightsState(this.urlcollection);
   User userdata;
-  List urlcollection = [
-    {'url': 'http://is.gd/W7BRGT'},
-    {'url': 'http://is.gd/XeNrbZ'},
-    {'url': 'http://is.gd/F3v1T3'},
-    {'url': 'http://is.gd/fp5MM8'},
-    {'url': 'http://is.gd/5U4mYM'},
-    {'url': 'http://is.gd/3U2jml'},
-  ];
+  // List urlcollection = [
+  //   {'url': 'http://is.gd/W7BRGT'},
+  //   {'url': 'http://is.gd/XeNrbZ'},
+  //   {'url': 'http://is.gd/F3v1T3'},
+  //   {'url': 'http://is.gd/fp5MM8'},
+  //   {'url': 'http://is.gd/5U4mYM'},
+  //   {'url': 'http://is.gd/3U2jml'},
+  // ];
   List datacollected = [];
 
   @override
   void initState() {
     super.initState();
-    userdata = FirebaseAuth.instance.currentUser;
     urlcollection.forEach((element) {
       datacollected.add(Client().get(Uri.parse(element['url'])));
     });
+    userdata = FirebaseAuth.instance.currentUser;
   }
 
   @override

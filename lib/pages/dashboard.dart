@@ -599,15 +599,13 @@ class _DashboardState extends State<Dashboard> {
 
   getArticleList() async {
     try {
-      String serviceURL =
-          "http://192.168.0.104:8000/easyperiod/article/list/api";
+      String serviceURL = "https://cvcsbd.com/easyperiod/article/list/api";
       var response = await http.get(Uri.parse(serviceURL));
       if (response.statusCode == 200) {
         var articlelist = json.decode(response.body);
         articlelist.forEach((element) {
           // print(urlcollection);
-          urlcollection
-              .add({'url': 'http://192.168.0.104:8000/easyperiod/' + element});
+          urlcollection.add('https://cvcsbd.com/easyperiod/' + element);
         });
         // print(urlcollection);
       }

@@ -52,39 +52,6 @@ class _CommunityState extends State<Community> {
             MyPosts(),
           ],
         ),
-        // Container(
-        //   padding: EdgeInsets.only(top: 15, left: 15, right: 15, bottom: 15),
-        //   child: Column(
-        //     children: <Widget>[
-        //       Text("Coming soon..."),
-        //       SizedBox(
-        //         height: 10,
-        //       ),
-        //       ElevatedButton(
-        //         onPressed: () async {
-        //           if (await canLaunch("https://orbachinujbuk.com")) {
-        //             await launch("https://orbachinujbuk.com");
-        //           } else {
-        //             throw 'Could not launch!';
-        //           }
-        //         },
-        //         child: Text("Check for updates"),
-        //       ),
-        //       SizedBox(
-        //         height: 10,
-        //       ),
-        //       Container(
-        //         height: 160,
-        //         decoration: BoxDecoration(
-        //           image: DecorationImage(
-        //             image: AssetImage("assets/images/faded/13.png"),
-        //             fit: BoxFit.contain,
-        //           ),
-        //         ),
-        //       ),
-        //     ],
-        //   ),
-        // ),
       ),
     );
   }

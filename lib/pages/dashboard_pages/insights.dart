@@ -32,7 +32,7 @@ class _InsightsState extends State<Insights> {
   void initState() {
     super.initState();
     urlcollection.forEach((element) {
-      datacollected.add(Client().get(Uri.parse(element['url'])));
+      datacollected.add(Client().get(Uri.parse(element)));
     });
     userdata = FirebaseAuth.instance.currentUser;
   }
@@ -57,13 +57,12 @@ class _InsightsState extends State<Insights> {
         itemCount: urlcollection.length,
         itemBuilder: (BuildContext context, int index) {
           return FutureBuilder(
-            // future: Client().get(Uri.parse(urlcollection[index]['url'])),
             future: datacollected[index],
             builder: (context, snapshot) {
               Widget retVal;
               if (snapshot.connectionState == ConnectionState.done) {
                 retVal = _buildPreviewWidget(
-                    snapshot.data.body, urlcollection[index]['url']);
+                    snapshot.data.body, urlcollection[index]);
               } else {
                 retVal = Center(
                   // child: CircularProgressIndicator(
@@ -146,7 +145,7 @@ class _InsightsState extends State<Insights> {
       return Container();
     }
 
-    String description, title, image, appleIcon, favIcon;
+    String description, title, image, appleIcon, favIcon, category;
     document = parse(document);
     var elements = document.getElementsByTagName('meta');
     final linkElements = document.getElementsByTagName('link');
@@ -169,6 +168,9 @@ class _InsightsState extends State<Insights> {
           description = tmp.attributes['content'];
         }
       }
+      if (tmp.attributes['property'] == 'og:category') {
+        category = tmp.attributes['content'];
+      }
 
       //fetch image
       if (tmp.attributes['property'] == 'og:image') {
@@ -190,6 +192,7 @@ class _InsightsState extends State<Insights> {
       'description': description ?? '',
       'image': image ??
           'https://tenxorg.com/images/blogs/how-to-manage-your-time-for-achieving-your-goals-1618900206.jpg',
+      'category': category ?? '',
       'appleIcon': appleIcon ?? '',
       'favIcon': favIcon ?? '',
       'url': "someurl",
@@ -203,6 +206,7 @@ class _InsightsState extends State<Insights> {
           Padding(
             padding: const EdgeInsets.all(10),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Image.network(
                   data['image'],
@@ -216,6 +220,13 @@ class _InsightsState extends State<Insights> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
+                      Text(
+                        data['category'],
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.red,
+                            fontSize: 15),
+                      ),
                       Text(
                         data['title'],
                         style: TextStyle(

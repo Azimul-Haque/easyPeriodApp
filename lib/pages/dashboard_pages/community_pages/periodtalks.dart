@@ -29,9 +29,133 @@ class _PeriodTalksState extends State<PeriodTalks> {
     return new Scaffold(
       body: ListView.builder(
         scrollDirection: Axis.vertical,
-        itemCount: posts.length,
+        itemCount: posts.length > 0 ? posts.length : 3,
         itemBuilder: (BuildContext context, int index) {
-          return Text(posts[index]['category']);
+          Widget retWdgt;
+          if (posts.length > 0) {
+            retWdgt = Text(posts[index]['category']);
+          } else {
+            retWdgt = Container(
+              padding: EdgeInsets.all(10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      Column(
+                        children: <Widget>[
+                          SizedBox(
+                            width: 50.0,
+                            height: 50.0,
+                            child: Shimmer.fromColors(
+                              baseColor: Colors.grey,
+                              highlightColor: Colors.white24,
+                              child: Container(
+                                decoration: new BoxDecoration(
+                                  color: Colors.white12,
+                                  shape: BoxShape.circle,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          SizedBox(
+                            width: 200.0,
+                            height: 10.0,
+                            child: Shimmer.fromColors(
+                              baseColor: Colors.grey,
+                              highlightColor: Colors.white24,
+                              child: Container(
+                                color: Colors.white12,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          SizedBox(
+                            width: 100.0,
+                            height: 10.0,
+                            child: Shimmer.fromColors(
+                              baseColor: Colors.grey,
+                              highlightColor: Colors.white24,
+                              child: Container(
+                                color: Colors.white12,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  SizedBox(
+                    width: double.maxFinite,
+                    height: 10.0,
+                    child: Shimmer.fromColors(
+                      baseColor: Colors.grey,
+                      highlightColor: Colors.white24,
+                      child: Container(
+                        color: Colors.white12,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  SizedBox(
+                    width: double.maxFinite,
+                    height: 10.0,
+                    child: Shimmer.fromColors(
+                      baseColor: Colors.grey,
+                      highlightColor: Colors.white24,
+                      child: Container(
+                        color: Colors.white12,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  SizedBox(
+                    width: double.maxFinite,
+                    height: 10.0,
+                    child: Shimmer.fromColors(
+                      baseColor: Colors.grey,
+                      highlightColor: Colors.white24,
+                      child: Container(
+                        color: Colors.white12,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  SizedBox(
+                    width: screenwidth * .5,
+                    height: 10.0,
+                    child: Shimmer.fromColors(
+                      baseColor: Colors.grey,
+                      highlightColor: Colors.white24,
+                      child: Container(
+                        color: Colors.white12,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
+          return retWdgt;
         },
       ),
     );

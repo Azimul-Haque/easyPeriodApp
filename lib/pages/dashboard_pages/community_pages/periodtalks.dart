@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:intl/intl.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -28,12 +28,13 @@ class _PeriodTalksState extends State<PeriodTalks> {
     var screenwidth = MediaQuery.of(context).size.width;
     return new Scaffold(
       body: ListView.builder(
+        padding: EdgeInsets.only(top: 5),
         scrollDirection: Axis.vertical,
-        itemCount: posts.length > 0 ? posts.length : 3,
+        itemCount: posts.length > 0 ? posts.length : 5,
         itemBuilder: (BuildContext context, int index) {
           Widget retWdgt;
           if (posts.length > 0) {
-            retWdgt = Text(posts[index]['category']);
+            retWdgt = _buildPreviewWidget(posts[index]);
           } else {
             retWdgt = Container(
               padding: EdgeInsets.all(10),
@@ -180,14 +181,15 @@ class _PeriodTalksState extends State<PeriodTalks> {
     }
   }
 
-  _buildPreviewWidget(document) {
-    // print(document);
-    if (document == null) {
+  _buildPreviewWidget(post) {
+    // print(post);
+    if (post == null) {
       return Container();
     }
 
     return Card(
-      color: Colors.lightGreen[50],
+      margin: EdgeInsets.only(left: 10, top: 5, right: 10, bottom: 5),
+      color: Colors.grey[100],
       elevation: 1.5,
       child: Stack(
         children: <Widget>[
@@ -196,40 +198,69 @@ class _PeriodTalksState extends State<PeriodTalks> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(
-                    top: 10,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        document['category'],
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.red,
-                            fontSize: 15),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        SizedBox(
+                          width: 50.0,
+                          height: 50.0,
+                          child: Container(
+                            decoration: new BoxDecoration(
+                              color: Colors.black26,
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                image: AssetImage("assets/images/user.png"),
+                                alignment: Alignment.center,
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 10.0,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              post['anonymous'],
+                              style: TextStyle(
+                                color: Colors.black87,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 2,
+                            ),
+                            Text(
+                              (DateFormat('MMMM dd, yyyy').format(
+                                      DateFormat('yyyy-MM-dd')
+                                          .parse(post['created_at'])))
+                                  .toString(),
+                              style: TextStyle(
+                                fontSize: 11,
+                                color: Colors.black45,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      post['body'],
+                      style: TextStyle(
+                        color: Colors.black87,
                       ),
-                      Text(
-                        document['anonymous'],
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.black),
-                      ),
-                      Text(
-                        document['body'],
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.black),
-                      ),
-                      Text(
-                        document['created_at'],
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.black),
-                      ),
-                      SizedBox(
-                        height: 4,
-                      ),
-                    ],
-                  ),
+                    ),
+                    Divider(color: Colors.black26),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[Text("test")],
+                    ),
+                  ],
                 ),
               ],
             ),

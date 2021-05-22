@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'dart:convert';
+import 'package:easyperiod/pages/dashboard_pages/community_pages/newpost.dart';
 import 'package:easyperiod/pages/dashboard_pages/community_pages/singlepost.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -27,7 +29,6 @@ class _MyPostsState extends State<MyPosts> {
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-        CircularProgressIndicator();
         this.getPosts();
         // print("Works");
       }
@@ -48,7 +49,11 @@ class _MyPostsState extends State<MyPosts> {
         padding: EdgeInsets.only(top: 5),
         scrollDirection: Axis.vertical,
         controller: _scrollController,
-        itemCount: posts.length > 0 ? posts.length + 1 : posts.length + 5,
+        itemCount: posts.length > 0 && posts.length < 7
+            ? posts.length
+            : posts.length >= 7
+                ? posts.length + 1
+                : posts.length + 5,
         itemBuilder: (BuildContext context, int index) {
           Widget retWdgt;
           if (posts.length > 0) {
@@ -80,13 +85,27 @@ class _MyPostsState extends State<MyPosts> {
           return retWdgt;
         },
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        label: Text('New Post'),
+        icon: Icon(Icons.edit),
+        onPressed: () {
+          Route route = MaterialPageRoute(builder: (context) => NewPost());
+          Navigator.push(context, route).then((value) {
+            setState(() {
+              this.getPosts();
+            });
+          });
+        },
+      ),
     );
   }
 
   getPosts() async {
     try {
       String serviceURL =
-          "http://192.168.0.104:8000/dashboard/easyperiod/global/posts/" +
+          "https://cvcsbd.com/dashboard/easyperiod/user/posts/" +
+              userdata.uid +
+              '/' +
               posts.length.toString() +
               "/api";
       var response = await http.get(Uri.parse(serviceURL));
@@ -99,7 +118,14 @@ class _MyPostsState extends State<MyPosts> {
           if (postdata["posts"].length == 0) {
             nonewspost = true;
           }
-          // print(posts.length);
+          if (posts.length == 0) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                behavior: SnackBarBehavior.floating,
+                content: Text('No data to show.'),
+              ),
+            );
+          }
         }
       }
     } catch (_) {

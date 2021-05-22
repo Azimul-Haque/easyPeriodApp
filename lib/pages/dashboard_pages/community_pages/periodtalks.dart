@@ -27,7 +27,6 @@ class _PeriodTalksState extends State<PeriodTalks> {
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-        CircularProgressIndicator();
         this.getPosts();
         // print("Works");
       }
@@ -48,7 +47,11 @@ class _PeriodTalksState extends State<PeriodTalks> {
         padding: EdgeInsets.only(top: 5),
         scrollDirection: Axis.vertical,
         controller: _scrollController,
-        itemCount: posts.length > 0 ? posts.length + 1 : posts.length + 5,
+        itemCount: posts.length > 0 && posts.length < 7
+            ? posts.length
+            : posts.length >= 7
+                ? posts.length + 1
+                : posts.length + 5,
         itemBuilder: (BuildContext context, int index) {
           Widget retWdgt;
           if (posts.length > 0) {
@@ -86,7 +89,7 @@ class _PeriodTalksState extends State<PeriodTalks> {
   getPosts() async {
     try {
       String serviceURL =
-          "http://192.168.0.104:8000/dashboard/easyperiod/global/posts/" +
+          "https://cvcsbd.com/dashboard/easyperiod/global/posts/" +
               posts.length.toString() +
               "/api";
       var response = await http.get(Uri.parse(serviceURL));
@@ -99,7 +102,14 @@ class _PeriodTalksState extends State<PeriodTalks> {
           if (postdata["posts"].length == 0) {
             nonewspost = true;
           }
-          // print(posts.length);
+          if (posts.length == 0) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                behavior: SnackBarBehavior.floating,
+                content: Text('No data to show.'),
+              ),
+            );
+          }
         }
       }
     } catch (_) {

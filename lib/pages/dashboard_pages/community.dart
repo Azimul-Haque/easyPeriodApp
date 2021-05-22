@@ -41,15 +41,15 @@ class _CommunityState extends State<Community> {
           ],
           bottom: TabBar(
             tabs: <Widget>[
-              Tab(text: "Period Talk"),
               Tab(text: "My Posts"),
+              Tab(text: "Period Talk"),
             ],
           ),
         ),
         body: TabBarView(
           children: <Widget>[
-            PeriodTalks(),
             MyPosts(),
+            PeriodTalks(),
           ],
         ),
       ),

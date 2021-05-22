@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:easyperiod/pages/dashboard_pages/community.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -223,6 +224,22 @@ class _SinglePostState extends State<SinglePost> {
                             ),
                           ],
                         ),
+                        Expanded(
+                          flex: 3,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: <Widget>[
+                              userdata.uid == post['uid']
+                                  ? IconButton(
+                                      iconSize: 18,
+                                      color: Colors.red,
+                                      icon: Icon(CupertinoIcons.delete),
+                                      onPressed: () => deletePost(post),
+                                    )
+                                  : Container(),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                     SizedBox(
@@ -411,7 +428,7 @@ class _SinglePostState extends State<SinglePost> {
         try {
           http.Response response = await http.post(
             Uri.parse(
-              "http://192.168.0.104:8000/dashboard/easyperiod/store/post/reply/api",
+              "https://cvcsbd.com/dashboard/easyperiod/store/post/reply/api",
             ),
             headers: <String, String>{
               'Content-Type': 'application/json; charset=utf-8',
@@ -484,7 +501,7 @@ class _SinglePostState extends State<SinglePost> {
           onPressed: () async {
             try {
               String serviceURL =
-                  "http://192.168.0.104:8000/dashboard/easyperiod/delete/post/reply/" +
+                  "https://cvcsbd.com/dashboard/easyperiod/delete/post/reply/" +
                       reply['id'].toString() +
                       "/api";
               var response = await http.get(Uri.parse(serviceURL));
@@ -495,6 +512,63 @@ class _SinglePostState extends State<SinglePost> {
                   setState(() {
                     postdata['easyperiodpostreplies'].remove(reply);
                   });
+                }
+              }
+            } catch (_) {
+              print(_);
+            }
+          },
+        ),
+        ElevatedButton(
+          child: Text("Back"),
+          style: ElevatedButton.styleFrom(
+            primary: Colors.grey[350],
+            onPrimary: Colors.black,
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  deletePost(post) async {
+    AlertDialog alert = AlertDialog(
+      title: Center(child: Text('Delete Confirmation')),
+      content: Text(
+        "Are you sure to delete this post?",
+        style: TextStyle(fontSize: 15.5, height: 1.2),
+      ),
+      actions: <Widget>[
+        ElevatedButton(
+          child: Text("Yes, Delete"),
+          onPressed: () async {
+            try {
+              String serviceURL =
+                  "https://cvcsbd.com/dashboard/easyperiod/delete/post/" +
+                      post['id'].toString() +
+                      "/api";
+              var response = await http.get(Uri.parse(serviceURL));
+              if (response.statusCode == 200) {
+                var getdata = json.decode(response.body);
+                if (getdata["success"] == true) {
+                  this.showSnackBarandPop('Reply deleted.');
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                  Route route =
+                      MaterialPageRoute(builder: (context) => Community());
+                  Navigator.push(context, route);
                 }
               }
             } catch (_) {

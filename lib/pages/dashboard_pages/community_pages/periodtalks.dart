@@ -15,26 +15,53 @@ class PeriodTalks extends StatefulWidget {
 class _PeriodTalksState extends State<PeriodTalks> {
   User userdata;
   List posts = [];
+  ScrollController _scrollController = new ScrollController();
+  bool _loading = false;
 
   @override
   void initState() {
     super.initState();
     userdata = FirebaseAuth.instance.currentUser;
     this.getPosts();
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        CircularProgressIndicator();
+        setState(() {
+          _loading = true;
+        });
+        this.getPosts();
+        // print("Works");
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    var screenwidth = MediaQuery.of(context).size.width;
+    // var screenwidth = MediaQuery.of(context).size.width;
     return new Scaffold(
       body: ListView.builder(
         padding: EdgeInsets.only(top: 5),
         scrollDirection: Axis.vertical,
-        itemCount: posts.length > 0 ? posts.length : 5,
+        controller: _scrollController,
+        itemCount: posts.length > 0 ? posts.length + 1 : posts.length + 5,
         itemBuilder: (BuildContext context, int index) {
           Widget retWdgt;
           if (posts.length > 0) {
-            retWdgt = _buildPreviewWidget(posts[index]);
+            if (index < posts.length) {
+              retWdgt = _buildPreviewWidget(posts[index]);
+            } else {
+              return Padding(
+                padding: EdgeInsets.symmetric(vertical: 50.0),
+                child: Center(child: CircularProgressIndicator()),
+              );
+            }
           } else {
             retWdgt = Container(
               padding: EdgeInsets.all(10),
@@ -171,9 +198,9 @@ class _PeriodTalksState extends State<PeriodTalks> {
         var postdata = json.decode(response.body);
         if (postdata["success"] == true) {
           setState(() {
-            posts = postdata["posts"];
+            posts.addAll(postdata["posts"]);
           });
-          print(posts);
+          // print(posts);
         }
       }
     } catch (_) {
@@ -255,10 +282,22 @@ class _PeriodTalksState extends State<PeriodTalks> {
                         color: Colors.black87,
                       ),
                     ),
-                    Divider(color: Colors.black26),
+                    Divider(
+                      color: Colors.black26,
+                      thickness: .75,
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[Text("test")],
+                      children: <Widget>[
+                        Text(
+                          post['easyperiodpostreplies'].length.toString() +
+                              ' Answer(s)',
+                          style: TextStyle(
+                            fontSize: 11,
+                            color: Colors.blue,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -276,6 +315,129 @@ class _PeriodTalksState extends State<PeriodTalks> {
                   // Navigator.push(context, route);
                 },
                 borderRadius: BorderRadius.circular(5),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  _shimmer() {
+    var screenwidth = MediaQuery.of(context).size.width;
+    return Container(
+      padding: EdgeInsets.all(10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              Column(
+                children: <Widget>[
+                  SizedBox(
+                    width: 50.0,
+                    height: 50.0,
+                    child: Shimmer.fromColors(
+                      baseColor: Colors.grey,
+                      highlightColor: Colors.white24,
+                      child: Container(
+                        decoration: new BoxDecoration(
+                          color: Colors.white12,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  SizedBox(
+                    width: 200.0,
+                    height: 10.0,
+                    child: Shimmer.fromColors(
+                      baseColor: Colors.grey,
+                      highlightColor: Colors.white24,
+                      child: Container(
+                        color: Colors.white12,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  SizedBox(
+                    width: 100.0,
+                    height: 10.0,
+                    child: Shimmer.fromColors(
+                      baseColor: Colors.grey,
+                      highlightColor: Colors.white24,
+                      child: Container(
+                        color: Colors.white12,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 5,
+          ),
+          SizedBox(
+            width: double.maxFinite,
+            height: 10.0,
+            child: Shimmer.fromColors(
+              baseColor: Colors.grey,
+              highlightColor: Colors.white24,
+              child: Container(
+                color: Colors.white12,
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 5,
+          ),
+          SizedBox(
+            width: double.maxFinite,
+            height: 10.0,
+            child: Shimmer.fromColors(
+              baseColor: Colors.grey,
+              highlightColor: Colors.white24,
+              child: Container(
+                color: Colors.white12,
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 5,
+          ),
+          SizedBox(
+            width: double.maxFinite,
+            height: 10.0,
+            child: Shimmer.fromColors(
+              baseColor: Colors.grey,
+              highlightColor: Colors.white24,
+              child: Container(
+                color: Colors.white12,
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 5,
+          ),
+          SizedBox(
+            width: screenwidth * .5,
+            height: 10.0,
+            child: Shimmer.fromColors(
+              baseColor: Colors.grey,
+              highlightColor: Colors.white24,
+              child: Container(
+                color: Colors.white12,
               ),
             ),
           ),

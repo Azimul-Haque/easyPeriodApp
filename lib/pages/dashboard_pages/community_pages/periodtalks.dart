@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:easyperiod/pages/dashboard_pages/community_pages/singlepost.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -16,7 +17,7 @@ class _PeriodTalksState extends State<PeriodTalks> {
   User userdata;
   List posts = [];
   ScrollController _scrollController = new ScrollController();
-  bool _loading = false;
+  bool nonewspost = false;
 
   @override
   void initState() {
@@ -27,9 +28,6 @@ class _PeriodTalksState extends State<PeriodTalks> {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
         CircularProgressIndicator();
-        setState(() {
-          _loading = true;
-        });
         this.getPosts();
         // print("Works");
       }
@@ -57,131 +55,27 @@ class _PeriodTalksState extends State<PeriodTalks> {
             if (index < posts.length) {
               retWdgt = _buildPreviewWidget(posts[index]);
             } else {
-              return Padding(
-                padding: EdgeInsets.symmetric(vertical: 50.0),
-                child: Center(child: CircularProgressIndicator()),
-              );
+              if (nonewspost == false) {
+                return _shimmer();
+              } else {
+                return Container(
+                  padding: EdgeInsets.all(20.0),
+                  alignment: Alignment.center,
+                  child: Text(
+                    'No more to show.',
+                    style: TextStyle(
+                      color: Colors.black38,
+                    ),
+                  ),
+                );
+              }
+              // Padding(
+              //   padding: EdgeInsets.symmetric(vertical: 10.0),
+              //   child: Center(child: CircularProgressIndicator()),
+              // );
             }
           } else {
-            retWdgt = Container(
-              padding: EdgeInsets.all(10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Column(
-                        children: <Widget>[
-                          SizedBox(
-                            width: 50.0,
-                            height: 50.0,
-                            child: Shimmer.fromColors(
-                              baseColor: Colors.grey,
-                              highlightColor: Colors.white24,
-                              child: Container(
-                                decoration: new BoxDecoration(
-                                  color: Colors.white12,
-                                  shape: BoxShape.circle,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          SizedBox(
-                            width: 200.0,
-                            height: 10.0,
-                            child: Shimmer.fromColors(
-                              baseColor: Colors.grey,
-                              highlightColor: Colors.white24,
-                              child: Container(
-                                color: Colors.white12,
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          SizedBox(
-                            width: 100.0,
-                            height: 10.0,
-                            child: Shimmer.fromColors(
-                              baseColor: Colors.grey,
-                              highlightColor: Colors.white24,
-                              child: Container(
-                                color: Colors.white12,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  SizedBox(
-                    width: double.maxFinite,
-                    height: 10.0,
-                    child: Shimmer.fromColors(
-                      baseColor: Colors.grey,
-                      highlightColor: Colors.white24,
-                      child: Container(
-                        color: Colors.white12,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  SizedBox(
-                    width: double.maxFinite,
-                    height: 10.0,
-                    child: Shimmer.fromColors(
-                      baseColor: Colors.grey,
-                      highlightColor: Colors.white24,
-                      child: Container(
-                        color: Colors.white12,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  SizedBox(
-                    width: double.maxFinite,
-                    height: 10.0,
-                    child: Shimmer.fromColors(
-                      baseColor: Colors.grey,
-                      highlightColor: Colors.white24,
-                      child: Container(
-                        color: Colors.white12,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  SizedBox(
-                    width: screenwidth * .5,
-                    height: 10.0,
-                    child: Shimmer.fromColors(
-                      baseColor: Colors.grey,
-                      highlightColor: Colors.white24,
-                      child: Container(
-                        color: Colors.white12,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            );
+            retWdgt = _shimmer();
           }
           return retWdgt;
         },
@@ -192,7 +86,9 @@ class _PeriodTalksState extends State<PeriodTalks> {
   getPosts() async {
     try {
       String serviceURL =
-          "http://192.168.0.104:8000/dashboard/easyperiod/global/posts/api";
+          "http://192.168.0.104:8000/dashboard/easyperiod/global/posts/" +
+              posts.length.toString() +
+              "/api";
       var response = await http.get(Uri.parse(serviceURL));
       if (response.statusCode == 200) {
         var postdata = json.decode(response.body);
@@ -200,7 +96,10 @@ class _PeriodTalksState extends State<PeriodTalks> {
           setState(() {
             posts.addAll(postdata["posts"]);
           });
-          // print(posts);
+          if (postdata["posts"].length == 0) {
+            nonewspost = true;
+          }
+          // print(posts.length);
         }
       }
     } catch (_) {
@@ -310,9 +209,9 @@ class _PeriodTalksState extends State<PeriodTalks> {
               child: InkWell(
                 highlightColor: Colors.white12,
                 onTap: () {
-                  // Route route =
-                  //     MaterialPageRoute(builder: (context) => WebPage(url));
-                  // Navigator.push(context, route);
+                  Route route =
+                      MaterialPageRoute(builder: (context) => SinglePost(post));
+                  Navigator.push(context, route);
                 },
                 borderRadius: BorderRadius.circular(5),
               ),

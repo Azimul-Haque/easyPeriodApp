@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easyperiod/globals.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,15 +20,13 @@ class _PredictionState extends State<Prediction> {
   _PredictionState(this.data);
   User userdata;
   var nextprobableperiod;
+  List startdatelist = [];
 
   @override
   void initState() {
     super.initState();
     userdata = FirebaseAuth.instance.currentUser;
-
-    nextprobableperiod = DateFormat("MMMM dd, yyyy")
-        .format(DateTime(data.year, data.month, data.day + 28));
-    print(nextprobableperiod);
+    fetchPeriodStartDays();
   }
 
   @override
@@ -45,13 +46,14 @@ class _PredictionState extends State<Prediction> {
       ),
       body: GestureDetector(
         child: Container(
-          padding: EdgeInsets.only(top: 15, left: 15, right: 15, bottom: 15),
+          padding: EdgeInsets.all(10),
           child: Column(
             children: <Widget>[
               Row(
                 children: <Widget>[
                   Expanded(
                     child: Container(
+                      padding: EdgeInsets.only(left: 5, right: 5),
                       child: Text(
                         "Period prediction",
                         style: TextStyle(
@@ -74,25 +76,35 @@ class _PredictionState extends State<Prediction> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Icon(
-                            CupertinoIcons.drop_fill,
-                            color: Colors.red,
-                            size: 15,
-                          ),
-                          Text(
-                            "Next probable period: " + nextprobableperiod,
-                            style: TextStyle(
-                              fontSize: 16,
-                            ),
-                          ),
-                        ],
-                      ),
+                      nextprobableperiod != null
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Icon(
+                                  CupertinoIcons.drop_fill,
+                                  color: Colors.red,
+                                  size: 15,
+                                ),
+                                Text(
+                                  "Next probable period: " + nextprobableperiod,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ],
+                            )
+                          : CircularProgressIndicator(),
                     ],
                   ),
                 ),
+              ),
+              Text(
+                "N.B.: Calculated from your period data.",
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.grey,
+                ),
+                textAlign: TextAlign.start,
               ),
               SizedBox(
                 height: 10,
@@ -111,5 +123,50 @@ class _PredictionState extends State<Prediction> {
         ),
       ),
     );
+  }
+
+  fetchPeriodStartDays() {
+    CollectionReference collectionReference =
+        FirebaseFirestore.instance.collection('periods');
+
+    collectionReference
+        .where('uid', isEqualTo: userdata.uid)
+        .orderBy('start', descending: true)
+        .snapshots()
+        .listen((snapshot) {
+      setState(() {
+        snapshot.docs.forEach((doc) {
+          startdatelist.add(doc.get("start"));
+        });
+        // 2 tar beshi data hoile avg korbe
+        if (startdatelist.length > 2) {
+          var cumulateddays = 0;
+          double avgdays = 0;
+          for (var i = 1; i < startdatelist.length; i++) {
+            cumulateddays = cumulateddays +
+                differenceOfDates(DateTime.parse(startdatelist[i - 1]),
+                    DateTime.parse(startdatelist[i]));
+            // print(differenceOfDates(DateTime.parse(startdatelist[i - 1]),
+            //     DateTime.parse(startdatelist[i])));
+          }
+          avgdays = cumulateddays / (startdatelist.length - 1);
+          // print('Avg: ' + avgdays.toInt().toString());
+          nextprobableperiod = DateFormat("MMMM dd, yyyy").format(DateTime(
+              DateTime.parse(startdatelist[0]).year,
+              DateTime.parse(startdatelist[0]).month,
+              DateTime.parse(startdatelist[0]).day + avgdays.toInt()));
+        } else {
+          nextprobableperiod = DateFormat("MMMM dd, yyyy").format(DateTime(
+              DateTime.parse(startdatelist[0]).year,
+              DateTime.parse(startdatelist[0]).month,
+              DateTime.parse(startdatelist[0]).day + 28));
+        }
+      });
+    });
+  }
+
+  differenceOfDates(date1, date2) {
+    var dayscount = date1.difference(date2).inDays; //  + 1
+    return dayscount;
   }
 }

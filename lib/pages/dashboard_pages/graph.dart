@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easyperiod/globals.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -11,11 +12,14 @@ class Graph extends StatefulWidget {
 
 class _GraphState extends State<Graph> {
   User userdata;
+  List startdatelist = [];
+  List barlist = [1, 1, 1, 1, 1, 1, 1];
 
   @override
   void initState() {
     super.initState();
     userdata = FirebaseAuth.instance.currentUser;
+    fetchPeriodStartDays();
   }
 
   @override
@@ -45,7 +49,7 @@ class _GraphState extends State<Graph> {
                       padding: EdgeInsets.only(
                           top: 0, left: 0, bottom: 10, right: 0),
                       child: Text(
-                        "Avg Period Graph",
+                        "Latest Period Length",
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
@@ -104,13 +108,13 @@ class _GraphState extends State<Graph> {
                                   ),
                                   // alignment: BarChartAlignment.center,
                                   barGroups: [
-                                    barData(28),
-                                    barData(27),
-                                    barData(29),
-                                    barData(28),
-                                    barData(28),
-                                    barData(28),
-                                    barData(28),
+                                    barData(barlist[0]),
+                                    barData(barlist[1]),
+                                    barData(barlist[2]),
+                                    barData(barlist[3]),
+                                    barData(barlist[4]),
+                                    barData(barlist[5]),
+                                    barData(barlist[6]),
                                   ],
                                 ),
                               ),
@@ -150,7 +154,7 @@ class _GraphState extends State<Graph> {
       x: xyvalue,
       barRods: [
         BarChartRodData(
-          y: xyvalue.toDouble(),
+          y: (xyvalue.toDouble() == 1) ? 0 : xyvalue.toDouble(),
           colors: [
             Colors.amber,
             Colors.red,
@@ -161,5 +165,38 @@ class _GraphState extends State<Graph> {
         ),
       ],
     );
+  }
+
+  fetchPeriodStartDays() {
+    CollectionReference collectionReference =
+        FirebaseFirestore.instance.collection('periods');
+
+    collectionReference
+        .where('uid', isEqualTo: userdata.uid)
+        .orderBy('start', descending: true)
+        .limit(2)
+        .snapshots()
+        .listen((snapshot) {
+      setState(() {
+        snapshot.docs.forEach((doc) {
+          startdatelist.add(doc.get("start"));
+        });
+        // 2 tar beshi data hoile avg korbe
+        if (startdatelist.length > 1) {
+          for (var i = 1; i < startdatelist.length; i++) {
+            var diffdays = differenceOfDates(
+                DateTime.parse(startdatelist[i - 1]),
+                DateTime.parse(startdatelist[i]));
+            barlist[i - 1] = diffdays;
+            print(barlist[i - 1]);
+          }
+        }
+      });
+    });
+  }
+
+  differenceOfDates(date1, date2) {
+    var dayscount = date1.difference(date2).inDays; //  + 1
+    return dayscount;
   }
 }

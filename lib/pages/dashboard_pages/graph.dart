@@ -13,7 +13,7 @@ class Graph extends StatefulWidget {
 class _GraphState extends State<Graph> {
   User userdata;
   List startdatelist = [];
-  List barlist = [1, 1, 1, 1, 1, 1, 1];
+  List barlist = [2, 2, 2, 2, 2, 2, 2];
 
   @override
   void initState() {
@@ -79,7 +79,7 @@ class _GraphState extends State<Graph> {
                         child: Column(
                           children: <Widget>[
                             Container(
-                              height: 140,
+                              height: 150,
                               padding: EdgeInsets.all(7),
                               child: BarChart(
                                 BarChartData(
@@ -100,7 +100,7 @@ class _GraphState extends State<Graph> {
                                       showTitles: true,
                                       margin: 0,
                                       getTextStyles: (value) =>
-                                          getTextforTiles(value),
+                                          getTextforTilesT(value),
                                     ),
                                     bottomTitles: SideTitles(
                                       showTitles: false,
@@ -143,18 +143,25 @@ class _GraphState extends State<Graph> {
     );
   }
 
-  getTextforTiles(double number) {
+  getTextforTilesT(double number) {
     return TextStyle(
       color: Colors.white,
     );
   }
 
+  getTextforTilesB(double number) {
+    return TextStyle(
+      color: Colors.white,
+      fontSize: 11,
+    );
+  }
+
   barData(xyvalue) {
     return BarChartGroupData(
-      x: xyvalue,
+      x: (xyvalue.toDouble() == 2) ? 0 : xyvalue,
       barRods: [
         BarChartRodData(
-          y: (xyvalue.toDouble() == 1) ? 0 : xyvalue.toDouble(),
+          y: xyvalue.toDouble(),
           colors: [
             Colors.amber,
             Colors.red,
@@ -174,7 +181,7 @@ class _GraphState extends State<Graph> {
     collectionReference
         .where('uid', isEqualTo: userdata.uid)
         .orderBy('start', descending: true)
-        .limit(2)
+        .limit(7)
         .snapshots()
         .listen((snapshot) {
       setState(() {

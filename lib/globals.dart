@@ -169,3 +169,12 @@ Future<void> share(textorurl, subject) async {
     subject: subject,
   );
 }
+
+showSnackBar(BuildContext context, String message) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      behavior: SnackBarBehavior.floating,
+      content: new Text(message),
+    ),
+  );
+}

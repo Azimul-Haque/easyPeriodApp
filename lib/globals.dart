@@ -32,7 +32,8 @@ commonAppBar(String appbarname, BuildContext context) {
               Navigator.push(context, route);
               break;
             case 'rate':
-              if (await canLaunch("https://orbachinujbuk.com")) {
+              if (await canLaunch(
+                  "https://play.google.com/store/apps/details?id=com.orbachinujbuk.easyperiod")) {
                 await launch(
                     "https://play.google.com/store/apps/details?id=com.orbachinujbuk.easyperiod");
               } else {
